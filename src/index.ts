@@ -1,13 +1,13 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { MetabaseClient } from './client.js';
-import { getDatabases } from './tools/get-databases.js';
+import { type MetabaseClient, createMetabaseClient } from './client';
+import { allTools, registerTools } from './tools';
 
 async function main() {
   let client: MetabaseClient;
 
   try {
-    client = new MetabaseClient();
+    client = createMetabaseClient();
   } catch (error) {
     console.error('Failed to initialize Metabase client:', error);
     process.exit(1);
@@ -18,22 +18,7 @@ async function main() {
     version: '0.1.0',
   });
 
-  server.tool('get_databases', 'Get list of databases configured in Metabase', {}, async () => {
-    try {
-      return await getDatabases(client);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
-      return {
-        content: [
-          {
-            type: 'text',
-            text: `Error fetching databases: ${message}`,
-          },
-        ],
-        isError: true,
-      };
-    }
-  });
+  registerTools(server, client, allTools);
 
   const transport = new StdioServerTransport();
   await server.connect(transport);

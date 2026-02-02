@@ -1,0 +1,103 @@
+import { z } from 'zod';
+
+// Field semantic types
+export const SemanticTypeSchema = z
+  .enum([
+    'type/PK',
+    'type/FK',
+    'type/Name',
+    'type/Title',
+    'type/Description',
+    'type/Category',
+    'type/State',
+    'type/City',
+    'type/Country',
+    'type/ZipCode',
+    'type/Email',
+    'type/URL',
+    'type/Number',
+    'type/Quantity',
+    'type/Cost',
+    'type/Price',
+    'type/Discount',
+    'type/Score',
+    'type/Percentage',
+    'type/Duration',
+    'type/CreationTimestamp',
+    'type/UpdatedTimestamp',
+    'type/CancelationTimestamp',
+    'type/DeletionTimestamp',
+    'type/Birthdate',
+    'type/JoinTimestamp',
+    'type/Latitude',
+    'type/Longitude',
+    'type/AvatarURL',
+    'type/ImageURL',
+  ])
+  .describe('Semantic type for field interpretation');
+
+export const FieldVisibilitySchema = z
+  .enum(['normal', 'details-only', 'hidden', 'sensitive', 'retired'])
+  .describe('Field visibility setting');
+
+// Input schemas
+export const GetFieldInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+});
+
+export const UpdateFieldInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+  display_name: z.string().optional().describe('Display name for the field'),
+  description: z.string().optional().describe('Field description'),
+  semantic_type: SemanticTypeSchema.optional().describe('Semantic type'),
+  visibility_type: FieldVisibilitySchema.optional().describe('Visibility setting'),
+  fk_target_field_id: z
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Target field ID for foreign key'),
+  coercion_strategy: z.string().optional().describe('Type coercion strategy'),
+  has_field_values: z
+    .enum(['none', 'list', 'search', 'auto-list'])
+    .optional()
+    .describe('Field values behavior'),
+  settings: z.record(z.unknown()).optional().describe('Field-specific settings'),
+});
+
+export const GetFieldValuesInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+});
+
+export const UpdateFieldValuesInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+  values: z.array(z.array(z.unknown())).describe('Array of [value, human_readable_value] pairs'),
+});
+
+export const RescanFieldValuesInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+});
+
+export const DiscardFieldValuesInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+});
+
+export const GetFieldRelatedInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+});
+
+export const SearchFieldValuesInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+  value: z.string().describe('Search value'),
+  limit: z.number().int().positive().max(100).optional().describe('Maximum results to return'),
+});
+
+// Type exports
+export type GetFieldInput = z.infer<typeof GetFieldInputSchema>;
+export type UpdateFieldInput = z.infer<typeof UpdateFieldInputSchema>;
+export type GetFieldValuesInput = z.infer<typeof GetFieldValuesInputSchema>;
+export type UpdateFieldValuesInput = z.infer<typeof UpdateFieldValuesInputSchema>;
+export type RescanFieldValuesInput = z.infer<typeof RescanFieldValuesInputSchema>;
+export type DiscardFieldValuesInput = z.infer<typeof DiscardFieldValuesInputSchema>;
+export type GetFieldRelatedInput = z.infer<typeof GetFieldRelatedInputSchema>;
+export type SearchFieldValuesInput = z.infer<typeof SearchFieldValuesInputSchema>;
