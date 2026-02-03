@@ -1,0 +1,30 @@
+# Source files
+src/
+tests/
+
+# Config files
+*.config.ts
+*.config.js
+tsconfig.json
+biome.json
+release.config.js
+
+# Development files
+.devenv*
+.direnv
+.envrc
+.serena/
+coverage/
+
+# Environment files
+.env
+.env.*
+
+# Lock files (pnpm-lock.yaml is useful for reproducibility but not needed in npm package)
+pnpm-lock.yaml
+
+# CI/CD
+.github/
+
+# Source maps (optional - can be useful for debugging)
+*.map

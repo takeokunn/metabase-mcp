@@ -1,7 +1,11 @@
+import { createRequire } from 'node:module';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { type MetabaseClient, createMetabaseClient } from './client';
 import { allTools, registerTools } from './tools';
+
+const require = createRequire(import.meta.url);
+const { version } = require('../package.json') as { version: string };
 
 async function main() {
   let client: MetabaseClient;
@@ -15,7 +19,7 @@ async function main() {
 
   const server = new McpServer({
     name: 'metabase-mcp',
-    version: '0.1.0',
+    version,
   });
 
   registerTools(server, client, allTools);
