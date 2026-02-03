@@ -1,9 +1,9 @@
 import { UpdateDataPermissionsInputSchema } from '@src/schemas/permissions';
 import { updateDataPermissionsDefinition } from '@src/tools/permissions/update-data-permissions';
 import { describe, expect, it } from 'vitest';
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
-import { expectMcpContent } from '../../__helpers__';
 import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('updateDataPermissions tool', () => {
   it('should update data permissions and return formatted MCP response', async () => {

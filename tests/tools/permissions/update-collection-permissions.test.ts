@@ -1,9 +1,9 @@
 import { UpdateCollectionPermissionsInputSchema } from '@src/schemas/permissions';
 import { updateCollectionPermissionsDefinition } from '@src/tools/permissions/update-collection-permissions';
 import { describe, expect, it } from 'vitest';
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
-import { expectMcpContent } from '../../__helpers__';
 import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('updateCollectionPermissions tool', () => {
   it('should update collection permissions and return formatted MCP response', async () => {

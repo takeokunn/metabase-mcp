@@ -1,9 +1,9 @@
 import { GetPermissionGroupInputSchema } from '@src/schemas/permissions';
 import { getPermissionGroupDefinition } from '@src/tools/permissions/get-permission-group';
 import { describe, expect, it } from 'vitest';
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
-import { expectMcpContent } from '../../__helpers__';
 import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getPermissionGroup tool', () => {
   it('should return formatted MCP response with permission group data', async () => {

@@ -2,8 +2,8 @@ import { GetCurrentUserInputSchema } from '@src/schemas/user';
 import { getCurrentUserDefinition } from '@src/tools/user/get-current-user';
 import { describe, expect, it } from 'vitest';
 
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
 import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getCurrentUser tool', () => {
   it('should return formatted MCP response with current user data', async () => {

@@ -1,8 +1,8 @@
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
-import { expectMcpContent } from '../../__helpers__';
-import { createApiError } from '../../__factories__';
 import { searchModelsDefinition } from '@src/tools/search/search-models';
 import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('searchModels tool', () => {
   it('should return formatted MCP response with available search models', async () => {

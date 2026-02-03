@@ -1,9 +1,9 @@
 import { DeletePermissionGroupInputSchema } from '@src/schemas/permissions';
 import { deletePermissionGroupDefinition } from '@src/tools/permissions/delete-permission-group';
 import { describe, expect, it } from 'vitest';
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
-import { expectMcpContent } from '../../__helpers__';
 import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('deletePermissionGroup tool', () => {
   it('should delete a permission group and return formatted MCP response', async () => {

@@ -2,8 +2,8 @@ import { UpdateUserPasswordInputSchema } from '@src/schemas/user';
 import { updateUserPasswordDefinition } from '@src/tools/user/update-user-password';
 import { describe, expect, it } from 'vitest';
 
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
 import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('updateUserPassword tool', () => {
   it('should return formatted MCP response on successful password update', async () => {

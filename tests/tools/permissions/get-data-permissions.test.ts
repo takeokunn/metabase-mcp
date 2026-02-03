@@ -1,8 +1,8 @@
 import { getDataPermissionsDefinition } from '@src/tools/permissions/get-data-permissions';
 import { describe, expect, it } from 'vitest';
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
-import { expectMcpContent } from '../../__helpers__';
 import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getDataPermissions tool', () => {
   it('should return formatted MCP response with data permissions graph', async () => {

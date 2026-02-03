@@ -2,8 +2,8 @@ import { ListUsersInputSchema } from '@src/schemas/user';
 import { listUsersDefinition } from '@src/tools/user/list-users';
 import { describe, expect, it } from 'vitest';
 
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
 import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('listUsers tool', () => {
   it('should return formatted MCP response with users', async () => {

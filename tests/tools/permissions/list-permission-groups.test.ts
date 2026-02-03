@@ -1,8 +1,8 @@
 import { listPermissionGroupsDefinition } from '@src/tools/permissions/list-permission-groups';
 import { describe, expect, it } from 'vitest';
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
-import { expectMcpContent } from '../../__helpers__';
 import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('listPermissionGroups tool', () => {
   it('should return formatted MCP response with permission groups', async () => {

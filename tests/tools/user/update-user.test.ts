@@ -2,8 +2,8 @@ import { UpdateUserInputSchema } from '@src/schemas/user';
 import { updateUserDefinition } from '@src/tools/user/update-user';
 import { describe, expect, it } from 'vitest';
 
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
 import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('updateUser tool', () => {
   it('should return formatted MCP response with updated user', async () => {

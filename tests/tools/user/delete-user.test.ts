@@ -2,8 +2,8 @@ import { DeleteUserInputSchema } from '@src/schemas/user';
 import { deleteUserDefinition } from '@src/tools/user/delete-user';
 import { describe, expect, it } from 'vitest';
 
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
 import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('deleteUser tool', () => {
   it('should return formatted MCP response after deleting user', async () => {

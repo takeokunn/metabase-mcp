@@ -2,8 +2,8 @@ import { GetUserInputSchema } from '@src/schemas/user';
 import { getUserDefinition } from '@src/tools/user/get-user';
 import { describe, expect, it } from 'vitest';
 
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
 import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getUser tool', () => {
   it('should return formatted MCP response with user data', async () => {

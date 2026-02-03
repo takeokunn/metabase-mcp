@@ -2,8 +2,8 @@ import { ReactivateUserInputSchema } from '@src/schemas/user';
 import { reactivateUserDefinition } from '@src/tools/user/reactivate-user';
 import { describe, expect, it } from 'vitest';
 
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
 import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('reactivateUser tool', () => {
   it('should return formatted MCP response on successful user reactivation', async () => {

@@ -1,9 +1,9 @@
 import { CreatePermissionGroupInputSchema } from '@src/schemas/permissions';
 import { createPermissionGroupDefinition } from '@src/tools/permissions/create-permission-group';
 import { describe, expect, it } from 'vitest';
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
-import { expectMcpContent } from '../../__helpers__';
 import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('createPermissionGroup tool', () => {
   it('should create a permission group and return formatted MCP response', async () => {

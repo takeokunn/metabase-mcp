@@ -1,9 +1,9 @@
 import { UpdatePermissionGroupInputSchema } from '@src/schemas/permissions';
 import { updatePermissionGroupDefinition } from '@src/tools/permissions/update-permission-group';
 import { describe, expect, it } from 'vitest';
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
-import { expectMcpContent } from '../../__helpers__';
 import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('updatePermissionGroup tool', () => {
   it('should update a permission group and return formatted MCP response', async () => {

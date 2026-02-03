@@ -2,8 +2,8 @@ import { SendInviteInputSchema } from '@src/schemas/user';
 import { sendInviteDefinition } from '@src/tools/user/send-invite';
 import { describe, expect, it } from 'vitest';
 
-import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
 import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('sendInvite tool', () => {
   it('should return formatted MCP response on successful invite send', async () => {
