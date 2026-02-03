@@ -12,19 +12,20 @@ import { formatToolResponse } from '@src/tools/registry';
  * Note: Uses the /api/notification endpoint (v0.49+)
  * Subscriptions allow users to receive dashboard updates via email or Slack
  */
-export const createDashboardSubscriptionDefinition: ToolDefinition<CreateDashboardSubscriptionInput> = {
-  name: 'create_dashboard_subscription',
-  description: 'Create a dashboard subscription (email/Slack notification) in Metabase',
-  inputSchema: CreateDashboardSubscriptionInputSchema,
-  handler: async (client: MetabaseClient, input: CreateDashboardSubscriptionInput) => {
-    const { dashboard_id, channels, parameters } = input;
+export const createDashboardSubscriptionDefinition: ToolDefinition<CreateDashboardSubscriptionInput> =
+  {
+    name: 'create_dashboard_subscription',
+    description: 'Create a dashboard subscription (email/Slack notification) in Metabase',
+    inputSchema: CreateDashboardSubscriptionInputSchema,
+    handler: async (client: MetabaseClient, input: CreateDashboardSubscriptionInput) => {
+      const { dashboard_id, channels, parameters } = input;
 
-    const result = await client.post('/api/notification', {
-      dashboard_id,
-      channels,
-      parameters: parameters ?? [],
-    });
+      const result = await client.post('/api/notification', {
+        dashboard_id,
+        channels,
+        parameters: parameters ?? [],
+      });
 
-    return formatToolResponse(result);
-  },
-};
+      return formatToolResponse(result);
+    },
+  };

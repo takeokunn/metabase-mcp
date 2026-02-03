@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type UpdateDashboardCardInput, UpdateDashboardCardInputSchema } from '@src/schemas/dashboard';
+import {
+  type UpdateDashboardCardInput,
+  UpdateDashboardCardInputSchema,
+} from '@src/schemas/dashboard';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

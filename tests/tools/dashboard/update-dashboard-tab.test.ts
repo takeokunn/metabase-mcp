@@ -31,11 +31,14 @@ describe('updateDashboardTab tool', () => {
     await updateDashboardTabDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: expect.arrayContaining([
-        expect.objectContaining({ id: 1, name: 'Updated Tab Name' }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: expect.arrayContaining([
+          expect.objectContaining({ id: 1, name: 'Updated Tab Name' }),
+        ]),
+      }),
+    );
   });
 
   it('should update tab position', async () => {
@@ -48,11 +51,12 @@ describe('updateDashboardTab tool', () => {
 
     await updateDashboardTabDefinition.handler(mockClient, inputWithPosition);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: expect.arrayContaining([
-        expect.objectContaining({ id: 1, position: 1 }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: expect.arrayContaining([expect.objectContaining({ id: 1, position: 1 })]),
+      }),
+    );
   });
 
   it('should preserve other tabs unchanged', async () => {
@@ -63,11 +67,12 @@ describe('updateDashboardTab tool', () => {
 
     await updateDashboardTabDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: expect.arrayContaining([
-        expect.objectContaining({ id: 2, name: 'Tab 2' }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: expect.arrayContaining([expect.objectContaining({ id: 2, name: 'Tab 2' })]),
+      }),
+    );
   });
 
   it('should preserve existing dashcards', async () => {
@@ -78,9 +83,12 @@ describe('updateDashboardTab tool', () => {
 
     await updateDashboardTabDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: [{ id: 10, card_id: 42 }],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: [{ id: 10, card_id: 42 }],
+      }),
+    );
   });
 
   it('should propagate client errors', async () => {

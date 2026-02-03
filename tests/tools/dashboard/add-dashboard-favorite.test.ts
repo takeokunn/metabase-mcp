@@ -32,7 +32,10 @@ describe('addDashboardFavorite tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const mockClient = createMockClientWithError('post', createApiError('Dashboard not found', 404));
+    const mockClient = createMockClientWithError(
+      'post',
+      createApiError('Dashboard not found', 404),
+    );
 
     await expect(addDashboardFavoriteDefinition.handler(mockClient, baseInput)).rejects.toThrow(
       'Dashboard not found',
@@ -41,7 +44,9 @@ describe('addDashboardFavorite tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(addDashboardFavoriteDefinition.name).toBe('add_dashboard_favorite');
-    expect(addDashboardFavoriteDefinition.description).toBe('Add a dashboard to favorites in Metabase');
+    expect(addDashboardFavoriteDefinition.description).toBe(
+      'Add a dashboard to favorites in Metabase',
+    );
     expect(addDashboardFavoriteDefinition.inputSchema).toEqual(AddDashboardFavoriteInputSchema);
   });
 });

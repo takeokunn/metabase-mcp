@@ -30,13 +30,16 @@ describe('addDashboardTab tool', () => {
     await addDashboardTabDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: expect.arrayContaining([
-        { id: 1, name: 'Tab 1', position: 0 },
-        { id: 2, name: 'Tab 2', position: 1 },
-        { id: -2, name: 'New Tab', position: 2 },
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: expect.arrayContaining([
+          { id: 1, name: 'Tab 1', position: 0 },
+          { id: 2, name: 'Tab 2', position: 1 },
+          { id: -2, name: 'New Tab', position: 2 },
+        ]),
+      }),
+    );
   });
 
   it('should set position based on existing tabs count', async () => {
@@ -47,11 +50,12 @@ describe('addDashboardTab tool', () => {
 
     await addDashboardTabDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: expect.arrayContaining([
-        expect.objectContaining({ id: -2, position: 2 }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: expect.arrayContaining([expect.objectContaining({ id: -2, position: 2 })]),
+      }),
+    );
   });
 
   it('should handle dashboard with no existing tabs', async () => {
@@ -64,9 +68,12 @@ describe('addDashboardTab tool', () => {
 
     await addDashboardTabDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [{ id: -2, name: 'New Tab', position: 0 }],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [{ id: -2, name: 'New Tab', position: 0 }],
+      }),
+    );
   });
 
   it('should handle dashboard with undefined tabs', async () => {
@@ -79,9 +86,12 @@ describe('addDashboardTab tool', () => {
 
     await addDashboardTabDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [{ id: -2, name: 'New Tab', position: 0 }],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [{ id: -2, name: 'New Tab', position: 0 }],
+      }),
+    );
   });
 
   it('should preserve existing dashcards', async () => {
@@ -92,9 +102,12 @@ describe('addDashboardTab tool', () => {
 
     await addDashboardTabDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: [{ id: 1, card_id: 10 }],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: [{ id: 1, card_id: 10 }],
+      }),
+    );
   });
 
   it('should propagate client errors', async () => {
@@ -119,7 +132,9 @@ describe('addDashboardTab tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(addDashboardTabDefinition.name).toBe('add_dashboard_tab');
-    expect(addDashboardTabDefinition.description).toBe('Add a new tab to a dashboard in Metabase (v0.49+)');
+    expect(addDashboardTabDefinition.description).toBe(
+      'Add a new tab to a dashboard in Metabase (v0.49+)',
+    );
     expect(addDashboardTabDefinition.inputSchema).toEqual(AddDashboardTabInputSchema);
   });
 });

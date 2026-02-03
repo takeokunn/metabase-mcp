@@ -28,25 +28,28 @@ describe('createDashboardPublicLink tool', () => {
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Failed to create public link');
 
-    await expect(createDashboardPublicLinkDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Failed to create public link',
-    );
+    await expect(
+      createDashboardPublicLinkDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Failed to create public link');
   });
 
   it('should propagate API errors with status codes', async () => {
-    const mockClient = createMockClientWithError('post', createApiError('Dashboard not found', 404));
-
-    await expect(createDashboardPublicLinkDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Dashboard not found',
+    const mockClient = createMockClientWithError(
+      'post',
+      createApiError('Dashboard not found', 404),
     );
+
+    await expect(
+      createDashboardPublicLinkDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Dashboard not found');
   });
 
   it('should propagate permission errors', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Permission denied', 403));
 
-    await expect(createDashboardPublicLinkDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Permission denied',
-    );
+    await expect(
+      createDashboardPublicLinkDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Permission denied');
   });
 
   it('should have correct tool definition metadata', () => {
@@ -54,6 +57,8 @@ describe('createDashboardPublicLink tool', () => {
     expect(createDashboardPublicLinkDefinition.description).toBe(
       'Create a public sharing link for a dashboard in Metabase (returns UUID)',
     );
-    expect(createDashboardPublicLinkDefinition.inputSchema).toEqual(CreateDashboardPublicLinkInputSchema);
+    expect(createDashboardPublicLinkDefinition.inputSchema).toEqual(
+      CreateDashboardPublicLinkInputSchema,
+    );
   });
 });

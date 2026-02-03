@@ -39,7 +39,10 @@ describe('revertDashboard tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const mockClient = createMockClientWithError('post', createApiError('Dashboard not found', 404));
+    const mockClient = createMockClientWithError(
+      'post',
+      createApiError('Dashboard not found', 404),
+    );
 
     await expect(revertDashboardDefinition.handler(mockClient, baseInput)).rejects.toThrow(
       'Dashboard not found',

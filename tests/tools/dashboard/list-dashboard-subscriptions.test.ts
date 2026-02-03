@@ -73,17 +73,17 @@ describe('listDashboardSubscriptions tool', () => {
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Failed to list subscriptions');
 
-    await expect(listDashboardSubscriptionsDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Failed to list subscriptions',
-    );
+    await expect(
+      listDashboardSubscriptionsDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Failed to list subscriptions');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
-    await expect(listDashboardSubscriptionsDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Forbidden',
-    );
+    await expect(
+      listDashboardSubscriptionsDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Forbidden');
   });
 
   it('should have correct tool definition metadata', () => {
@@ -91,6 +91,8 @@ describe('listDashboardSubscriptions tool', () => {
     expect(listDashboardSubscriptionsDefinition.description).toBe(
       'List dashboard subscriptions (email/Slack notifications) in Metabase',
     );
-    expect(listDashboardSubscriptionsDefinition.inputSchema).toEqual(ListDashboardSubscriptionsParamsSchema);
+    expect(listDashboardSubscriptionsDefinition.inputSchema).toEqual(
+      ListDashboardSubscriptionsParamsSchema,
+    );
   });
 });

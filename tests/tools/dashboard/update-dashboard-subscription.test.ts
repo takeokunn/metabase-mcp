@@ -88,17 +88,20 @@ describe('updateDashboardSubscription tool', () => {
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('put', 'Failed to update subscription');
 
-    await expect(updateDashboardSubscriptionDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Failed to update subscription',
-    );
+    await expect(
+      updateDashboardSubscriptionDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Failed to update subscription');
   });
 
   it('should propagate API errors with status codes', async () => {
-    const mockClient = createMockClientWithError('put', createApiError('Subscription not found', 404));
-
-    await expect(updateDashboardSubscriptionDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Subscription not found',
+    const mockClient = createMockClientWithError(
+      'put',
+      createApiError('Subscription not found', 404),
     );
+
+    await expect(
+      updateDashboardSubscriptionDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Subscription not found');
   });
 
   it('should have correct tool definition metadata', () => {
@@ -106,6 +109,8 @@ describe('updateDashboardSubscription tool', () => {
     expect(updateDashboardSubscriptionDefinition.description).toBe(
       'Update a dashboard subscription (email/Slack notification) in Metabase',
     );
-    expect(updateDashboardSubscriptionDefinition.inputSchema).toEqual(UpdateDashboardSubscriptionInputSchema);
+    expect(updateDashboardSubscriptionDefinition.inputSchema).toEqual(
+      UpdateDashboardSubscriptionInputSchema,
+    );
   });
 });

@@ -75,27 +75,31 @@ describe('createDashboardSubscription tool', () => {
 
     await createDashboardSubscriptionDefinition.handler(mockClient, slackInput);
 
-    expect(mockClient.post).toHaveBeenCalledWith('/api/notification', expect.objectContaining({
-      channels: expect.arrayContaining([
-        expect.objectContaining({ channel_type: 'slack' }),
-      ]),
-    }));
+    expect(mockClient.post).toHaveBeenCalledWith(
+      '/api/notification',
+      expect.objectContaining({
+        channels: expect.arrayContaining([expect.objectContaining({ channel_type: 'slack' })]),
+      }),
+    );
   });
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Failed to create subscription');
 
-    await expect(createDashboardSubscriptionDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Failed to create subscription',
-    );
+    await expect(
+      createDashboardSubscriptionDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Failed to create subscription');
   });
 
   it('should propagate API errors with status codes', async () => {
-    const mockClient = createMockClientWithError('post', createApiError('Dashboard not found', 404));
-
-    await expect(createDashboardSubscriptionDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Dashboard not found',
+    const mockClient = createMockClientWithError(
+      'post',
+      createApiError('Dashboard not found', 404),
     );
+
+    await expect(
+      createDashboardSubscriptionDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Dashboard not found');
   });
 
   it('should have correct tool definition metadata', () => {
@@ -103,6 +107,8 @@ describe('createDashboardSubscription tool', () => {
     expect(createDashboardSubscriptionDefinition.description).toBe(
       'Create a dashboard subscription (email/Slack notification) in Metabase',
     );
-    expect(createDashboardSubscriptionDefinition.inputSchema).toEqual(CreateDashboardSubscriptionInputSchema);
+    expect(createDashboardSubscriptionDefinition.inputSchema).toEqual(
+      CreateDashboardSubscriptionInputSchema,
+    );
   });
 });

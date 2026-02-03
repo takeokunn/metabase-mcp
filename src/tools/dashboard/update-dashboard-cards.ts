@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type UpdateDashboardCardsInput, UpdateDashboardCardsInputSchema } from '@src/schemas/dashboard';
+import {
+  type UpdateDashboardCardsInput,
+  UpdateDashboardCardsInputSchema,
+} from '@src/schemas/dashboard';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 
@@ -14,7 +17,8 @@ import { formatToolResponse } from '@src/tools/registry';
  */
 export const updateDashboardCardsDefinition: ToolDefinition<UpdateDashboardCardsInput> = {
   name: 'update_dashboard_cards',
-  description: 'Bulk update dashboard cards in Metabase (v0.49+). Cards not in payload are removed.',
+  description:
+    'Bulk update dashboard cards in Metabase (v0.49+). Cards not in payload are removed.',
   inputSchema: UpdateDashboardCardsInputSchema,
   handler: async (client: MetabaseClient, input: UpdateDashboardCardsInput) => {
     const { dashboard_id, cards, ordered_tabs } = input;

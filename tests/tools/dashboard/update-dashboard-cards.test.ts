@@ -30,12 +30,15 @@ describe('updateDashboardCards tool', () => {
     await updateDashboardCardsDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: expect.arrayContaining([
-        expect.objectContaining({ id: 10, card_id: 42 }),
-        expect.objectContaining({ id: 20, card_id: 43 }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: expect.arrayContaining([
+          expect.objectContaining({ id: 10, card_id: 42 }),
+          expect.objectContaining({ id: 20, card_id: 43 }),
+        ]),
+      }),
+    );
   });
 
   it('should use existing tabs when ordered_tabs not provided', async () => {
@@ -46,9 +49,12 @@ describe('updateDashboardCards tool', () => {
 
     await updateDashboardCardsDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [{ id: 1, name: 'Tab 1' }],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [{ id: 1, name: 'Tab 1' }],
+      }),
+    );
   });
 
   it('should use ordered_tabs when provided', async () => {
@@ -67,12 +73,15 @@ describe('updateDashboardCards tool', () => {
 
     await updateDashboardCardsDefinition.handler(mockClient, inputWithTabs);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [
-        { id: 1, name: 'First Tab' },
-        { id: 2, name: 'Second Tab' },
-      ],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [
+          { id: 1, name: 'First Tab' },
+          { id: 2, name: 'Second Tab' },
+        ],
+      }),
+    );
   });
 
   it('should format cards with default values', async () => {
@@ -88,15 +97,20 @@ describe('updateDashboardCards tool', () => {
 
     await updateDashboardCardsDefinition.handler(mockClient, inputWithMinimalCards);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: [expect.objectContaining({
-        id: -1,
-        card_id: null,
-        parameter_mappings: [],
-        visualization_settings: {},
-        series: [],
-      })],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: [
+          expect.objectContaining({
+            id: -1,
+            card_id: null,
+            parameter_mappings: [],
+            visualization_settings: {},
+            series: [],
+          }),
+        ],
+      }),
+    );
   });
 
   it('should handle empty dashboard tabs', async () => {
@@ -109,9 +123,12 @@ describe('updateDashboardCards tool', () => {
 
     await updateDashboardCardsDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [],
+      }),
+    );
   });
 
   it('should propagate client errors', async () => {

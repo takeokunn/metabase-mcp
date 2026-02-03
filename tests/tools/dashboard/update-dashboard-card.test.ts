@@ -32,11 +32,12 @@ describe('updateDashboardCard tool', () => {
     await updateDashboardCardDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: expect.arrayContaining([
-        expect.objectContaining({ id: 10, row: 5, col: 6 }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: expect.arrayContaining([expect.objectContaining({ id: 10, row: 5, col: 6 })]),
+      }),
+    );
   });
 
   it('should update dashcard size', async () => {
@@ -49,11 +50,14 @@ describe('updateDashboardCard tool', () => {
 
     await updateDashboardCardDefinition.handler(mockClient, inputWithSize);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: expect.arrayContaining([
-        expect.objectContaining({ id: 10, size_x: 8, size_y: 6 }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: expect.arrayContaining([
+          expect.objectContaining({ id: 10, size_x: 8, size_y: 6 }),
+        ]),
+      }),
+    );
   });
 
   it('should update visualization_settings', async () => {
@@ -69,11 +73,14 @@ describe('updateDashboardCard tool', () => {
 
     await updateDashboardCardDefinition.handler(mockClient, inputWithSettings);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: expect.arrayContaining([
-        expect.objectContaining({ visualization_settings: { 'graph.colors': ['#FF0000'] } }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: expect.arrayContaining([
+          expect.objectContaining({ visualization_settings: { 'graph.colors': ['#FF0000'] } }),
+        ]),
+      }),
+    );
   });
 
   it('should preserve other dashcards unchanged', async () => {
@@ -84,11 +91,14 @@ describe('updateDashboardCard tool', () => {
 
     await updateDashboardCardDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: expect.arrayContaining([
-        expect.objectContaining({ id: 20, row: 0, col: 4 }), // Unchanged
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: expect.arrayContaining([
+          expect.objectContaining({ id: 20, row: 0, col: 4 }), // Unchanged
+        ]),
+      }),
+    );
   });
 
   it('should preserve existing tabs', async () => {
@@ -99,9 +109,12 @@ describe('updateDashboardCard tool', () => {
 
     await updateDashboardCardDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [{ id: 1, name: 'Tab 1' }],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [{ id: 1, name: 'Tab 1' }],
+      }),
+    );
   });
 
   it('should propagate client errors', async () => {

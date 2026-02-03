@@ -28,18 +28,26 @@ describe('addDashboardCard tool', () => {
   it('should add card to dashboard with negative ID', async () => {
     const mockClient = createMockClient({
       get: vi.fn().mockResolvedValue(mockDashboard),
-      put: vi.fn().mockResolvedValue({ ...mockDashboard, dashcards: [...mockDashboard.dashcards, { id: -1 }] }),
+      put: vi
+        .fn()
+        .mockResolvedValue({
+          ...mockDashboard,
+          dashcards: [...mockDashboard.dashcards, { id: -1 }],
+        }),
     });
 
     const result = await addDashboardCardDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [],
-      dashcards: expect.arrayContaining([
-        expect.objectContaining({ id: -1, card_id: 42, row: 0, col: 0 }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [],
+        dashcards: expect.arrayContaining([
+          expect.objectContaining({ id: -1, card_id: 42, row: 0, col: 0 }),
+        ]),
+      }),
+    );
     expect(result.content[0].type).toBe('text');
   });
 
@@ -59,11 +67,14 @@ describe('addDashboardCard tool', () => {
 
     await addDashboardCardDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: expect.arrayContaining([
-        expect.objectContaining({ id: -2 }), // New card should get -2 (minId - 1)
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: expect.arrayContaining([
+          expect.objectContaining({ id: -2 }), // New card should get -2 (minId - 1)
+        ]),
+      }),
+    );
   });
 
   it('should handle empty dashboard', async () => {
@@ -76,9 +87,12 @@ describe('addDashboardCard tool', () => {
 
     await addDashboardCardDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: [expect.objectContaining({ id: -1 })],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: [expect.objectContaining({ id: -1 })],
+      }),
+    );
   });
 
   it('should handle dashboard with undefined dashcards', async () => {
@@ -91,10 +105,13 @@ describe('addDashboardCard tool', () => {
 
     await addDashboardCardDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [],
-      dashcards: [expect.objectContaining({ id: -1, card_id: 42 })],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [],
+        dashcards: [expect.objectContaining({ id: -1, card_id: 42 })],
+      }),
+    );
   });
 
   it('should include virtual_card for text cards', async () => {
@@ -119,12 +136,17 @@ describe('addDashboardCard tool', () => {
 
     await addDashboardCardDefinition.handler(mockClient, inputWithVirtualCard);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: [expect.objectContaining({
-        card_id: null,
-        virtual_card: expect.objectContaining({ display: 'text' }),
-      })],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: [
+          expect.objectContaining({
+            card_id: null,
+            virtual_card: expect.objectContaining({ display: 'text' }),
+          }),
+        ],
+      }),
+    );
   });
 
   it('should include dashboard_tab_id when provided', async () => {
@@ -137,17 +159,21 @@ describe('addDashboardCard tool', () => {
 
     await addDashboardCardDefinition.handler(mockClient, inputWithTab);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: expect.arrayContaining([
-        expect.objectContaining({ dashboard_tab_id: 5 }),
-      ]),
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: expect.arrayContaining([expect.objectContaining({ dashboard_tab_id: 5 })]),
+      }),
+    );
   });
 
   it('should preserve existing tabs', async () => {
     const dashboardWithTabs = {
       ...mockDashboard,
-      tabs: [{ id: 1, name: 'Tab 1' }, { id: 2, name: 'Tab 2' }],
+      tabs: [
+        { id: 1, name: 'Tab 1' },
+        { id: 2, name: 'Tab 2' },
+      ],
     };
 
     const mockClient = createMockClient({
@@ -157,9 +183,15 @@ describe('addDashboardCard tool', () => {
 
     await addDashboardCardDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [{ id: 1, name: 'Tab 1' }, { id: 2, name: 'Tab 2' }],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [
+          { id: 1, name: 'Tab 1' },
+          { id: 2, name: 'Tab 2' },
+        ],
+      }),
+    );
   });
 
   it('should propagate client errors', async () => {
@@ -184,7 +216,9 @@ describe('addDashboardCard tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(addDashboardCardDefinition.name).toBe('add_dashboard_card');
-    expect(addDashboardCardDefinition.description).toBe('Add a card to a dashboard in Metabase (v0.49+)');
+    expect(addDashboardCardDefinition.description).toBe(
+      'Add a card to a dashboard in Metabase (v0.49+)',
+    );
     expect(addDashboardCardDefinition.inputSchema).toEqual(AddDashboardCardInputSchema);
   });
 });

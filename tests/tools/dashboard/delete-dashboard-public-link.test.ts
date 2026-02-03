@@ -26,25 +26,31 @@ describe('deleteDashboardPublicLink tool', () => {
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('delete', 'Failed to delete public link');
 
-    await expect(deleteDashboardPublicLinkDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Failed to delete public link',
-    );
+    await expect(
+      deleteDashboardPublicLinkDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Failed to delete public link');
   });
 
   it('should propagate API errors with status codes', async () => {
-    const mockClient = createMockClientWithError('delete', createApiError('Dashboard not found', 404));
-
-    await expect(deleteDashboardPublicLinkDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Dashboard not found',
+    const mockClient = createMockClientWithError(
+      'delete',
+      createApiError('Dashboard not found', 404),
     );
+
+    await expect(
+      deleteDashboardPublicLinkDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Dashboard not found');
   });
 
   it('should propagate permission errors', async () => {
-    const mockClient = createMockClientWithError('delete', createApiError('Permission denied', 403));
-
-    await expect(deleteDashboardPublicLinkDefinition.handler(mockClient, baseInput)).rejects.toThrow(
-      'Permission denied',
+    const mockClient = createMockClientWithError(
+      'delete',
+      createApiError('Permission denied', 403),
     );
+
+    await expect(
+      deleteDashboardPublicLinkDefinition.handler(mockClient, baseInput),
+    ).rejects.toThrow('Permission denied');
   });
 
   it('should have correct tool definition metadata', () => {
@@ -52,6 +58,8 @@ describe('deleteDashboardPublicLink tool', () => {
     expect(deleteDashboardPublicLinkDefinition.description).toBe(
       'Delete a public sharing link from a dashboard in Metabase',
     );
-    expect(deleteDashboardPublicLinkDefinition.inputSchema).toEqual(DeleteDashboardPublicLinkInputSchema);
+    expect(deleteDashboardPublicLinkDefinition.inputSchema).toEqual(
+      DeleteDashboardPublicLinkInputSchema,
+    );
   });
 });

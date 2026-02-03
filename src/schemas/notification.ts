@@ -6,7 +6,9 @@ import { DashboardIdSchema } from './dashboard';
 export const NotificationIdSchema = IdSchema;
 
 // Notification channel type schema
-export const NotificationChannelTypeSchema = z.enum(['email', 'slack']).describe('Notification channel type');
+export const NotificationChannelTypeSchema = z
+  .enum(['email', 'slack'])
+  .describe('Notification channel type');
 
 // Schedule type schema
 export const ScheduleTypeSchema = z
@@ -29,7 +31,10 @@ export const NotificationChannelSchema = z.object({
   channel_type: NotificationChannelTypeSchema.describe('Type of notification channel'),
   enabled: z.boolean().optional().describe('Whether the channel is enabled'),
   recipients: z.array(NotificationRecipientSchema).optional().describe('List of recipients'),
-  details: z.record(z.unknown()).optional().describe('Channel-specific details (e.g., Slack webhook)'),
+  details: z
+    .record(z.unknown())
+    .optional()
+    .describe('Channel-specific details (e.g., Slack webhook)'),
   schedule_type: ScheduleTypeSchema.optional().describe('Schedule frequency'),
   schedule_hour: z.number().int().min(0).max(23).optional().describe('Hour of day (0-23)'),
   schedule_day: DayOfWeekSchema.nullable().optional().describe('Day of week for weekly schedules'),
@@ -87,7 +92,11 @@ export const CreateDashboardSubscriptionInputSchema = z.object({
         schedule_type: ScheduleTypeSchema.describe('Schedule frequency'),
         schedule_hour: z.number().int().min(0).max(23).optional().describe('Hour of day'),
         schedule_day: DayOfWeekSchema.nullable().optional().describe('Day of week'),
-        schedule_frame: z.enum(['first', 'mid', 'last']).nullable().optional().describe('Monthly frame'),
+        schedule_frame: z
+          .enum(['first', 'mid', 'last'])
+          .nullable()
+          .optional()
+          .describe('Monthly frame'),
       }),
     )
     .min(1)
@@ -120,8 +129,16 @@ export type NotificationRecipient = z.infer<typeof NotificationRecipientSchema>;
 export type NotificationChannel = z.infer<typeof NotificationChannelSchema>;
 export type DashboardSubscription = z.infer<typeof DashboardSubscriptionSchema>;
 
-export type ListDashboardSubscriptionsParams = z.infer<typeof ListDashboardSubscriptionsParamsSchema>;
+export type ListDashboardSubscriptionsParams = z.infer<
+  typeof ListDashboardSubscriptionsParamsSchema
+>;
 export type GetDashboardSubscriptionParams = z.infer<typeof GetDashboardSubscriptionParamsSchema>;
-export type CreateDashboardSubscriptionInput = z.infer<typeof CreateDashboardSubscriptionInputSchema>;
-export type UpdateDashboardSubscriptionInput = z.infer<typeof UpdateDashboardSubscriptionInputSchema>;
-export type DeleteDashboardSubscriptionInput = z.infer<typeof DeleteDashboardSubscriptionInputSchema>;
+export type CreateDashboardSubscriptionInput = z.infer<
+  typeof CreateDashboardSubscriptionInputSchema
+>;
+export type UpdateDashboardSubscriptionInput = z.infer<
+  typeof UpdateDashboardSubscriptionInputSchema
+>;
+export type DeleteDashboardSubscriptionInput = z.infer<
+  typeof DeleteDashboardSubscriptionInputSchema
+>;

@@ -41,7 +41,10 @@ describe('listPublicDashboards tool', () => {
   });
 
   it('should propagate API errors with status codes (superuser only)', async () => {
-    const mockClient = createMockClientWithError('get', createApiError('Forbidden - Superuser only', 403));
+    const mockClient = createMockClientWithError(
+      'get',
+      createApiError('Forbidden - Superuser only', 403),
+    );
 
     await expect(listPublicDashboardsDefinition.handler(mockClient, baseInput)).rejects.toThrow(
       'Forbidden - Superuser only',

@@ -30,9 +30,12 @@ describe('removeDashboardCard tool', () => {
     await removeDashboardCardDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: [expect.objectContaining({ id: 20 })],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: [expect.objectContaining({ id: 20 })],
+      }),
+    );
   });
 
   it('should preserve other dashcards', async () => {
@@ -57,9 +60,12 @@ describe('removeDashboardCard tool', () => {
 
     await removeDashboardCardDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      tabs: [{ id: 1, name: 'Tab 1' }],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        tabs: [{ id: 1, name: 'Tab 1' }],
+      }),
+    );
   });
 
   it('should handle removing last dashcard', async () => {
@@ -75,9 +81,12 @@ describe('removeDashboardCard tool', () => {
 
     await removeDashboardCardDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', expect.objectContaining({
-      dashcards: [],
-    }));
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/dashboard/1',
+      expect.objectContaining({
+        dashcards: [],
+      }),
+    );
   });
 
   it('should propagate client errors', async () => {

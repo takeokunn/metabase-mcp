@@ -5,7 +5,10 @@ import { IdSchema, UUIDSchema } from './common';
 export const DashboardIdSchema = IdSchema;
 
 // Dashcard ID schema (can be negative for new cards in v0.49+)
-export const DashcardIdSchema = z.number().int().describe('Dashboard card ID (negative for new cards)');
+export const DashcardIdSchema = z
+  .number()
+  .int()
+  .describe('Dashboard card ID (negative for new cards)');
 
 // Dashboard Tab ID schema (can be negative for new tabs, -2 is magic ID for new tab)
 export const DashboardTabIdSchema = z.number().int().describe('Dashboard tab ID (-2 for new tab)');
@@ -27,7 +30,9 @@ export const ParameterMappingSchema = z.object({
 });
 
 // Visualization settings schema (flexible object for card-specific settings)
-export const VisualizationSettingsSchema = z.record(z.unknown()).describe('Card-specific visualization settings');
+export const VisualizationSettingsSchema = z
+  .record(z.unknown())
+  .describe('Card-specific visualization settings');
 
 // Dashboard tab schema
 export const DashboardTabSchema = z.object({
@@ -39,17 +44,36 @@ export const DashboardTabSchema = z.object({
 // Dashcard schema (card embedded in dashboard)
 export const DashcardSchema = z.object({
   id: DashcardIdSchema.describe('Dashcard ID'),
-  card_id: z.number().int().positive().nullable().optional().describe('Card ID (null for text/virtual cards)'),
+  card_id: z
+    .number()
+    .int()
+    .positive()
+    .nullable()
+    .optional()
+    .describe('Card ID (null for text/virtual cards)'),
   dashboard_id: DashboardIdSchema.optional().describe('Parent dashboard ID'),
-  dashboard_tab_id: DashboardTabIdSchema.nullable().optional().describe('Tab ID (null for default tab)'),
+  dashboard_tab_id: DashboardTabIdSchema.nullable()
+    .optional()
+    .describe('Tab ID (null for default tab)'),
   row: z.number().int().nonnegative().describe('Row position (0-indexed)'),
   col: z.number().int().nonnegative().describe('Column position (0-indexed)'),
   size_x: z.number().int().positive().describe('Width in grid units'),
   size_y: z.number().int().positive().describe('Height in grid units'),
-  parameter_mappings: z.array(ParameterMappingSchema).optional().describe('Filter parameter mappings'),
-  visualization_settings: VisualizationSettingsSchema.optional().describe('Card-specific visualization settings'),
+  parameter_mappings: z
+    .array(ParameterMappingSchema)
+    .optional()
+    .describe('Filter parameter mappings'),
+  visualization_settings: VisualizationSettingsSchema.optional().describe(
+    'Card-specific visualization settings',
+  ),
   series: z.array(z.record(z.unknown())).optional().describe('Series data for multi-series cards'),
-  action_id: z.number().int().positive().nullable().optional().describe('Action ID for action cards'),
+  action_id: z
+    .number()
+    .int()
+    .positive()
+    .nullable()
+    .optional()
+    .describe('Action ID for action cards'),
 });
 
 // Virtual card schema (for text boxes, headings, etc.)
@@ -138,13 +162,24 @@ export const CopyDashboardInputSchema = z.object({
 // Add dashboard card input schema
 export const AddDashboardCardInputSchema = z.object({
   dashboard_id: DashboardIdSchema.describe('Dashboard ID to add card to'),
-  card_id: z.number().int().positive().nullable().optional().describe('Card ID (null for text/virtual cards)'),
+  card_id: z
+    .number()
+    .int()
+    .positive()
+    .nullable()
+    .optional()
+    .describe('Card ID (null for text/virtual cards)'),
   row: z.number().int().nonnegative().describe('Row position (0-indexed)'),
   col: z.number().int().nonnegative().describe('Column position (0-indexed)'),
   size_x: z.number().int().positive().default(4).describe('Width in grid units'),
   size_y: z.number().int().positive().default(3).describe('Height in grid units'),
-  dashboard_tab_id: DashboardTabIdSchema.nullable().optional().describe('Tab ID (null for default tab)'),
-  parameter_mappings: z.array(ParameterMappingSchema).optional().describe('Filter parameter mappings'),
+  dashboard_tab_id: DashboardTabIdSchema.nullable()
+    .optional()
+    .describe('Tab ID (null for default tab)'),
+  parameter_mappings: z
+    .array(ParameterMappingSchema)
+    .optional()
+    .describe('Filter parameter mappings'),
   visualization_settings: VisualizationSettingsSchema.optional().describe('Visualization settings'),
   virtual_card: VirtualCardSchema.optional().describe('Virtual card config for text/heading cards'),
 });
@@ -158,8 +193,13 @@ export const UpdateDashboardCardInputSchema = z.object({
   size_x: z.number().int().positive().optional().describe('New width in grid units'),
   size_y: z.number().int().positive().optional().describe('New height in grid units'),
   dashboard_tab_id: DashboardTabIdSchema.nullable().optional().describe('Move to different tab'),
-  parameter_mappings: z.array(ParameterMappingSchema).optional().describe('Updated parameter mappings'),
-  visualization_settings: VisualizationSettingsSchema.optional().describe('Updated visualization settings'),
+  parameter_mappings: z
+    .array(ParameterMappingSchema)
+    .optional()
+    .describe('Updated parameter mappings'),
+  visualization_settings: VisualizationSettingsSchema.optional().describe(
+    'Updated visualization settings',
+  ),
 });
 
 // Remove dashboard card input schema

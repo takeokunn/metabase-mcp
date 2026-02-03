@@ -67,6 +67,8 @@ describe('listDashboardRevisions tool', () => {
     expect(listDashboardRevisionsDefinition.description).toBe(
       'List revision history for a dashboard in Metabase',
     );
-    expect(listDashboardRevisionsDefinition.inputSchema).toEqual(ListDashboardRevisionsParamsSchema);
+    expect(listDashboardRevisionsDefinition.inputSchema).toEqual(
+      ListDashboardRevisionsParamsSchema,
+    );
   });
 });

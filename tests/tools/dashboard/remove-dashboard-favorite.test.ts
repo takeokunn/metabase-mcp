@@ -32,7 +32,10 @@ describe('removeDashboardFavorite tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const mockClient = createMockClientWithError('delete', createApiError('Dashboard not found', 404));
+    const mockClient = createMockClientWithError(
+      'delete',
+      createApiError('Dashboard not found', 404),
+    );
 
     await expect(removeDashboardFavoriteDefinition.handler(mockClient, baseInput)).rejects.toThrow(
       'Dashboard not found',
@@ -41,7 +44,11 @@ describe('removeDashboardFavorite tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(removeDashboardFavoriteDefinition.name).toBe('remove_dashboard_favorite');
-    expect(removeDashboardFavoriteDefinition.description).toBe('Remove a dashboard from favorites in Metabase');
-    expect(removeDashboardFavoriteDefinition.inputSchema).toEqual(RemoveDashboardFavoriteInputSchema);
+    expect(removeDashboardFavoriteDefinition.description).toBe(
+      'Remove a dashboard from favorites in Metabase',
+    );
+    expect(removeDashboardFavoriteDefinition.inputSchema).toEqual(
+      RemoveDashboardFavoriteInputSchema,
+    );
   });
 });
