@@ -8,14 +8,14 @@ import { createMockClientWithError, createMockClientWithResponse } from '../../_
 describe('createSnippet tool', () => {
   const baseSnippetInput = {
     name: 'New Date Filter',
-    content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+    content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)',
   };
 
   it('should return formatted MCP response with created snippet', async () => {
     const mockCreatedSnippet = {
       id: 42,
       name: 'New Date Filter',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)',
       creator_id: 1,
       archived: false,
     };
@@ -27,7 +27,7 @@ describe('createSnippet tool', () => {
     expectMcpContent(result, mockCreatedSnippet);
     expect(mockClient.post).toHaveBeenCalledWith('/api/native-query-snippet', {
       name: 'New Date Filter',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)',
       description: undefined,
       collection_id: undefined,
     });
@@ -43,7 +43,7 @@ describe('createSnippet tool', () => {
     const mockCreatedSnippet = {
       id: 43,
       name: 'New Date Filter',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)',
       description: 'Filters records from the last 7 days',
       creator_id: 1,
     };
@@ -55,7 +55,7 @@ describe('createSnippet tool', () => {
     expectMcpContent(result, mockCreatedSnippet);
     expect(mockClient.post).toHaveBeenCalledWith('/api/native-query-snippet', {
       name: 'New Date Filter',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)',
       description: 'Filters records from the last 7 days',
       collection_id: undefined,
     });
@@ -70,7 +70,7 @@ describe('createSnippet tool', () => {
     const mockCreatedSnippet = {
       id: 44,
       name: 'New Date Filter',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)',
       collection_id: 5,
     };
 
@@ -81,7 +81,7 @@ describe('createSnippet tool', () => {
     expectMcpContent(result, mockCreatedSnippet);
     expect(mockClient.post).toHaveBeenCalledWith('/api/native-query-snippet', {
       name: 'New Date Filter',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)',
       description: undefined,
       collection_id: 5,
     });

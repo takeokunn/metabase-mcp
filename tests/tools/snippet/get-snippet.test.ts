@@ -11,7 +11,7 @@ describe('getSnippet tool', () => {
       id: 1,
       name: 'Date Filter',
       description: 'Filters records from the last 30 days',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)',
       creator_id: 1,
       archived: false,
       collection_id: 5,

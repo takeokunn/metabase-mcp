@@ -10,7 +10,7 @@ describe('updateSnippet tool', () => {
     const mockUpdatedSnippet = {
       id: 1,
       name: 'Updated Date Filter',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)',
       creator_id: 1,
       archived: false,
     };
@@ -20,13 +20,13 @@ describe('updateSnippet tool', () => {
     const result = await updateSnippetDefinition.handler(mockClient, {
       id: 1,
       name: 'Updated Date Filter',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)',
     });
 
     expectMcpContent(result, mockUpdatedSnippet);
     expect(mockClient.put).toHaveBeenCalledWith('/api/native-query-snippet/1', {
       name: 'Updated Date Filter',
-      content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)",
+      content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 14 DAY)',
     });
     expect(mockClient.put).toHaveBeenCalledOnce();
   });

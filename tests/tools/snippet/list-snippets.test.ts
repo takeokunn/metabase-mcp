@@ -11,7 +11,7 @@ describe('listSnippets tool', () => {
       {
         id: 1,
         name: 'Date Filter',
-        content: "WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)",
+        content: 'WHERE created_at >= DATE_SUB(NOW(), INTERVAL 30 DAY)',
         creator_id: 1,
         archived: false,
       },

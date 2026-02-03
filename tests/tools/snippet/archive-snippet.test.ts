@@ -72,9 +72,7 @@ describe('archiveSnippet tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(archiveSnippetDefinition.name).toBe('archive_snippet');
-    expect(archiveSnippetDefinition.description).toBe(
-      'Archive a native query snippet in Metabase',
-    );
+    expect(archiveSnippetDefinition.description).toBe('Archive a native query snippet in Metabase');
     expect(archiveSnippetDefinition.inputSchema).toEqual(ArchiveSnippetInputSchema);
   });
 });
