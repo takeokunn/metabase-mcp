@@ -10,7 +10,7 @@ on:
   workflow_call:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   ci:
@@ -42,11 +42,4 @@ jobs:
         run: pnpm build
 
       - name: Test
-        run: pnpm test:coverage
-
-      - name: Generate coverage badges
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        uses: jpb06/coverage-badges-action@latest
-        with:
-          branches: main
-          badges-icon: vitest
+        run: pnpm test:run
