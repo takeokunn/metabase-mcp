@@ -1,7 +1,7 @@
 import { createRequire } from 'node:module';
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
-import { type MetabaseClient, createMetabaseClient } from './client';
+import { createMetabaseClient, type MetabaseClient } from './client';
 import { allTools, registerTools } from './tools';
 
 const require = createRequire(import.meta.url);

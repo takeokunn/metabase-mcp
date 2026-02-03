@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { IdSchema, PaginationParamsSchema, createPaginatedResponseSchema } from './common';
+import { createPaginatedResponseSchema, IdSchema } from './common';
 
 // Database ID schema
 export const DatabaseIdSchema = IdSchema;

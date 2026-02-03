@@ -1,7 +1,7 @@
+export type { MockMetabaseClient } from './client.mock';
 export {
   createMockClient,
-  createMockClientWithResponse,
   createMockClientWithError,
+  createMockClientWithResponse,
 } from './client.mock';
-export type { MockMetabaseClient } from './client.mock';
-export { mockFetchResponse, mockFetchError, mockNetworkError } from './fetch.mock';
+export { mockFetchError, mockFetchResponse, mockNetworkError } from './fetch.mock';

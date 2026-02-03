@@ -1,10 +1,10 @@
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import type { MetabaseClient } from '@src/client';
 import {
-  type ToolDefinition,
   formatErrorResponse,
   formatToolResponse,
   registerTools,
+  type ToolDefinition,
 } from '@src/tools/registry';
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod';

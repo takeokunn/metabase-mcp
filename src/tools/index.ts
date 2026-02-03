@@ -26,5 +26,5 @@ export const allTools: ToolDefinition<unknown>[] = [
   ...permissionsTools,
 ];
 
-export { registerTools, formatToolResponse, formatErrorResponse } from './registry';
 export type { ToolDefinition, ToolResponse } from './registry';
+export { formatErrorResponse, formatToolResponse, registerTools } from './registry';

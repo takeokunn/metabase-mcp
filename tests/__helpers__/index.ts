@@ -1,1 +1,1 @@
-export { expectMcpSuccess, expectMcpError, expectMcpContent } from './mcp-assertions';
+export { expectMcpContent, expectMcpError, expectMcpSuccess } from './mcp-assertions';
