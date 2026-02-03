@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { ListDatabaseTablesParamsSchema } from '@src/schemas/database';
 import { listDatabaseTablesDefinition } from '@src/tools/database/list-database-tables';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('listDatabaseTables tool', () => {
   it('should return formatted MCP response with tables without schema filter', async () => {
@@ -11,15 +13,11 @@ describe('listDatabaseTables tool', () => {
       { id: 3, name: 'products', schema: 'inventory' },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTables),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTables);
 
     const result = await listDatabaseTablesDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockTables);
+    expectMcpContent(result, mockTables);
     expect(mockClient.get).toHaveBeenCalledWith('/api/database/1/tables');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -30,26 +28,21 @@ describe('listDatabaseTables tool', () => {
       { id: 2, name: 'orders', schema: 'public' },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTables),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTables);
 
     const result = await listDatabaseTablesDefinition.handler(mockClient, {
       id: 1,
       schema: 'public',
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockTables);
+    expectMcpContent(result, mockTables);
     expect(mockClient.get).toHaveBeenCalledWith('/api/database/1/schema/public');
   });
 
   it('should encode schema name with special characters', async () => {
     const mockTables = [{ id: 1, name: 'data', schema: 'my schema' }];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTables),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTables);
 
     await listDatabaseTablesDefinition.handler(mockClient, { id: 1, schema: 'my schema' });
 
@@ -59,20 +52,15 @@ describe('listDatabaseTables tool', () => {
   it('should handle empty table list', async () => {
     const mockTables: unknown[] = [];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTables),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTables);
 
     const result = await listDatabaseTablesDefinition.handler(mockClient, { id: 42 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual([]);
+    expectMcpContent(result, []);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Database not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Database not found');
 
     await expect(listDatabaseTablesDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Database not found',
@@ -80,12 +68,7 @@ describe('listDatabaseTables tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(listDatabaseTablesDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',

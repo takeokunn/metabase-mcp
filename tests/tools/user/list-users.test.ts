@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { ListUsersInputSchema } from '@src/schemas/user';
 import { listUsersDefinition } from '@src/tools/user/list-users';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
 
 describe('listUsers tool', () => {
   it('should return formatted MCP response with users', async () => {
@@ -13,23 +15,17 @@ describe('listUsers tool', () => {
       total: 2,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockUsers),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockUsers);
 
     const result = await listUsersDefinition.handler(mockClient, {});
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUsers);
+    expectMcpContent(result, mockUsers);
     expect(mockClient.get).toHaveBeenCalledWith('/api/user', {});
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
 
   it('should pass filter parameters', async () => {
-    const mockClient = {
-      get: vi.fn().mockResolvedValue({ data: [], total: 0 }),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', { data: [], total: 0 });
 
     await listUsersDefinition.handler(mockClient, { status: 'active', query: 'admin' });
 
@@ -37,9 +33,7 @@ describe('listUsers tool', () => {
   });
 
   it('should pass pagination parameters', async () => {
-    const mockClient = {
-      get: vi.fn().mockResolvedValue({ data: [], total: 0 }),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', { data: [], total: 0 });
 
     await listUsersDefinition.handler(mockClient, { limit: 10, offset: 20 });
 
@@ -47,9 +41,7 @@ describe('listUsers tool', () => {
   });
 
   it('should pass group_id parameter', async () => {
-    const mockClient = {
-      get: vi.fn().mockResolvedValue({ data: [], total: 0 }),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', { data: [], total: 0 });
 
     await listUsersDefinition.handler(mockClient, { group_id: 5 });
 
@@ -57,9 +49,7 @@ describe('listUsers tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Unauthorized')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Unauthorized');
 
     await expect(listUsersDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
   });

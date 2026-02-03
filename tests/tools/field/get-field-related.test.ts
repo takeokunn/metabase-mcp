@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { GetFieldRelatedInputSchema } from '@src/schemas/field';
 import { getFieldRelatedDefinition } from '@src/tools/field/get-field-related';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getFieldRelated tool', () => {
   it('should return formatted MCP response with related entities', async () => {
@@ -16,15 +18,11 @@ describe('getFieldRelated tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockRelated),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockRelated);
 
     const result = await getFieldRelatedDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockRelated);
+    expectMcpContent(result, mockRelated);
     expect(mockClient.get).toHaveBeenCalledWith('/api/field/1/related');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -35,14 +33,11 @@ describe('getFieldRelated tool', () => {
       fields: [],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockRelated),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockRelated);
 
     const result = await getFieldRelatedDefinition.handler(mockClient, { id: 42 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockRelated);
+    expectMcpContent(result, mockRelated);
     expect(mockClient.get).toHaveBeenCalledWith('/api/field/42/related');
   });
 
@@ -52,19 +47,15 @@ describe('getFieldRelated tool', () => {
       fields: [],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockRelated),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockRelated);
 
     const result = await getFieldRelatedDefinition.handler(mockClient, { id: 10 });
 
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockRelated);
+    expectMcpContent(result, mockRelated);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Field not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Field not found');
 
     await expect(getFieldRelatedDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Field not found',
@@ -73,12 +64,7 @@ describe('getFieldRelated tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(getFieldRelatedDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Unauthorized',

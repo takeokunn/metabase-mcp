@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { ExecuteQueryInputSchema } from '@src/schemas/dataset';
 import { executeQueryDefinition } from '@src/tools/dataset/execute-query';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('executeQuery tool', () => {
   describe('MBQL query execution', () => {
@@ -22,9 +25,7 @@ describe('executeQuery tool', () => {
         status: 'completed',
       };
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockQueryResult),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockQueryResult);
 
       const input = {
         database: 1,
@@ -37,9 +38,7 @@ describe('executeQuery tool', () => {
 
       const result = await executeQueryDefinition.handler(mockClient, input);
 
-      expect(result.content).toHaveLength(1);
-      expect(result.content[0].type).toBe('text');
-      expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockQueryResult);
+      expectMcpContent(result, mockQueryResult);
       expect(mockClient.post).toHaveBeenCalledWith('/api/dataset', {
         database: 1,
         type: 'query',
@@ -61,9 +60,7 @@ describe('executeQuery tool', () => {
         status: 'completed',
       };
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockQueryResult),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockQueryResult);
 
       const input = {
         database: 1,
@@ -76,8 +73,7 @@ describe('executeQuery tool', () => {
 
       const result = await executeQueryDefinition.handler(mockClient, input);
 
-      const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-      expect(parsedResult.data.rows[0][0]).toBe(500);
+      expectMcpContent(result, mockQueryResult);
     });
 
     it('should handle empty MBQL query results', async () => {
@@ -93,9 +89,7 @@ describe('executeQuery tool', () => {
         status: 'completed',
       };
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockQueryResult),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockQueryResult);
 
       const input = {
         database: 1,
@@ -108,9 +102,7 @@ describe('executeQuery tool', () => {
 
       const result = await executeQueryDefinition.handler(mockClient, input);
 
-      const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-      expect(parsedResult.row_count).toBe(0);
-      expect(parsedResult.data.rows).toEqual([]);
+      expectMcpContent(result, mockQueryResult);
     });
   });
 
@@ -132,9 +124,7 @@ describe('executeQuery tool', () => {
         status: 'completed',
       };
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockQueryResult),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockQueryResult);
 
       const input = {
         database: 1,
@@ -146,9 +136,7 @@ describe('executeQuery tool', () => {
 
       const result = await executeQueryDefinition.handler(mockClient, input);
 
-      expect(result.content).toHaveLength(1);
-      expect(result.content[0].type).toBe('text');
-      expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockQueryResult);
+      expectMcpContent(result, mockQueryResult);
       expect(mockClient.post).toHaveBeenCalledWith('/api/dataset', {
         database: 1,
         type: 'native',
@@ -171,9 +159,7 @@ describe('executeQuery tool', () => {
         status: 'completed',
       };
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockQueryResult),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockQueryResult);
 
       const input = {
         database: 1,
@@ -206,8 +192,7 @@ describe('executeQuery tool', () => {
           },
         },
       });
-      const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-      expect(parsedResult.row_count).toBe(1);
+      expectMcpContent(result, mockQueryResult);
     });
 
     it('should handle empty native SQL query results', async () => {
@@ -220,9 +205,7 @@ describe('executeQuery tool', () => {
         status: 'completed',
       };
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockQueryResult),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockQueryResult);
 
       const input = {
         database: 1,
@@ -234,16 +217,13 @@ describe('executeQuery tool', () => {
 
       const result = await executeQueryDefinition.handler(mockClient, input);
 
-      const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-      expect(parsedResult.row_count).toBe(0);
+      expectMcpContent(result, mockQueryResult);
     });
   });
 
   describe('Error handling', () => {
     it('should propagate query execution errors', async () => {
-      const mockClient = {
-        post: vi.fn().mockRejectedValue(new Error('Query execution failed')),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithError('post', 'Query execution failed');
 
       const input = {
         database: 1,
@@ -259,12 +239,10 @@ describe('executeQuery tool', () => {
     });
 
     it('should propagate database connection errors', async () => {
-      const apiError = new Error('Database connection failed');
-      (apiError as Error & { status?: number }).status = 500;
-
-      const mockClient = {
-        post: vi.fn().mockRejectedValue(apiError),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithError(
+        'post',
+        createApiError('Database connection failed', 500),
+      );
 
       const input = {
         database: 999,
@@ -280,12 +258,7 @@ describe('executeQuery tool', () => {
     });
 
     it('should propagate authentication errors', async () => {
-      const apiError = new Error('Unauthorized');
-      (apiError as Error & { status?: number }).status = 401;
-
-      const mockClient = {
-        post: vi.fn().mockRejectedValue(apiError),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
 
       const input = {
         database: 1,
@@ -301,12 +274,10 @@ describe('executeQuery tool', () => {
     });
 
     it('should propagate permission errors', async () => {
-      const apiError = new Error('You do not have permission to run this query');
-      (apiError as Error & { status?: number }).status = 403;
-
-      const mockClient = {
-        post: vi.fn().mockRejectedValue(apiError),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithError(
+        'post',
+        createApiError('You do not have permission to run this query', 403),
+      );
 
       const input = {
         database: 1,

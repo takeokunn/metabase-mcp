@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { GetTableMetadataParamsSchema } from '@src/schemas/table';
 import { getTableMetadataDefinition } from '@src/tools/table/get-table-metadata';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getTableMetadata tool', () => {
   it('should return formatted MCP response with table metadata', async () => {
@@ -18,15 +20,11 @@ describe('getTableMetadata tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getTableMetadataDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockMetadata);
+    expectMcpContent(result, mockMetadata);
     expect(mockClient.get).toHaveBeenCalledWith('/api/table/1/query_metadata', undefined);
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -42,18 +40,14 @@ describe('getTableMetadata tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getTableMetadataDefinition.handler(mockClient, {
       id: 5,
       include_hidden_fields: true,
     });
 
-    expect(result.content[0].type).toBe('text');
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.fields).toHaveLength(3);
+    expectMcpContent(result, mockMetadata);
     expect(mockClient.get).toHaveBeenCalledWith('/api/table/5/query_metadata', {
       include_hidden_fields: true,
     });
@@ -69,20 +63,17 @@ describe('getTableMetadata tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getTableMetadataDefinition.handler(mockClient, {
       id: 5,
       include_hidden_fields: false,
     });
 
+    expectMcpContent(result, mockMetadata);
     expect(mockClient.get).toHaveBeenCalledWith('/api/table/5/query_metadata', {
       include_hidden_fields: false,
     });
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.fields).toHaveLength(2);
   });
 
   it('should not pass params when include_hidden_fields is undefined', async () => {
@@ -92,9 +83,7 @@ describe('getTableMetadata tool', () => {
       fields: [],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     await getTableMetadataDefinition.handler(mockClient, { id: 10 });
 
@@ -124,15 +113,11 @@ describe('getTableMetadata tool', () => {
       dimension_options: {},
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getTableMetadataDefinition.handler(mockClient, { id: 3 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.fields[0].fk_target_field_id).toBe(100);
-    expect(parsedResult.fields[1].fk_target_table_id).toBe(2);
+    expectMcpContent(result, mockMetadata);
   });
 
   it('should handle metadata with dimension options', async () => {
@@ -146,15 +131,11 @@ describe('getTableMetadata tool', () => {
       },
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getTableMetadataDefinition.handler(mockClient, { id: 7 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.dimension_options).toBeDefined();
-    expect(Object.keys(parsedResult.dimension_options)).toHaveLength(2);
+    expectMcpContent(result, mockMetadata);
   });
 
   it('should handle empty fields list', async () => {
@@ -164,20 +145,15 @@ describe('getTableMetadata tool', () => {
       fields: [],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getTableMetadataDefinition.handler(mockClient, { id: 15 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.fields).toEqual([]);
+    expectMcpContent(result, mockMetadata);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Table not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Table not found');
 
     await expect(getTableMetadataDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Table not found',
@@ -186,12 +162,7 @@ describe('getTableMetadata tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(getTableMetadataDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',

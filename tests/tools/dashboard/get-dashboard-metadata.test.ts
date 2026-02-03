@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { GetDashboardParamsSchema } from '@src/schemas/dashboard';
 import { getDashboardMetadataDefinition } from '@src/tools/dashboard/get-dashboard-metadata';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getDashboardMetadata tool', () => {
   it('should return formatted MCP response with dashboard metadata', async () => {
@@ -17,15 +20,11 @@ describe('getDashboardMetadata tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getDashboardMetadataDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockMetadata);
+    expectMcpContent(result, mockMetadata);
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1/query_metadata');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -42,9 +41,7 @@ describe('getDashboardMetadata tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getDashboardMetadataDefinition.handler(mockClient, { id: 42 });
 
@@ -59,14 +56,11 @@ describe('getDashboardMetadata tool', () => {
       databases: [],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getDashboardMetadataDefinition.handler(mockClient, { id: 5 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockMetadata);
+    expectMcpContent(result, mockMetadata);
   });
 
   it('should handle metadata with parameters', async () => {
@@ -79,9 +73,7 @@ describe('getDashboardMetadata tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getDashboardMetadataDefinition.handler(mockClient, { id: 10 });
 
@@ -90,9 +82,7 @@ describe('getDashboardMetadata tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Dashboard not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Dashboard not found');
 
     await expect(getDashboardMetadataDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Dashboard not found',
@@ -101,12 +91,7 @@ describe('getDashboardMetadata tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(getDashboardMetadataDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Unauthorized',
@@ -114,12 +99,7 @@ describe('getDashboardMetadata tool', () => {
   });
 
   it('should propagate forbidden errors', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(getDashboardMetadataDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',

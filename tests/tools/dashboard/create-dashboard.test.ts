@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { CreateDashboardInputSchema } from '@src/schemas/dashboard';
 import { createDashboardDefinition } from '@src/tools/dashboard/create-dashboard';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('createDashboard tool', () => {
   const baseDashboardInput = {
@@ -17,15 +20,11 @@ describe('createDashboard tool', () => {
       parameters: [],
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCreatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCreatedDashboard);
 
     const result = await createDashboardDefinition.handler(mockClient, baseDashboardInput);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCreatedDashboard);
+    expectMcpContent(result, mockCreatedDashboard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard', {
       name: 'New Analytics Dashboard',
       description: undefined,
@@ -48,9 +47,7 @@ describe('createDashboard tool', () => {
       collection_id: null,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCreatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCreatedDashboard);
 
     const result = await createDashboardDefinition.handler(mockClient, inputWithDescription);
 
@@ -76,14 +73,11 @@ describe('createDashboard tool', () => {
       collection_id: 10,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCreatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCreatedDashboard);
 
     const result = await createDashboardDefinition.handler(mockClient, inputWithCollection);
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCreatedDashboard);
+    expectMcpContent(result, mockCreatedDashboard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard', {
       name: 'New Analytics Dashboard',
       description: undefined,
@@ -118,14 +112,11 @@ describe('createDashboard tool', () => {
       parameters: inputWithParameters.parameters,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCreatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCreatedDashboard);
 
     const result = await createDashboardDefinition.handler(mockClient, inputWithParameters);
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCreatedDashboard);
+    expectMcpContent(result, mockCreatedDashboard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard', {
       name: 'New Analytics Dashboard',
       description: undefined,
@@ -135,9 +126,7 @@ describe('createDashboard tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Failed to create dashboard')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Failed to create dashboard');
 
     await expect(createDashboardDefinition.handler(mockClient, baseDashboardInput)).rejects.toThrow(
       'Failed to create dashboard',
@@ -145,12 +134,7 @@ describe('createDashboard tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Bad Request');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', createApiError('Bad Request', 400));
 
     await expect(createDashboardDefinition.handler(mockClient, baseDashboardInput)).rejects.toThrow(
       'Bad Request',

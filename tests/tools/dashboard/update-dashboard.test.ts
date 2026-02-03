@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { UpdateDashboardInputSchema } from '@src/schemas/dashboard';
 import { updateDashboardDefinition } from '@src/tools/dashboard/update-dashboard';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('updateDashboard tool', () => {
   it('should return formatted MCP response with updated dashboard', async () => {
@@ -12,9 +15,7 @@ describe('updateDashboard tool', () => {
       collection_id: 5,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedDashboard);
 
     const result = await updateDashboardDefinition.handler(mockClient, {
       id: 1,
@@ -22,9 +23,7 @@ describe('updateDashboard tool', () => {
       description: 'Updated metrics',
     });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedDashboard);
+    expectMcpContent(result, mockUpdatedDashboard);
     expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/1', {
       name: 'Updated Executive Dashboard',
       description: 'Updated metrics',
@@ -39,17 +38,14 @@ describe('updateDashboard tool', () => {
       collection_id: null,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedDashboard);
 
     const result = await updateDashboardDefinition.handler(mockClient, {
       id: 42,
       name: 'New Dashboard Name',
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedDashboard);
+    expectMcpContent(result, mockUpdatedDashboard);
     expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/42', {
       name: 'New Dashboard Name',
     });
@@ -62,9 +58,7 @@ describe('updateDashboard tool', () => {
       description: 'Updated description for the dashboard',
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedDashboard);
 
     const result = await updateDashboardDefinition.handler(mockClient, {
       id: 5,
@@ -84,17 +78,14 @@ describe('updateDashboard tool', () => {
       collection_id: 10,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedDashboard);
 
     const result = await updateDashboardDefinition.handler(mockClient, {
       id: 3,
       collection_id: 10,
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedDashboard);
+    expectMcpContent(result, mockUpdatedDashboard);
     expect(mockClient.put).toHaveBeenCalledWith('/api/dashboard/3', {
       collection_id: 10,
     });
@@ -107,9 +98,7 @@ describe('updateDashboard tool', () => {
       collection_id: null,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedDashboard);
 
     const result = await updateDashboardDefinition.handler(mockClient, {
       id: 7,
@@ -130,9 +119,7 @@ describe('updateDashboard tool', () => {
       collection_id: 5,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedDashboard);
 
     const result = await updateDashboardDefinition.handler(mockClient, {
       id: 10,
@@ -150,9 +137,7 @@ describe('updateDashboard tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(new Error('Dashboard not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'Dashboard not found');
 
     await expect(
       updateDashboardDefinition.handler(mockClient, { id: 999, name: 'Test' }),
@@ -161,12 +146,7 @@ describe('updateDashboard tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Bad Request');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', createApiError('Bad Request', 400));
 
     await expect(
       updateDashboardDefinition.handler(mockClient, { id: 1, name: 'Test' }),
@@ -174,12 +154,7 @@ describe('updateDashboard tool', () => {
   });
 
   it('should propagate forbidden errors', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', createApiError('Forbidden', 403));
 
     await expect(
       updateDashboardDefinition.handler(mockClient, { id: 1, name: 'Test' }),

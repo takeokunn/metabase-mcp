@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { CreatePermissionGroupInputSchema } from '@src/schemas/permissions';
 import { createPermissionGroupDefinition } from '@src/tools/permissions/create-permission-group';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
+import { createApiError } from '../../__factories__';
 
 describe('createPermissionGroup tool', () => {
   it('should create a permission group and return formatted MCP response', async () => {
@@ -10,17 +12,13 @@ describe('createPermissionGroup tool', () => {
       name: 'Data Analysts',
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResponse);
 
     const input = { name: 'Data Analysts' };
 
     const result = await createPermissionGroupDefinition.handler(mockClient, input);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.post).toHaveBeenCalledWith('/api/permissions/group', {
       name: 'Data Analysts',
     });
@@ -33,25 +31,20 @@ describe('createPermissionGroup tool', () => {
       name: 'Sales & Marketing Team',
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResponse);
 
     const input = { name: 'Sales & Marketing Team' };
 
     const result = await createPermissionGroupDefinition.handler(mockClient, input);
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.post).toHaveBeenCalledWith('/api/permissions/group', {
       name: 'Sales & Marketing Team',
     });
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Group name already exists')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Group name already exists');
 
     const input = { name: 'Existing Group' };
 
@@ -61,12 +54,7 @@ describe('createPermissionGroup tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', createApiError('Forbidden', 403));
 
     const input = { name: 'New Group' };
 

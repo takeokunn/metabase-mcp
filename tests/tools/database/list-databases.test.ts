@@ -1,6 +1,7 @@
 import type { MetabaseClient } from '@src/client';
 import { listDatabasesDefinition } from '@src/tools/database/list-databases';
 import { describe, expect, it, vi } from 'vitest';
+import { expectMcpContent } from '../../__helpers__';
 
 describe('listDatabases tool', () => {
   it('should return formatted MCP response with databases', async () => {
@@ -9,15 +10,15 @@ describe('listDatabases tool', () => {
       { id: 2, name: 'Analytics DB', engine: 'bigquery' },
     ];
 
+    // Note: list-databases uses getDatabases() which is not part of the standard
+    // MetabaseClient interface (get/post/put/delete). Keeping custom mock for compatibility.
     const mockClient = {
       getDatabases: vi.fn().mockResolvedValue(mockDatabases),
     } as unknown as MetabaseClient;
 
     const result = await listDatabasesDefinition.handler(mockClient, {});
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockDatabases);
+    expectMcpContent(result, mockDatabases);
     expect(mockClient.getDatabases).toHaveBeenCalledOnce();
   });
 
@@ -28,8 +29,7 @@ describe('listDatabases tool', () => {
 
     const result = await listDatabasesDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual([]);
+    expectMcpContent(result, []);
   });
 
   it('should propagate client errors', async () => {

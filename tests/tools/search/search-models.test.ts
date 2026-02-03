@@ -1,20 +1,18 @@
-import type { MetabaseClient } from '@src/client';
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
+import { createApiError } from '../../__factories__';
 import { searchModelsDefinition } from '@src/tools/search/search-models';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('searchModels tool', () => {
   it('should return formatted MCP response with available search models', async () => {
     const mockModels = ['card', 'dashboard', 'collection', 'table', 'database', 'action'];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockModels),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockModels);
 
     const result = await searchModelsDefinition.handler(mockClient, {});
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockModels);
+    expectMcpContent(result, mockModels);
     expect(mockClient.get).toHaveBeenCalledWith('/api/search/models');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -22,14 +20,11 @@ describe('searchModels tool', () => {
   it('should handle empty models list', async () => {
     const mockModels: string[] = [];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockModels),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockModels);
 
     const result = await searchModelsDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual([]);
+    expectMcpContent(result, []);
   });
 
   it('should handle models with additional types', async () => {
@@ -45,9 +40,7 @@ describe('searchModels tool', () => {
       'metric',
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockModels),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockModels);
 
     const result = await searchModelsDefinition.handler(mockClient, {});
 
@@ -59,32 +52,22 @@ describe('searchModels tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('API error')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'API error');
 
     await expect(searchModelsDefinition.handler(mockClient, {})).rejects.toThrow('API error');
     expect(mockClient.get).toHaveBeenCalledWith('/api/search/models');
   });
 
   it('should propagate authentication errors', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const apiError = createApiError('Unauthorized', 401);
+    const mockClient = createMockClientWithError('get', apiError);
 
     await expect(searchModelsDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
   });
 
   it('should propagate forbidden errors', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const apiError = createApiError('Forbidden', 403);
+    const mockClient = createMockClientWithError('get', apiError);
 
     await expect(searchModelsDefinition.handler(mockClient, {})).rejects.toThrow('Forbidden');
   });

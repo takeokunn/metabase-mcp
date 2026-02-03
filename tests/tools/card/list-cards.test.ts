@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { ListCardsParamsSchema } from '@src/schemas/card';
 import { listCardsDefinition } from '@src/tools/card/list-cards';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('listCards tool', () => {
   it('should return formatted MCP response with cards', async () => {
@@ -22,15 +24,11 @@ describe('listCards tool', () => {
       },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockCards),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockCards);
 
     const result = await listCardsDefinition.handler(mockClient, {});
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCards);
+    expectMcpContent(result, mockCards);
     expect(mockClient.get).toHaveBeenCalledWith('/api/card', undefined);
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -46,43 +44,30 @@ describe('listCards tool', () => {
       },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockCards),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockCards);
 
     const result = await listCardsDefinition.handler(mockClient, { collection_id: 10 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCards);
+    expectMcpContent(result, mockCards);
     expect(mockClient.get).toHaveBeenCalledWith('/api/card', { collection: 10 });
   });
 
   it('should handle empty card list', async () => {
-    const mockClient = {
-      get: vi.fn().mockResolvedValue([]),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', []);
 
     const result = await listCardsDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual([]);
+    expectMcpContent(result, []);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('API error')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'API error');
 
     await expect(listCardsDefinition.handler(mockClient, {})).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(listCardsDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
   });

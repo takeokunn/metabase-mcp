@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { DiscardFieldValuesInputSchema } from '@src/schemas/field';
 import { discardFieldValuesDefinition } from '@src/tools/field/discard-field-values';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('discardFieldValues tool', () => {
   it('should return formatted MCP response after discarding field values', async () => {
@@ -9,15 +11,11 @@ describe('discardFieldValues tool', () => {
       success: true,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResponse);
 
     const result = await discardFieldValuesDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.post).toHaveBeenCalledWith('/api/field/1/discard_values');
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
@@ -28,35 +26,27 @@ describe('discardFieldValues tool', () => {
       message: 'Field values discarded',
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResponse);
 
     const result = await discardFieldValuesDefinition.handler(mockClient, { id: 42 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.post).toHaveBeenCalledWith('/api/field/42/discard_values');
   });
 
   it('should handle empty response', async () => {
     const mockResponse = {};
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResponse);
 
     const result = await discardFieldValuesDefinition.handler(mockClient, { id: 100 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.post).toHaveBeenCalledWith('/api/field/100/discard_values');
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Field not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Field not found');
 
     await expect(discardFieldValuesDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Field not found',
@@ -65,12 +55,7 @@ describe('discardFieldValues tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', createApiError('Forbidden', 403));
 
     await expect(discardFieldValuesDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',

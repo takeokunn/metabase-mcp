@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { UpdateDataPermissionsInputSchema } from '@src/schemas/permissions';
 import { updateDataPermissionsDefinition } from '@src/tools/permissions/update-data-permissions';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
+import { createApiError } from '../../__factories__';
 
 describe('updateDataPermissions tool', () => {
   it('should update data permissions and return formatted MCP response', async () => {
@@ -19,9 +21,7 @@ describe('updateDataPermissions tool', () => {
       },
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockResponse);
 
     const input = {
       revision: 5,
@@ -39,9 +39,7 @@ describe('updateDataPermissions tool', () => {
 
     const result = await updateDataPermissionsDefinition.handler(mockClient, input);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.put).toHaveBeenCalledWith('/api/permissions/graph', {
       revision: 5,
       groups: input.groups,
@@ -73,9 +71,7 @@ describe('updateDataPermissions tool', () => {
       },
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockResponse);
 
     const input = {
       revision: 10,
@@ -102,8 +98,7 @@ describe('updateDataPermissions tool', () => {
 
     const result = await updateDataPermissionsDefinition.handler(mockClient, input);
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.put).toHaveBeenCalledWith('/api/permissions/graph', {
       revision: 10,
       groups: input.groups,
@@ -125,9 +120,7 @@ describe('updateDataPermissions tool', () => {
       },
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockResponse);
 
     const input = {
       revision: 2,
@@ -156,9 +149,7 @@ describe('updateDataPermissions tool', () => {
       groups: {},
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockResponse);
 
     const input = {
       revision: 1,
@@ -167,8 +158,7 @@ describe('updateDataPermissions tool', () => {
 
     const result = await updateDataPermissionsDefinition.handler(mockClient, input);
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.put).toHaveBeenCalledWith('/api/permissions/graph', {
       revision: 1,
       groups: {},
@@ -176,9 +166,7 @@ describe('updateDataPermissions tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(new Error('Permission denied')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'Permission denied');
 
     const input = {
       revision: 5,
@@ -200,9 +188,7 @@ describe('updateDataPermissions tool', () => {
   });
 
   it('should propagate revision conflict errors', async () => {
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(new Error('Revision mismatch')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'Revision mismatch');
 
     const input = {
       revision: 1,
@@ -223,12 +209,7 @@ describe('updateDataPermissions tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', createApiError('Unauthorized', 401));
 
     const input = {
       revision: 5,

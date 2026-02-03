@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { CreateUserInputSchema } from '@src/schemas/user';
 import { createUserDefinition } from '@src/tools/user/create-user';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
 
 describe('createUser tool', () => {
   it('should return formatted MCP response with created user', async () => {
@@ -13,9 +15,7 @@ describe('createUser tool', () => {
       is_active: true,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCreatedUser),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCreatedUser);
 
     const input = {
       first_name: 'New',
@@ -25,9 +25,7 @@ describe('createUser tool', () => {
 
     const result = await createUserDefinition.handler(mockClient, input);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCreatedUser);
+    expectMcpContent(result, mockCreatedUser);
     expect(mockClient.post).toHaveBeenCalledWith('/api/user', {
       first_name: 'New',
       last_name: 'User',
@@ -47,9 +45,7 @@ describe('createUser tool', () => {
       last_name: 'User',
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCreatedUser),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCreatedUser);
 
     const input = {
       first_name: 'Full',
@@ -73,9 +69,7 @@ describe('createUser tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Email already exists')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Email already exists');
 
     const input = {
       first_name: 'Duplicate',
@@ -89,12 +83,7 @@ describe('createUser tool', () => {
   });
 
   it('should propagate validation errors', async () => {
-    const apiError = new Error('Invalid email format');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Invalid email format', 400);
 
     const input = {
       first_name: 'Bad',

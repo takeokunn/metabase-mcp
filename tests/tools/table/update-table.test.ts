@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { UpdateTableInputSchema } from '@src/schemas/table';
 import { updateTableDefinition } from '@src/tools/table/update-table';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('updateTable tool', () => {
   it('should return formatted MCP response after updating table', async () => {
@@ -16,9 +18,7 @@ describe('updateTable tool', () => {
       active: true,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedTable);
 
     const result = await updateTableDefinition.handler(mockClient, {
       id: 1,
@@ -26,9 +26,7 @@ describe('updateTable tool', () => {
       description: 'Updated description',
     });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedTable);
+    expectMcpContent(result, mockUpdatedTable);
     expect(mockClient.put).toHaveBeenCalledWith('/api/table/1', {
       display_name: 'Application Users',
       description: 'Updated description',
@@ -44,17 +42,14 @@ describe('updateTable tool', () => {
       db_id: 2,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedTable);
 
     const result = await updateTableDefinition.handler(mockClient, {
       id: 5,
       display_name: 'Customer Orders',
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedTable);
+    expectMcpContent(result, mockUpdatedTable);
     expect(mockClient.put).toHaveBeenCalledWith('/api/table/5', {
       display_name: 'Customer Orders',
     });
@@ -69,17 +64,14 @@ describe('updateTable tool', () => {
       visibility_type: 'hidden',
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedTable);
 
     const result = await updateTableDefinition.handler(mockClient, {
       id: 10,
       visibility_type: 'hidden',
     });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.visibility_type).toBe('hidden');
+    expectMcpContent(result, mockUpdatedTable);
     expect(mockClient.put).toHaveBeenCalledWith('/api/table/10', {
       visibility_type: 'hidden',
     });
@@ -93,17 +85,14 @@ describe('updateTable tool', () => {
       db_id: 1,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedTable);
 
     const result = await updateTableDefinition.handler(mockClient, {
       id: 15,
       visibility_type: 'technical',
     });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.visibility_type).toBe('technical');
+    expectMcpContent(result, mockUpdatedTable);
   });
 
   it('should clear description by setting to null', async () => {
@@ -114,17 +103,14 @@ describe('updateTable tool', () => {
       db_id: 1,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedTable);
 
     const result = await updateTableDefinition.handler(mockClient, {
       id: 3,
       description: null,
     });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.description).toBeNull();
+    expectMcpContent(result, mockUpdatedTable);
     expect(mockClient.put).toHaveBeenCalledWith('/api/table/3', {
       description: null,
     });
@@ -140,9 +126,7 @@ describe('updateTable tool', () => {
       db_id: 3,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedTable);
 
     const result = await updateTableDefinition.handler(mockClient, {
       id: 7,
@@ -151,7 +135,7 @@ describe('updateTable tool', () => {
       visibility_type: 'normal',
     });
 
-    expect(result.content[0].type).toBe('text');
+    expectMcpContent(result, mockUpdatedTable);
     expect(mockClient.put).toHaveBeenCalledWith('/api/table/7', {
       display_name: 'Financial Transactions',
       description: 'All financial transactions',
@@ -160,9 +144,7 @@ describe('updateTable tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(new Error('Table not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'Table not found');
 
     await expect(
       updateTableDefinition.handler(mockClient, { id: 999, display_name: 'Test' }),
@@ -171,12 +153,7 @@ describe('updateTable tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', createApiError('Forbidden', 403));
 
     await expect(
       updateTableDefinition.handler(mockClient, { id: 1, display_name: 'Test' }),

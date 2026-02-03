@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { ExecuteCardParamsSchema } from '@src/schemas/card';
 import { executeCardDefinition } from '@src/tools/card/execute-card';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('executeCard tool', () => {
   it('should return formatted MCP response with query results', async () => {
@@ -20,15 +22,11 @@ describe('executeCard tool', () => {
       row_count: 2,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockQueryResult),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockQueryResult);
 
     const result = await executeCardDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockQueryResult);
+    expectMcpContent(result, mockQueryResult);
     expect(mockClient.post).toHaveBeenCalledWith('/api/card/1/query', undefined);
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
@@ -46,9 +44,7 @@ describe('executeCard tool', () => {
       row_count: 1,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockQueryResult),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockQueryResult);
 
     const input = {
       id: 42,
@@ -57,8 +53,7 @@ describe('executeCard tool', () => {
 
     const result = await executeCardDefinition.handler(mockClient, input);
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockQueryResult);
+    expectMcpContent(result, mockQueryResult);
     expect(mockClient.post).toHaveBeenCalledWith('/api/card/42/query', {
       parameters: { category: 'electronics', min_price: 10 },
     });
@@ -76,21 +71,15 @@ describe('executeCard tool', () => {
       row_count: 0,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockQueryResult),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockQueryResult);
 
     const result = await executeCardDefinition.handler(mockClient, { id: 5 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.row_count).toBe(0);
-    expect(parsedResult.data.rows).toHaveLength(0);
+    expectMcpContent(result, mockQueryResult);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Card not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Card not found');
 
     await expect(executeCardDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Card not found',
@@ -99,12 +88,10 @@ describe('executeCard tool', () => {
   });
 
   it('should propagate query execution errors', async () => {
-    const apiError = new Error('Query failed: Invalid column reference');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError(
+      'post',
+      createApiError('Query failed: Invalid column reference', 400),
+    );
 
     await expect(executeCardDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Query failed: Invalid column reference',
@@ -112,12 +99,7 @@ describe('executeCard tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
 
     await expect(executeCardDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Unauthorized',

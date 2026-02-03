@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { ListCollectionsParamsSchema } from '@src/schemas/collection';
 import { listCollectionsDefinition } from '@src/tools/collection/list-collections';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('listCollections tool', () => {
   it('should return formatted MCP response with collections', async () => {
@@ -11,41 +14,32 @@ describe('listCollections tool', () => {
       { id: 3, name: 'Engineering', description: null, location: '/1/' },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockCollections),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockCollections);
 
     const result = await listCollectionsDefinition.handler(mockClient, {});
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCollections);
+    expectMcpContent(result, mockCollections);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection', { namespace: undefined });
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
 
   it('should handle empty collections list', async () => {
-    const mockClient = {
-      get: vi.fn().mockResolvedValue([]),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', []);
 
     const result = await listCollectionsDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual([]);
+    expectMcpContent(result, []);
   });
 
   it('should pass namespace parameter when provided', async () => {
     const mockCollections = [{ id: 10, name: 'Snippets Collection', location: '/' }];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockCollections),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockCollections);
 
     const result = await listCollectionsDefinition.handler(mockClient, { namespace: 'snippets' });
 
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection', { namespace: 'snippets' });
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCollections);
+    expectMcpContent(result, mockCollections);
   });
 
   it('should handle personal collections', async () => {
@@ -54,32 +48,21 @@ describe('listCollections tool', () => {
       { id: 100, name: "John's Personal Collection", personal_owner_id: 5, location: '/' },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockCollections),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockCollections);
 
     const result = await listCollectionsDefinition.handler(mockClient, {});
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult).toHaveLength(2);
-    expect(parsedResult[1].personal_owner_id).toBe(5);
+    expectMcpContent(result, mockCollections);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('API error')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'API error');
 
     await expect(listCollectionsDefinition.handler(mockClient, {})).rejects.toThrow('API error');
   });
 
   it('should propagate authentication errors', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(listCollectionsDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
   });

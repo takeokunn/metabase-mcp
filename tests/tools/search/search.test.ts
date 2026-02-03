@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
+import { createApiError } from '../../__factories__';
 import { SearchParamsSchema } from '@src/schemas/search';
 import { searchDefinition } from '@src/tools/search/search';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('search tool', () => {
   it('should return formatted MCP response with search results', async () => {
@@ -15,15 +17,11 @@ describe('search tool', () => {
       offset: 0,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSearchResults),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSearchResults);
 
     const result = await searchDefinition.handler(mockClient, { q: 'sales' });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockSearchResults);
+    expectMcpContent(result, mockSearchResults);
     expect(mockClient.get).toHaveBeenCalledWith('/api/search', { q: 'sales' });
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -36,9 +34,7 @@ describe('search tool', () => {
       offset: 0,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSearchResults),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSearchResults);
 
     const result = await searchDefinition.handler(mockClient, { q: 'nonexistent' });
 
@@ -55,9 +51,7 @@ describe('search tool', () => {
       offset: 0,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSearchResults),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSearchResults);
 
     const result = await searchDefinition.handler(mockClient, {
       q: 'test',
@@ -68,7 +62,7 @@ describe('search tool', () => {
       q: 'test',
       models: 'dashboard,card',
     });
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockSearchResults);
+    expectMcpContent(result, mockSearchResults);
   });
 
   it('should pass pagination parameters when provided', async () => {
@@ -79,9 +73,7 @@ describe('search tool', () => {
       offset: 20,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSearchResults),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSearchResults);
 
     const result = await searchDefinition.handler(mockClient, {
       q: 'query',
@@ -107,9 +99,7 @@ describe('search tool', () => {
       offset: 0,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSearchResults),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSearchResults);
 
     await searchDefinition.handler(mockClient, {
       q: 'users',
@@ -130,9 +120,7 @@ describe('search tool', () => {
       offset: 0,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSearchResults),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSearchResults);
 
     await searchDefinition.handler(mockClient, {
       q: 'report',
@@ -153,9 +141,7 @@ describe('search tool', () => {
       offset: 50,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSearchResults),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSearchResults);
 
     await searchDefinition.handler(mockClient, {
       q: 'complex',
@@ -177,9 +163,7 @@ describe('search tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Search failed')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Search failed');
 
     await expect(searchDefinition.handler(mockClient, { q: 'test' })).rejects.toThrow(
       'Search failed',
@@ -187,12 +171,8 @@ describe('search tool', () => {
   });
 
   it('should propagate authentication errors', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const apiError = createApiError('Unauthorized', 401);
+    const mockClient = createMockClientWithError('get', apiError);
 
     await expect(searchDefinition.handler(mockClient, { q: 'test' })).rejects.toThrow(
       'Unauthorized',

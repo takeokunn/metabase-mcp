@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { CopyDashboardInputSchema } from '@src/schemas/dashboard';
 import { copyDashboardDefinition } from '@src/tools/dashboard/copy-dashboard';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('copyDashboard tool', () => {
   it('should return formatted MCP response with copied dashboard', async () => {
@@ -12,15 +15,11 @@ describe('copyDashboard tool', () => {
       collection_id: 5,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCopiedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCopiedDashboard);
 
     const result = await copyDashboardDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCopiedDashboard);
+    expectMcpContent(result, mockCopiedDashboard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/1/copy', {});
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
@@ -32,17 +31,14 @@ describe('copyDashboard tool', () => {
       collection_id: null,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCopiedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCopiedDashboard);
 
     const result = await copyDashboardDefinition.handler(mockClient, {
       id: 5,
       name: 'My Custom Dashboard Copy',
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCopiedDashboard);
+    expectMcpContent(result, mockCopiedDashboard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/5/copy', {
       name: 'My Custom Dashboard Copy',
     });
@@ -55,17 +51,14 @@ describe('copyDashboard tool', () => {
       collection_id: 10,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCopiedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCopiedDashboard);
 
     const result = await copyDashboardDefinition.handler(mockClient, {
       id: 3,
       collection_id: 10,
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCopiedDashboard);
+    expectMcpContent(result, mockCopiedDashboard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/3/copy', {
       collection_id: 10,
     });
@@ -78,9 +71,7 @@ describe('copyDashboard tool', () => {
       collection_id: 15,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCopiedDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCopiedDashboard);
 
     const result = await copyDashboardDefinition.handler(mockClient, {
       id: 7,
@@ -88,8 +79,7 @@ describe('copyDashboard tool', () => {
       collection_id: 15,
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCopiedDashboard);
+    expectMcpContent(result, mockCopiedDashboard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/7/copy', {
       name: 'New Dashboard Name',
       collection_id: 15,
@@ -97,9 +87,7 @@ describe('copyDashboard tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Dashboard not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Dashboard not found');
 
     await expect(copyDashboardDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Dashboard not found',
@@ -108,12 +96,7 @@ describe('copyDashboard tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', createApiError('Forbidden', 403));
 
     await expect(copyDashboardDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',
@@ -121,12 +104,7 @@ describe('copyDashboard tool', () => {
   });
 
   it('should propagate unauthorized errors', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
 
     await expect(copyDashboardDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Unauthorized',

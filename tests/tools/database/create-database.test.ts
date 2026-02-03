@@ -1,6 +1,7 @@
-import type { MetabaseClient } from '@src/client';
 import { createDatabaseDefinition } from '@src/tools/database/create-database';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('createDatabase tool', () => {
   it('should create a database and return formatted MCP response', async () => {
@@ -10,9 +11,7 @@ describe('createDatabase tool', () => {
       engine: 'postgres',
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResponse);
 
     const input = {
       name: 'New Database',
@@ -22,9 +21,7 @@ describe('createDatabase tool', () => {
 
     const result = await createDatabaseDefinition.handler(mockClient, input);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.post).toHaveBeenCalledWith('/api/database', {
       name: 'New Database',
       engine: 'postgres',
@@ -35,9 +32,7 @@ describe('createDatabase tool', () => {
   it('should use empty object for details when not provided', async () => {
     const mockResponse = { id: 1, name: 'Test DB', engine: 'h2' };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResponse);
 
     const input = {
       name: 'Test DB',
@@ -54,9 +49,7 @@ describe('createDatabase tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('API error')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'API error');
 
     const input = {
       name: 'Test DB',

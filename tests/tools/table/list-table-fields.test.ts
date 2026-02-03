@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { ListTableFieldsParamsSchema } from '@src/schemas/table';
 import { listTableFieldsDefinition } from '@src/tools/table/list-table-fields';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('listTableFields tool', () => {
   it('should return formatted MCP response with table fields', async () => {
@@ -11,15 +13,11 @@ describe('listTableFields tool', () => {
       { id: 3, name: 'email', display_name: 'Email', base_type: 'type/Text', table_id: 1 },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockFields),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockFields);
 
     const result = await listTableFieldsDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockFields);
+    expectMcpContent(result, mockFields);
     expect(mockClient.get).toHaveBeenCalledWith('/api/table/1/fields');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -36,29 +34,22 @@ describe('listTableFields tool', () => {
       { id: 8, name: 'status', base_type: 'type/Text', table_id: 5 },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockFields),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockFields);
 
     const result = await listTableFieldsDefinition.handler(mockClient, { id: 5 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult).toHaveLength(8);
+    expectMcpContent(result, mockFields);
     expect(mockClient.get).toHaveBeenCalledWith('/api/table/5/fields');
   });
 
   it('should handle empty fields list', async () => {
     const mockFields: unknown[] = [];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockFields),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockFields);
 
     const result = await listTableFieldsDefinition.handler(mockClient, { id: 10 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult).toEqual([]);
-    expect(parsedResult).toHaveLength(0);
+    expectMcpContent(result, mockFields);
   });
 
   it('should handle fields with various data types', async () => {
@@ -70,18 +61,11 @@ describe('listTableFields tool', () => {
       { id: 5, name: 'uuid', base_type: 'type/UUID', table_id: 3 },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockFields),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockFields);
 
     const result = await listTableFieldsDefinition.handler(mockClient, { id: 3 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult[0].base_type).toBe('type/BigInteger');
-    expect(parsedResult[1].base_type).toBe('type/Decimal');
-    expect(parsedResult[2].base_type).toBe('type/Boolean');
-    expect(parsedResult[3].base_type).toBe('type/JSON');
-    expect(parsedResult[4].base_type).toBe('type/UUID');
+    expectMcpContent(result, mockFields);
   });
 
   it('should handle fields with semantic types', async () => {
@@ -102,21 +86,15 @@ describe('listTableFields tool', () => {
       },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockFields),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockFields);
 
     const result = await listTableFieldsDefinition.handler(mockClient, { id: 2 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult[0].semantic_type).toBe('type/Email');
-    expect(parsedResult[1].semantic_type).toBe('type/CreationTimestamp');
+    expectMcpContent(result, mockFields);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Table not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Table not found');
 
     await expect(listTableFieldsDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Table not found',
@@ -125,12 +103,7 @@ describe('listTableFields tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(listTableFieldsDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',

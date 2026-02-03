@@ -1,21 +1,19 @@
-import type { MetabaseClient } from '@src/client';
 import { GetDatabaseParamsSchema } from '@src/schemas/database';
 import { listDatabaseSchemasDefinition } from '@src/tools/database/list-database-schemas';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('listDatabaseSchemas tool', () => {
   it('should return formatted MCP response with schemas', async () => {
     const mockSchemas = ['public', 'analytics', 'reporting'];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSchemas),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSchemas);
 
     const result = await listDatabaseSchemasDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockSchemas);
+    expectMcpContent(result, mockSchemas);
     expect(mockClient.get).toHaveBeenCalledWith('/api/database/1/schemas');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -23,34 +21,27 @@ describe('listDatabaseSchemas tool', () => {
   it('should handle empty schema list', async () => {
     const mockSchemas: string[] = [];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSchemas),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSchemas);
 
     const result = await listDatabaseSchemasDefinition.handler(mockClient, { id: 42 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual([]);
+    expectMcpContent(result, []);
     expect(mockClient.get).toHaveBeenCalledWith('/api/database/42/schemas');
   });
 
   it('should handle single schema', async () => {
     const mockSchemas = ['public'];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockSchemas),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockSchemas);
 
     const result = await listDatabaseSchemasDefinition.handler(mockClient, { id: 5 });
 
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(['public']);
+    expectMcpContent(result, ['public']);
     expect(mockClient.get).toHaveBeenCalledWith('/api/database/5/schemas');
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Database not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Database not found');
 
     await expect(listDatabaseSchemasDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Database not found',
@@ -59,12 +50,7 @@ describe('listDatabaseSchemas tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(listDatabaseSchemasDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Unauthorized',

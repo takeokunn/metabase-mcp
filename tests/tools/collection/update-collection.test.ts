@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { UpdateCollectionInputSchema } from '@src/schemas/collection';
 import { updateCollectionDefinition } from '@src/tools/collection/update-collection';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('updateCollection tool', () => {
   it('should return formatted MCP response with updated collection', async () => {
@@ -12,9 +15,7 @@ describe('updateCollection tool', () => {
       location: '/5/',
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedCollection);
 
     const result = await updateCollectionDefinition.handler(mockClient, {
       id: 5,
@@ -22,9 +23,7 @@ describe('updateCollection tool', () => {
       description: 'Updated description',
     });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedCollection);
+    expectMcpContent(result, mockUpdatedCollection);
     expect(mockClient.put).toHaveBeenCalledWith('/api/collection/5', {
       name: 'Updated Marketing Reports',
       description: 'Updated description',
@@ -39,17 +38,14 @@ describe('updateCollection tool', () => {
       location: '/10/',
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedCollection);
 
     const result = await updateCollectionDefinition.handler(mockClient, {
       id: 10,
       name: 'New Collection Name',
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedCollection);
+    expectMcpContent(result, mockUpdatedCollection);
     expect(mockClient.put).toHaveBeenCalledWith('/api/collection/10', {
       name: 'New Collection Name',
     });
@@ -62,9 +58,7 @@ describe('updateCollection tool', () => {
       description: 'Updated description for the collection',
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedCollection);
 
     const result = await updateCollectionDefinition.handler(mockClient, {
       id: 15,
@@ -85,17 +79,14 @@ describe('updateCollection tool', () => {
       parent_id: 5,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedCollection);
 
     const result = await updateCollectionDefinition.handler(mockClient, {
       id: 20,
       parent_id: 5,
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedCollection);
+    expectMcpContent(result, mockUpdatedCollection);
     expect(mockClient.put).toHaveBeenCalledWith('/api/collection/20', {
       parent_id: 5,
     });
@@ -108,9 +99,7 @@ describe('updateCollection tool', () => {
       archived: true,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedCollection);
 
     const result = await updateCollectionDefinition.handler(mockClient, {
       id: 25,
@@ -130,9 +119,7 @@ describe('updateCollection tool', () => {
       archived: false,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedCollection);
 
     const result = await updateCollectionDefinition.handler(mockClient, {
       id: 30,
@@ -153,9 +140,7 @@ describe('updateCollection tool', () => {
       location: '/10/35/',
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedCollection);
 
     const result = await updateCollectionDefinition.handler(mockClient, {
       id: 35,
@@ -173,9 +158,7 @@ describe('updateCollection tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(new Error('Collection not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'Collection not found');
 
     await expect(
       updateCollectionDefinition.handler(mockClient, { id: 999, name: 'Test' }),
@@ -184,12 +167,7 @@ describe('updateCollection tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Bad Request');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', createApiError('Bad Request', 400));
 
     await expect(
       updateCollectionDefinition.handler(mockClient, { id: 5, name: 'Test' }),
@@ -197,12 +175,7 @@ describe('updateCollection tool', () => {
   });
 
   it('should propagate forbidden errors', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', createApiError('Forbidden', 403));
 
     await expect(
       updateCollectionDefinition.handler(mockClient, { id: 5, name: 'Test' }),

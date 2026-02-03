@@ -1,6 +1,8 @@
-import type { MetabaseClient } from '@src/client';
 import { listPermissionGroupsDefinition } from '@src/tools/permissions/list-permission-groups';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
+import { createApiError } from '../../__factories__';
 
 describe('listPermissionGroups tool', () => {
   it('should return formatted MCP response with permission groups', async () => {
@@ -10,15 +12,11 @@ describe('listPermissionGroups tool', () => {
       { id: 3, name: 'Analysts' },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockGroups),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockGroups);
 
     const result = await listPermissionGroupsDefinition.handler(mockClient, {});
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockGroups);
+    expectMcpContent(result, mockGroups);
     expect(mockClient.get).toHaveBeenCalledWith('/api/permissions/group');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -26,21 +24,16 @@ describe('listPermissionGroups tool', () => {
   it('should handle empty groups list', async () => {
     const mockGroups: unknown[] = [];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockGroups),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockGroups);
 
     const result = await listPermissionGroupsDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual([]);
+    expectMcpContent(result, []);
     expect(mockClient.get).toHaveBeenCalledWith('/api/permissions/group');
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Permission denied')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Permission denied');
 
     await expect(listPermissionGroupsDefinition.handler(mockClient, {})).rejects.toThrow(
       'Permission denied',
@@ -48,12 +41,7 @@ describe('listPermissionGroups tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(listPermissionGroupsDefinition.handler(mockClient, {})).rejects.toThrow(
       'Unauthorized',

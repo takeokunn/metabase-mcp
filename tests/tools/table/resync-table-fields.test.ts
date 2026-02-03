@@ -1,21 +1,19 @@
-import type { MetabaseClient } from '@src/client';
 import { TableIdInputSchema } from '@src/schemas/table';
 import { resyncTableFieldsDefinition } from '@src/tools/table/resync-table-fields';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('resyncTableFields tool', () => {
   it('should return formatted MCP response after resyncing table fields', async () => {
     const mockResult = { success: true };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResult),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResult);
 
     const result = await resyncTableFieldsDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResult);
+    expectMcpContent(result, mockResult);
     expect(mockClient.post).toHaveBeenCalledWith('/api/table/1/rescan_values');
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
@@ -23,38 +21,30 @@ describe('resyncTableFields tool', () => {
   it('should handle resync for different table IDs', async () => {
     const mockResult = { success: true };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResult),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResult);
 
     const result = await resyncTableFieldsDefinition.handler(mockClient, { id: 42 });
 
-    expect(result.content[0].type).toBe('text');
+    expectMcpContent(result, mockResult);
     expect(mockClient.post).toHaveBeenCalledWith('/api/table/42/rescan_values');
   });
 
   it('should handle empty response from API', async () => {
     const mockResult = {};
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResult),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResult);
 
     const result = await resyncTableFieldsDefinition.handler(mockClient, { id: 5 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult).toEqual({});
+    expectMcpContent(result, mockResult);
   });
 
   it('should handle null response from API', async () => {
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(null),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', null);
 
     const result = await resyncTableFieldsDefinition.handler(mockClient, { id: 10 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult).toBeNull();
+    expectMcpContent(result, null);
   });
 
   it('should handle response with message', async () => {
@@ -63,21 +53,15 @@ describe('resyncTableFields tool', () => {
       message: 'Rescan initiated for table',
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResult),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResult);
 
     const result = await resyncTableFieldsDefinition.handler(mockClient, { id: 15 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.success).toBe(true);
-    expect(parsedResult.message).toBe('Rescan initiated for table');
+    expectMcpContent(result, mockResult);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Table not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Table not found');
 
     await expect(resyncTableFieldsDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Table not found',
@@ -86,12 +70,7 @@ describe('resyncTableFields tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', createApiError('Forbidden', 403));
 
     await expect(resyncTableFieldsDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',
@@ -99,12 +78,10 @@ describe('resyncTableFields tool', () => {
   });
 
   it('should handle server error during resync', async () => {
-    const apiError = new Error('Internal Server Error');
-    (apiError as Error & { status?: number }).status = 500;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError(
+      'post',
+      createApiError('Internal Server Error', 500),
+    );
 
     await expect(resyncTableFieldsDefinition.handler(mockClient, { id: 3 })).rejects.toThrow(
       'Internal Server Error',

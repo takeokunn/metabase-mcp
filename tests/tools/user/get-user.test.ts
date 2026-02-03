@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { GetUserInputSchema } from '@src/schemas/user';
 import { getUserDefinition } from '@src/tools/user/get-user';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
 
 describe('getUser tool', () => {
   it('should return formatted MCP response with user data', async () => {
@@ -14,15 +16,11 @@ describe('getUser tool', () => {
       is_active: true,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockUser),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockUser);
 
     const result = await getUserDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUser);
+    expectMcpContent(result, mockUser);
     expect(mockClient.get).toHaveBeenCalledWith('/api/user/1');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -35,21 +33,16 @@ describe('getUser tool', () => {
       last_name: 'User',
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockUser),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockUser);
 
     const result = await getUserDefinition.handler(mockClient, { id: 42 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUser);
+    expectMcpContent(result, mockUser);
     expect(mockClient.get).toHaveBeenCalledWith('/api/user/42');
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('User not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'User not found');
 
     await expect(getUserDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'User not found',
@@ -58,12 +51,7 @@ describe('getUser tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Unauthorized', 401);
 
     await expect(getUserDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
   });

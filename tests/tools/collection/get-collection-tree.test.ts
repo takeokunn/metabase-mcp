@@ -1,6 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { getCollectionTreeDefinition } from '@src/tools/collection/get-collection-tree';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getCollectionTree tool', () => {
   it('should return formatted MCP response with collection tree', async () => {
@@ -22,15 +25,11 @@ describe('getCollectionTree tool', () => {
       },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTree),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTree);
 
     const result = await getCollectionTreeDefinition.handler(mockClient, {});
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockTree);
+    expectMcpContent(result, mockTree);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection/tree');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -56,9 +55,7 @@ describe('getCollectionTree tool', () => {
       },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTree),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTree);
 
     const result = await getCollectionTreeDefinition.handler(mockClient, {});
 
@@ -69,14 +66,11 @@ describe('getCollectionTree tool', () => {
   it('should handle empty tree', async () => {
     const mockTree: unknown[] = [];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTree),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTree);
 
     const result = await getCollectionTreeDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual([]);
+    expectMcpContent(result, []);
   });
 
   it('should handle flat tree with no children', async () => {
@@ -86,15 +80,11 @@ describe('getCollectionTree tool', () => {
       { id: 3, name: 'Collection C', children: [] },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTree),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTree);
 
     const result = await getCollectionTreeDefinition.handler(mockClient, {});
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult).toHaveLength(3);
-    expect(parsedResult.every((c: { children: unknown[] }) => c.children.length === 0)).toBe(true);
+    expectMcpContent(result, mockTree);
   });
 
   it('should include personal collections in tree', async () => {
@@ -103,21 +93,15 @@ describe('getCollectionTree tool', () => {
       { id: 2, name: "John's Collection", personal_owner_id: 1, children: [] },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTree),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTree);
 
     const result = await getCollectionTreeDefinition.handler(mockClient, {});
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult).toHaveLength(2);
-    expect(parsedResult[1].personal_owner_id).toBe(1);
+    expectMcpContent(result, mockTree);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Failed to fetch collection tree')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Failed to fetch collection tree');
 
     await expect(getCollectionTreeDefinition.handler(mockClient, {})).rejects.toThrow(
       'Failed to fetch collection tree',
@@ -126,12 +110,7 @@ describe('getCollectionTree tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(getCollectionTreeDefinition.handler(mockClient, {})).rejects.toThrow(
       'Unauthorized',
@@ -139,12 +118,7 @@ describe('getCollectionTree tool', () => {
   });
 
   it('should propagate forbidden errors', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(getCollectionTreeDefinition.handler(mockClient, {})).rejects.toThrow('Forbidden');
   });

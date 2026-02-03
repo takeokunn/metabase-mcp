@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { GetCollectionItemsParamsSchema } from '@src/schemas/collection';
 import { getCollectionItemsDefinition } from '@src/tools/collection/get-collection-items';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getCollectionItems tool', () => {
   it('should return formatted MCP response with collection items', async () => {
@@ -14,15 +17,11 @@ describe('getCollectionItems tool', () => {
       total: 3,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockItems),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockItems);
 
     const result = await getCollectionItemsDefinition.handler(mockClient, { id: 5 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockItems);
+    expectMcpContent(result, mockItems);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection/5/items', {
       limit: undefined,
       offset: undefined,
@@ -36,14 +35,11 @@ describe('getCollectionItems tool', () => {
       total: 1,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockItems),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockItems);
 
     const result = await getCollectionItemsDefinition.handler(mockClient, { id: 'root' });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockItems);
+    expectMcpContent(result, mockItems);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection/root/items', {
       limit: undefined,
       offset: undefined,
@@ -59,17 +55,14 @@ describe('getCollectionItems tool', () => {
       total: 2,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockItems),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockItems);
 
     const result = await getCollectionItemsDefinition.handler(mockClient, {
       id: 5,
       models: ['dashboard'],
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockItems);
+    expectMcpContent(result, mockItems);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection/5/items', {
       limit: undefined,
       offset: undefined,
@@ -86,9 +79,7 @@ describe('getCollectionItems tool', () => {
       total: 2,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockItems),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockItems);
 
     const result = await getCollectionItemsDefinition.handler(mockClient, {
       id: 10,
@@ -112,9 +103,7 @@ describe('getCollectionItems tool', () => {
       total: 10,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockItems),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockItems);
 
     const result = await getCollectionItemsDefinition.handler(mockClient, {
       id: 5,
@@ -137,9 +126,7 @@ describe('getCollectionItems tool', () => {
       total: 10,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockItems),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockItems);
 
     const result = await getCollectionItemsDefinition.handler(mockClient, {
       id: 5,
@@ -160,21 +147,15 @@ describe('getCollectionItems tool', () => {
       total: 0,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockItems),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockItems);
 
     const result = await getCollectionItemsDefinition.handler(mockClient, { id: 99 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.data).toHaveLength(0);
-    expect(parsedResult.total).toBe(0);
+    expectMcpContent(result, mockItems);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Collection not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Collection not found');
 
     await expect(getCollectionItemsDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Collection not found',
@@ -186,12 +167,7 @@ describe('getCollectionItems tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(getCollectionItemsDefinition.handler(mockClient, { id: 5 })).rejects.toThrow(
       'Unauthorized',
@@ -199,12 +175,7 @@ describe('getCollectionItems tool', () => {
   });
 
   it('should propagate forbidden errors', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(getCollectionItemsDefinition.handler(mockClient, { id: 5 })).rejects.toThrow(
       'Forbidden',

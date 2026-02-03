@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { ListDashboardsParamsSchema } from '@src/schemas/dashboard';
 import { listDashboardsDefinition } from '@src/tools/dashboard/list-dashboards';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('listDashboards tool', () => {
   it('should return formatted MCP response with dashboards', async () => {
@@ -20,15 +23,11 @@ describe('listDashboards tool', () => {
       },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockDashboards),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockDashboards);
 
     const result = await listDashboardsDefinition.handler(mockClient, {});
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockDashboards);
+    expectMcpContent(result, mockDashboards);
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -37,14 +36,11 @@ describe('listDashboards tool', () => {
   // Use get_collection_items with models: ["dashboard"] to filter by collection.
 
   it('should handle empty dashboard list', async () => {
-    const mockClient = {
-      get: vi.fn().mockResolvedValue([]),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', []);
 
     const result = await listDashboardsDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual([]);
+    expectMcpContent(result, []);
   });
 
   it('should handle dashboards with parameters', async () => {
@@ -64,31 +60,21 @@ describe('listDashboards tool', () => {
       },
     ];
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockDashboards),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockDashboards);
 
     const result = await listDashboardsDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockDashboards);
+    expectMcpContent(result, mockDashboards);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('API error')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'API error');
 
     await expect(listDashboardsDefinition.handler(mockClient, {})).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(listDashboardsDefinition.handler(mockClient, {})).rejects.toThrow('Forbidden');
   });

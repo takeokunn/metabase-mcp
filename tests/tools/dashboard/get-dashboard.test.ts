@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { GetDashboardParamsSchema } from '@src/schemas/dashboard';
 import { getDashboardDefinition } from '@src/tools/dashboard/get-dashboard';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getDashboard tool', () => {
   it('should return formatted MCP response with dashboard data', async () => {
@@ -19,15 +22,11 @@ describe('getDashboard tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockDashboard);
 
     const result = await getDashboardDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockDashboard);
+    expectMcpContent(result, mockDashboard);
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -38,14 +37,11 @@ describe('getDashboard tool', () => {
       name: 'Simple Dashboard',
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockDashboard);
 
     const result = await getDashboardDefinition.handler(mockClient, { id: 5 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockDashboard);
+    expectMcpContent(result, mockDashboard);
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/5');
   });
 
@@ -59,9 +55,7 @@ describe('getDashboard tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockDashboard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockDashboard);
 
     const result = await getDashboardDefinition.handler(mockClient, { id: 3 });
 
@@ -70,9 +64,7 @@ describe('getDashboard tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Dashboard not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Dashboard not found');
 
     await expect(getDashboardDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Dashboard not found',
@@ -81,12 +73,7 @@ describe('getDashboard tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(getDashboardDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',

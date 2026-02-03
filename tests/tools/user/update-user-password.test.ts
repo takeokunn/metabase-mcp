@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { UpdateUserPasswordInputSchema } from '@src/schemas/user';
 import { updateUserPasswordDefinition } from '@src/tools/user/update-user-password';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
 
 describe('updateUserPassword tool', () => {
   it('should return formatted MCP response on successful password update', async () => {
@@ -9,9 +11,7 @@ describe('updateUserPassword tool', () => {
       success: true,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockResponse);
 
     const input = {
       id: 1,
@@ -20,9 +20,7 @@ describe('updateUserPassword tool', () => {
 
     const result = await updateUserPasswordDefinition.handler(mockClient, input);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.put).toHaveBeenCalledWith('/api/user/1/password', {
       password: 'newSecurePassword123',
     });
@@ -34,9 +32,7 @@ describe('updateUserPassword tool', () => {
       success: true,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockResponse);
 
     const input = {
       id: 2,
@@ -46,8 +42,7 @@ describe('updateUserPassword tool', () => {
 
     const result = await updateUserPasswordDefinition.handler(mockClient, input);
 
-    expect(result.content).toHaveLength(1);
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.put).toHaveBeenCalledWith('/api/user/2/password', {
       password: 'newSecurePassword456',
       old_password: 'currentPassword123',
@@ -55,9 +50,7 @@ describe('updateUserPassword tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(new Error('User not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'User not found');
 
     const input = {
       id: 999,
@@ -70,12 +63,11 @@ describe('updateUserPassword tool', () => {
   });
 
   it('should propagate password validation errors', async () => {
-    const apiError = new Error('Password does not meet complexity requirements');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError(
+      'put',
+      'Password does not meet complexity requirements',
+      400,
+    );
 
     const input = {
       id: 1,
@@ -88,12 +80,7 @@ describe('updateUserPassword tool', () => {
   });
 
   it('should propagate incorrect old password errors', async () => {
-    const apiError = new Error('Incorrect current password');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'Incorrect current password', 400);
 
     const input = {
       id: 1,

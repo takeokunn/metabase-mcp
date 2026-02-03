@@ -1,29 +1,24 @@
-import type { MetabaseClient } from '@src/client';
 import { rescanDatabaseValuesDefinition } from '@src/tools/database/rescan-database-values';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('rescanDatabaseValues tool', () => {
   it('should trigger rescan and return formatted MCP response', async () => {
     const mockResponse = { success: true };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResponse);
 
     const input = { id: 1 };
 
     const result = await rescanDatabaseValuesDefinition.handler(mockClient, input);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.post).toHaveBeenCalledWith('/api/database/1/rescan_values');
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Database not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Database not found');
 
     const input = { id: 999 };
 

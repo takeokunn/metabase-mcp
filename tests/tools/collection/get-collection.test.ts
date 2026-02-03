@@ -1,7 +1,10 @@
-import type { MetabaseClient } from '@src/client';
 import { GetCollectionParamsSchema } from '@src/schemas/collection';
 import { getCollectionDefinition } from '@src/tools/collection/get-collection';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getCollection tool', () => {
   it('should return formatted MCP response with collection data', async () => {
@@ -14,15 +17,11 @@ describe('getCollection tool', () => {
       archived: false,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockCollection);
 
     const result = await getCollectionDefinition.handler(mockClient, { id: 5 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCollection);
+    expectMcpContent(result, mockCollection);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection/5');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -36,14 +35,11 @@ describe('getCollection tool', () => {
       personal_owner_id: null,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockRootCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockRootCollection);
 
     const result = await getCollectionDefinition.handler(mockClient, { id: 'root' });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockRootCollection);
+    expectMcpContent(result, mockRootCollection);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection/root');
   });
 
@@ -53,14 +49,11 @@ describe('getCollection tool', () => {
       name: 'Simple Collection',
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockCollection);
 
     const result = await getCollectionDefinition.handler(mockClient, { id: 10 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCollection);
+    expectMcpContent(result, mockCollection);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection/10');
   });
 
@@ -73,22 +66,15 @@ describe('getCollection tool', () => {
       personal_owner_id: 1,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockPersonalCollection),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockPersonalCollection);
 
     const result = await getCollectionDefinition.handler(mockClient, { id: 15 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(
-      mockPersonalCollection,
-    );
+    expectMcpContent(result, mockPersonalCollection);
   });
 
   it('should propagate client errors for non-existent collection', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Collection not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Collection not found');
 
     await expect(getCollectionDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Collection not found',
@@ -97,12 +83,7 @@ describe('getCollection tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(getCollectionDefinition.handler(mockClient, { id: 5 })).rejects.toThrow(
       'Unauthorized',
@@ -110,12 +91,7 @@ describe('getCollection tool', () => {
   });
 
   it('should propagate forbidden errors', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(getCollectionDefinition.handler(mockClient, { id: 5 })).rejects.toThrow(
       'Forbidden',

@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { CreateCardInputSchema } from '@src/schemas/card';
 import { createCardDefinition } from '@src/tools/card/create-card';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('createCard tool', () => {
   const baseCardInput = {
@@ -25,15 +27,11 @@ describe('createCard tool', () => {
       collection_id: null,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCreatedCard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCreatedCard);
 
     const result = await createCardDefinition.handler(mockClient, baseCardInput);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCreatedCard);
+    expectMcpContent(result, mockCreatedCard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/card', {
       name: 'New Sales Report',
       display: 'bar',
@@ -60,13 +58,11 @@ describe('createCard tool', () => {
       database_id: 1,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCreatedCard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCreatedCard);
 
     const result = await createCardDefinition.handler(mockClient, inputWithSettings);
 
-    expect(result.content[0].type).toBe('text');
+    expectMcpContent(result, mockCreatedCard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/card', {
       name: 'New Sales Report',
       display: 'bar',
@@ -90,14 +86,11 @@ describe('createCard tool', () => {
       collection_id: 5,
     };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockCreatedCard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockCreatedCard);
 
     const result = await createCardDefinition.handler(mockClient, inputWithCollection);
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCreatedCard);
+    expectMcpContent(result, mockCreatedCard);
     expect(mockClient.post).toHaveBeenCalledWith('/api/card', {
       name: 'New Sales Report',
       display: 'bar',
@@ -108,9 +101,7 @@ describe('createCard tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Failed to create card')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Failed to create card');
 
     await expect(createCardDefinition.handler(mockClient, baseCardInput)).rejects.toThrow(
       'Failed to create card',
@@ -118,12 +109,7 @@ describe('createCard tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Bad Request');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', createApiError('Bad Request', 400));
 
     await expect(createCardDefinition.handler(mockClient, baseCardInput)).rejects.toThrow(
       'Bad Request',

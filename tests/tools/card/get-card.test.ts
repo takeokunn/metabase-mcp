@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { GetCardParamsSchema } from '@src/schemas/card';
 import { getCardDefinition } from '@src/tools/card/get-card';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getCard tool', () => {
   it('should return formatted MCP response with card data', async () => {
@@ -14,15 +16,11 @@ describe('getCard tool', () => {
       collection_id: 5,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockCard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockCard);
 
     const result = await getCardDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCard);
+    expectMcpContent(result, mockCard);
     expect(mockClient.get).toHaveBeenCalledWith('/api/card/1');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -35,21 +33,16 @@ describe('getCard tool', () => {
       database_id: 2,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockCard),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockCard);
 
     const result = await getCardDefinition.handler(mockClient, { id: 42 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCard);
+    expectMcpContent(result, mockCard);
     expect(mockClient.get).toHaveBeenCalledWith('/api/card/42');
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Card not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Card not found');
 
     await expect(getCardDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Card not found',
@@ -58,12 +51,7 @@ describe('getCard tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(getCardDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
   });

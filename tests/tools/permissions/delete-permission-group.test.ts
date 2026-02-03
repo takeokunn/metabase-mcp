@@ -1,23 +1,21 @@
-import type { MetabaseClient } from '@src/client';
 import { DeletePermissionGroupInputSchema } from '@src/schemas/permissions';
 import { deletePermissionGroupDefinition } from '@src/tools/permissions/delete-permission-group';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
+import { createApiError } from '../../__factories__';
 
 describe('deletePermissionGroup tool', () => {
   it('should delete a permission group and return formatted MCP response', async () => {
     const mockResponse = { success: true };
 
-    const mockClient = {
-      delete: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('delete', mockResponse);
 
     const input = { id: 3 };
 
     const result = await deletePermissionGroupDefinition.handler(mockClient, input);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.delete).toHaveBeenCalledWith('/api/permissions/group/3');
     expect(mockClient.delete).toHaveBeenCalledOnce();
   });
@@ -25,23 +23,18 @@ describe('deletePermissionGroup tool', () => {
   it('should handle different group IDs', async () => {
     const mockResponse = { success: true };
 
-    const mockClient = {
-      delete: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('delete', mockResponse);
 
     const input = { id: 42 };
 
     const result = await deletePermissionGroupDefinition.handler(mockClient, input);
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.delete).toHaveBeenCalledWith('/api/permissions/group/42');
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      delete: vi.fn().mockRejectedValue(new Error('Group not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('delete', 'Group not found');
 
     const input = { id: 999 };
 
@@ -52,12 +45,10 @@ describe('deletePermissionGroup tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Cannot delete built-in group');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      delete: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError(
+      'delete',
+      createApiError('Cannot delete built-in group', 400),
+    );
 
     const input = { id: 1 };
 

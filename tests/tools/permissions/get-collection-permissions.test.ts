@@ -1,6 +1,8 @@
-import type { MetabaseClient } from '@src/client';
 import { getCollectionPermissionsDefinition } from '@src/tools/permissions/get-collection-permissions';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
+import { createApiError } from '../../__factories__';
 
 describe('getCollectionPermissions tool', () => {
   it('should return formatted MCP response with collection permissions graph', async () => {
@@ -20,15 +22,11 @@ describe('getCollectionPermissions tool', () => {
       },
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockPermissionsGraph),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockPermissionsGraph);
 
     const result = await getCollectionPermissionsDefinition.handler(mockClient, {});
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockPermissionsGraph);
+    expectMcpContent(result, mockPermissionsGraph);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection/graph');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -47,14 +45,11 @@ describe('getCollectionPermissions tool', () => {
       },
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockPermissionsGraph),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockPermissionsGraph);
 
     const result = await getCollectionPermissionsDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockPermissionsGraph);
+    expectMcpContent(result, mockPermissionsGraph);
     expect(mockClient.get).toHaveBeenCalledWith('/api/collection/graph');
   });
 
@@ -64,20 +59,15 @@ describe('getCollectionPermissions tool', () => {
       groups: {},
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockPermissionsGraph),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockPermissionsGraph);
 
     const result = await getCollectionPermissionsDefinition.handler(mockClient, {});
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockPermissionsGraph);
+    expectMcpContent(result, mockPermissionsGraph);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Permission denied')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Permission denied');
 
     await expect(getCollectionPermissionsDefinition.handler(mockClient, {})).rejects.toThrow(
       'Permission denied',
@@ -85,12 +75,7 @@ describe('getCollectionPermissions tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(getCollectionPermissionsDefinition.handler(mockClient, {})).rejects.toThrow(
       'Unauthorized',

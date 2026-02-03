@@ -1,16 +1,17 @@
-import type { MetabaseClient } from '@src/client';
 import { ExportQueryInputSchema } from '@src/schemas/dataset';
 import { exportQueryDefinition } from '@src/tools/dataset/export-query';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('exportQuery tool', () => {
   describe('CSV export', () => {
     it('should export MBQL query results as CSV', async () => {
       const mockCsvData = 'id,name,value\n1,Product A,100\n2,Product B,200';
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockCsvData),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockCsvData);
 
       const input = {
         database: 1,
@@ -23,9 +24,7 @@ describe('exportQuery tool', () => {
 
       const result = await exportQueryDefinition.handler(mockClient, input);
 
-      expect(result.content).toHaveLength(1);
-      expect(result.content[0].type).toBe('text');
-      expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCsvData);
+      expectMcpContent(result, mockCsvData);
       expect(mockClient.post).toHaveBeenCalledWith('/api/dataset/csv', {
         database: 1,
         type: 'query',
@@ -37,9 +36,7 @@ describe('exportQuery tool', () => {
     it('should export native SQL query results as CSV', async () => {
       const mockCsvData = 'count\n42';
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockCsvData),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockCsvData);
 
       const input = {
         database: 1,
@@ -52,8 +49,7 @@ describe('exportQuery tool', () => {
 
       const result = await exportQueryDefinition.handler(mockClient, input);
 
-      expect(result.content[0].type).toBe('text');
-      expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockCsvData);
+      expectMcpContent(result, mockCsvData);
       expect(mockClient.post).toHaveBeenCalledWith('/api/dataset/csv', {
         database: 1,
         type: 'native',
@@ -69,9 +65,7 @@ describe('exportQuery tool', () => {
         { id: 2, name: 'Product B', value: 200 },
       ];
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockJsonData),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockJsonData);
 
       const input = {
         database: 1,
@@ -89,8 +83,7 @@ describe('exportQuery tool', () => {
 
       const result = await exportQueryDefinition.handler(mockClient, input);
 
-      expect(result.content[0].type).toBe('text');
-      expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockJsonData);
+      expectMcpContent(result, mockJsonData);
       expect(mockClient.post).toHaveBeenCalledWith('/api/dataset/json', {
         database: 1,
         type: 'query',
@@ -103,9 +96,7 @@ describe('exportQuery tool', () => {
     it('should export query results as XLSX', async () => {
       const mockXlsxData = Buffer.from('xlsx binary data').toString('base64');
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockXlsxData),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockXlsxData);
 
       const input = {
         database: 1,
@@ -118,7 +109,7 @@ describe('exportQuery tool', () => {
 
       const result = await exportQueryDefinition.handler(mockClient, input);
 
-      expect(result.content[0].type).toBe('text');
+      expectMcpContent(result, mockXlsxData);
       expect(mockClient.post).toHaveBeenCalledWith('/api/dataset/xlsx', {
         database: 1,
         type: 'query',
@@ -131,9 +122,7 @@ describe('exportQuery tool', () => {
     it('should handle native query with template tags', async () => {
       const mockJsonData = [{ user_count: 15 }];
 
-      const mockClient = {
-        post: vi.fn().mockResolvedValue(mockJsonData),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithResponse('post', mockJsonData);
 
       const input = {
         database: 1,
@@ -153,8 +142,7 @@ describe('exportQuery tool', () => {
 
       const result = await exportQueryDefinition.handler(mockClient, input);
 
-      expect(result.content[0].type).toBe('text');
-      expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockJsonData);
+      expectMcpContent(result, mockJsonData);
       expect(mockClient.post).toHaveBeenCalledWith('/api/dataset/json', {
         database: 1,
         type: 'native',
@@ -165,9 +153,7 @@ describe('exportQuery tool', () => {
 
   describe('error handling', () => {
     it('should propagate client errors', async () => {
-      const mockClient = {
-        post: vi.fn().mockRejectedValue(new Error('Query execution failed')),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithError('post', 'Query execution failed');
 
       const input = {
         database: 1,
@@ -182,12 +168,7 @@ describe('exportQuery tool', () => {
     });
 
     it('should propagate API errors with status codes', async () => {
-      const apiError = new Error('Bad Request');
-      (apiError as Error & { status?: number }).status = 400;
-
-      const mockClient = {
-        post: vi.fn().mockRejectedValue(apiError),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithError('post', createApiError('Bad Request', 400));
 
       const input = {
         database: 1,
@@ -200,12 +181,10 @@ describe('exportQuery tool', () => {
     });
 
     it('should propagate database not found errors', async () => {
-      const apiError = new Error('Database not found');
-      (apiError as Error & { status?: number }).status = 404;
-
-      const mockClient = {
-        post: vi.fn().mockRejectedValue(apiError),
-      } as unknown as MetabaseClient;
+      const mockClient = createMockClientWithError(
+        'post',
+        createApiError('Database not found', 404),
+      );
 
       const input = {
         database: 999,

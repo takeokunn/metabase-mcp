@@ -1,21 +1,20 @@
-import type { MetabaseClient } from '@src/client';
 import { DeleteDashboardInputSchema } from '@src/schemas/dashboard';
 import { deleteDashboardDefinition } from '@src/tools/dashboard/delete-dashboard';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('deleteDashboard tool', () => {
   it('should return formatted MCP response after deleting dashboard', async () => {
     const mockResult = { success: true };
 
-    const mockClient = {
-      delete: vi.fn().mockResolvedValue(mockResult),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('delete', mockResult);
 
     const result = await deleteDashboardDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResult);
+    expectMcpContent(result, mockResult);
     expect(mockClient.delete).toHaveBeenCalledWith('/api/dashboard/1');
     expect(mockClient.delete).toHaveBeenCalledOnce();
   });
@@ -23,21 +22,16 @@ describe('deleteDashboard tool', () => {
   it('should delete dashboard with different ID', async () => {
     const mockResult = { success: true };
 
-    const mockClient = {
-      delete: vi.fn().mockResolvedValue(mockResult),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('delete', mockResult);
 
     const result = await deleteDashboardDefinition.handler(mockClient, { id: 42 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResult);
+    expectMcpContent(result, mockResult);
     expect(mockClient.delete).toHaveBeenCalledWith('/api/dashboard/42');
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      delete: vi.fn().mockRejectedValue(new Error('Dashboard not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('delete', 'Dashboard not found');
 
     await expect(deleteDashboardDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Dashboard not found',
@@ -46,12 +40,7 @@ describe('deleteDashboard tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      delete: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('delete', createApiError('Forbidden', 403));
 
     await expect(deleteDashboardDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',
@@ -59,12 +48,7 @@ describe('deleteDashboard tool', () => {
   });
 
   it('should propagate unauthorized errors', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      delete: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('delete', createApiError('Unauthorized', 401));
 
     await expect(deleteDashboardDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Unauthorized',

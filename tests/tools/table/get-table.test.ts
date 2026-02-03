@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { GetTableParamsSchema } from '@src/schemas/table';
 import { getTableDefinition } from '@src/tools/table/get-table';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getTable tool', () => {
   it('should return formatted MCP response with table data', async () => {
@@ -16,15 +18,11 @@ describe('getTable tool', () => {
       active: true,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTable);
 
     const result = await getTableDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockTable);
+    expectMcpContent(result, mockTable);
     expect(mockClient.get).toHaveBeenCalledWith('/api/table/1');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -36,14 +34,11 @@ describe('getTable tool', () => {
       db_id: 2,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTable);
 
     const result = await getTableDefinition.handler(mockClient, { id: 42 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockTable);
+    expectMcpContent(result, mockTable);
     expect(mockClient.get).toHaveBeenCalledWith('/api/table/42');
   });
 
@@ -58,14 +53,11 @@ describe('getTable tool', () => {
       active: true,
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTable);
 
     const result = await getTableDefinition.handler(mockClient, { id: 10 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.visibility_type).toBe('hidden');
+    expectMcpContent(result, mockTable);
   });
 
   it('should handle table with fields data', async () => {
@@ -80,20 +72,15 @@ describe('getTable tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockTable),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockTable);
 
     const result = await getTableDefinition.handler(mockClient, { id: 5 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.fields).toHaveLength(3);
+    expectMcpContent(result, mockTable);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Table not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Table not found');
 
     await expect(getTableDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Table not found',
@@ -102,12 +89,7 @@ describe('getTable tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(getTableDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Forbidden');
   });

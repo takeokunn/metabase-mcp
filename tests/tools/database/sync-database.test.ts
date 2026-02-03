@@ -1,47 +1,40 @@
-import type { MetabaseClient } from '@src/client';
 import { GetDatabaseParamsSchema } from '@src/schemas/database';
 import { syncDatabaseDefinition } from '@src/tools/database/sync-database';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('syncDatabase tool', () => {
   it('should trigger sync and return formatted MCP response', async () => {
     const mockResponse = { success: true };
 
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(mockResponse),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', mockResponse);
 
     const result = await syncDatabaseDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockResponse);
+    expectMcpContent(result, mockResponse);
     expect(mockClient.post).toHaveBeenCalledWith('/api/database/1/sync');
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
 
   it('should return default success message when API returns null', async () => {
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(null),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', null);
 
     const result = await syncDatabaseDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual({
+    expectMcpContent(result, {
       success: true,
       message: 'Database sync triggered',
     });
   });
 
   it('should return default success message when API returns undefined', async () => {
-    const mockClient = {
-      post: vi.fn().mockResolvedValue(undefined),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('post', undefined);
 
     const result = await syncDatabaseDefinition.handler(mockClient, { id: 42 });
 
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual({
+    expectMcpContent(result, {
       success: true,
       message: 'Database sync triggered',
     });
@@ -49,9 +42,7 @@ describe('syncDatabase tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(new Error('Database not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', 'Database not found');
 
     await expect(syncDatabaseDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Database not found',
@@ -60,12 +51,7 @@ describe('syncDatabase tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      post: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
 
     await expect(syncDatabaseDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Unauthorized',

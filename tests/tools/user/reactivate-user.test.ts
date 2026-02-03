@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { ReactivateUserInputSchema } from '@src/schemas/user';
 import { reactivateUserDefinition } from '@src/tools/user/reactivate-user';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createMockClientWithResponse, createMockClientWithError } from '../../__mocks__';
+import { expectMcpContent } from '../../__helpers__';
 
 describe('reactivateUser tool', () => {
   it('should return formatted MCP response on successful user reactivation', async () => {
@@ -13,9 +15,7 @@ describe('reactivateUser tool', () => {
       is_active: true,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockReactivatedUser),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockReactivatedUser);
 
     const input = {
       id: 1,
@@ -23,17 +23,13 @@ describe('reactivateUser tool', () => {
 
     const result = await reactivateUserDefinition.handler(mockClient, input);
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockReactivatedUser);
+    expectMcpContent(result, mockReactivatedUser);
     expect(mockClient.put).toHaveBeenCalledWith('/api/user/1/reactivate');
     expect(mockClient.put).toHaveBeenCalledOnce();
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(new Error('User not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'User not found');
 
     const input = {
       id: 999,
@@ -45,12 +41,7 @@ describe('reactivateUser tool', () => {
   });
 
   it('should propagate already active user errors', async () => {
-    const apiError = new Error('User is already active');
-    (apiError as Error & { status?: number }).status = 400;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'User is already active', 400);
 
     const input = {
       id: 1,
@@ -62,12 +53,11 @@ describe('reactivateUser tool', () => {
   });
 
   it('should propagate permission errors', async () => {
-    const apiError = new Error('You do not have permission to reactivate users');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError(
+      'put',
+      'You do not have permission to reactivate users',
+      403,
+    );
 
     const input = {
       id: 1,

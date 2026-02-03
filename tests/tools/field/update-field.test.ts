@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { UpdateFieldInputSchema } from '@src/schemas/field';
 import { updateFieldDefinition } from '@src/tools/field/update-field';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('updateField tool', () => {
   it('should return formatted MCP response with updated field data', async () => {
@@ -16,9 +18,7 @@ describe('updateField tool', () => {
       table_id: 5,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedField),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedField);
 
     const result = await updateFieldDefinition.handler(mockClient, {
       id: 1,
@@ -27,9 +27,7 @@ describe('updateField tool', () => {
       semantic_type: 'type/Email',
     });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedField);
+    expectMcpContent(result, mockUpdatedField);
     expect(mockClient.put).toHaveBeenCalledWith('/api/field/1', {
       display_name: 'User Email',
       description: 'Primary email address',
@@ -47,17 +45,14 @@ describe('updateField tool', () => {
       table_id: 10,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedField),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedField);
 
     const result = await updateFieldDefinition.handler(mockClient, {
       id: 42,
       visibility_type: 'sensitive',
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedField);
+    expectMcpContent(result, mockUpdatedField);
     expect(mockClient.put).toHaveBeenCalledWith('/api/field/42', {
       visibility_type: 'sensitive',
     });
@@ -72,9 +67,7 @@ describe('updateField tool', () => {
       table_id: 20,
     };
 
-    const mockClient = {
-      put: vi.fn().mockResolvedValue(mockUpdatedField),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('put', mockUpdatedField);
 
     const result = await updateFieldDefinition.handler(mockClient, {
       id: 10,
@@ -82,8 +75,7 @@ describe('updateField tool', () => {
       fk_target_field_id: 1,
     });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockUpdatedField);
+    expectMcpContent(result, mockUpdatedField);
     expect(mockClient.put).toHaveBeenCalledWith('/api/field/10', {
       semantic_type: 'type/FK',
       fk_target_field_id: 1,
@@ -91,9 +83,7 @@ describe('updateField tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(new Error('Field not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', 'Field not found');
 
     await expect(
       updateFieldDefinition.handler(mockClient, { id: 999, display_name: 'Test' }),
@@ -102,12 +92,7 @@ describe('updateField tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      put: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('put', createApiError('Forbidden', 403));
 
     await expect(
       updateFieldDefinition.handler(mockClient, { id: 1, display_name: 'Test' }),

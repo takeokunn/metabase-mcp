@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { GetCardMetadataParamsSchema } from '@src/schemas/card';
 import { getCardMetadataDefinition } from '@src/tools/card/get-card-metadata';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { createApiError } from '../../__factories__';
+import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getCardMetadata tool', () => {
   it('should return formatted MCP response with card metadata', async () => {
@@ -15,15 +17,11 @@ describe('getCardMetadata tool', () => {
       databases: [{ id: 1, name: 'Sample Database' }],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getCardMetadataDefinition.handler(mockClient, { id: 1 });
 
-    expect(result.content).toHaveLength(1);
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockMetadata);
+    expectMcpContent(result, mockMetadata);
     expect(mockClient.get).toHaveBeenCalledWith('/api/card/1/query_metadata');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
@@ -42,14 +40,11 @@ describe('getCardMetadata tool', () => {
       ],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getCardMetadataDefinition.handler(mockClient, { id: 42 });
 
-    const parsedResult = JSON.parse((result.content[0] as { text: string }).text);
-    expect(parsedResult.tables).toHaveLength(3);
+    expectMcpContent(result, mockMetadata);
     expect(mockClient.get).toHaveBeenCalledWith('/api/card/42/query_metadata');
   });
 
@@ -59,20 +54,15 @@ describe('getCardMetadata tool', () => {
       tables: [],
     };
 
-    const mockClient = {
-      get: vi.fn().mockResolvedValue(mockMetadata),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockMetadata);
 
     const result = await getCardMetadataDefinition.handler(mockClient, { id: 5 });
 
-    expect(result.content[0].type).toBe('text');
-    expect(JSON.parse((result.content[0] as { text: string }).text)).toEqual(mockMetadata);
+    expectMcpContent(result, mockMetadata);
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(new Error('Card not found')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'Card not found');
 
     await expect(getCardMetadataDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Card not found',
@@ -81,12 +71,7 @@ describe('getCardMetadata tool', () => {
   });
 
   it('should propagate API errors with status codes', async () => {
-    const apiError = new Error('Unauthorized');
-    (apiError as Error & { status?: number }).status = 401;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(getCardMetadataDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Unauthorized',
@@ -94,12 +79,7 @@ describe('getCardMetadata tool', () => {
   });
 
   it('should propagate forbidden errors', async () => {
-    const apiError = new Error('Forbidden');
-    (apiError as Error & { status?: number }).status = 403;
-
-    const mockClient = {
-      get: vi.fn().mockRejectedValue(apiError),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
 
     await expect(getCardMetadataDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
       'Forbidden',
