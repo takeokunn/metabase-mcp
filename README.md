@@ -17,12 +17,10 @@ A Model Context Protocol (MCP) server for Metabase, enabling AI assistants to in
 - **Permissions Management** - Configure permission groups and data access
 - **Search** - Full-text search across all Metabase content
 - **Query Execution** - Run ad-hoc queries and export results
-- Secure API token authentication
-- TypeScript implementation with full type safety
+- **Secure API Token Authentication** - API key-based access control
+- **TypeScript Implementation** - Full type safety throughout
 
 ## Installation
-
-### From npm
 
 ```bash
 npm install -g @takeokunn/metabase-mcp
@@ -34,22 +32,9 @@ Or run directly with npx:
 npx @takeokunn/metabase-mcp
 ```
 
-### From source
-
-```bash
-pnpm install
-pnpm build
-```
-
 ## Configuration
 
-Create a `.env` file based on `.env.example`:
-
-```bash
-cp .env.example .env
-```
-
-Required environment variables:
+Set the following environment variables:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
@@ -64,14 +49,6 @@ Required environment variables:
 4. Copy the generated token
 
 ## Usage
-
-### Direct Execution
-
-```bash
-export METABASE_URL=https://your-metabase.example.com
-export METABASE_API_TOKEN=mb_your_api_token
-pnpm start
-```
 
 ### Claude Desktop Integration
 
@@ -229,41 +206,9 @@ This MCP server provides 67 tools organized into 10 categories:
 | `get_collection_permissions` | Get collection permissions graph |
 | `update_collection_permissions` | Update collection permissions for groups |
 
-## Development
-
-```bash
-# Install dependencies
-pnpm install
-
-# Build
-pnpm build
-
-# Run tests
-pnpm test
-
-# Watch mode
-pnpm dev
-```
-
-## Debugging
-
-Use the MCP Inspector to debug and test the server interactively:
-
-```bash
-pnpm debug
-```
-
-This opens a web UI where you can:
-- Send requests to the MCP server
-- Inspect responses and errors
-- Test tools interactively
-
-> **Note**: Run `pnpm build` first to ensure `dist/index.js` exists.
-
 ## Requirements
 
 - Node.js 22+
-- pnpm
 - Metabase instance with API access
 
 ## License
