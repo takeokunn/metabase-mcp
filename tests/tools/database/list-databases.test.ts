@@ -1,7 +1,9 @@
-import type { MetabaseClient } from '@src/client';
 import { listDatabasesDefinition } from '@src/tools/database/list-databases';
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
+import { createApiError } from '../../__factories__';
 import { expectMcpContent } from '../../__helpers__';
+import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('listDatabases tool', () => {
   it('should return formatted MCP response with databases', async () => {
@@ -10,22 +12,17 @@ describe('listDatabases tool', () => {
       { id: 2, name: 'Analytics DB', engine: 'bigquery' },
     ];
 
-    // Note: list-databases uses getDatabases() which is not part of the standard
-    // MetabaseClient interface (get/post/put/delete). Keeping custom mock for compatibility.
-    const mockClient = {
-      getDatabases: vi.fn().mockResolvedValue(mockDatabases),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', mockDatabases);
 
     const result = await listDatabasesDefinition.handler(mockClient, {});
 
     expectMcpContent(result, mockDatabases);
-    expect(mockClient.getDatabases).toHaveBeenCalledOnce();
+    expect(mockClient.get).toHaveBeenCalledWith('/api/database');
+    expect(mockClient.get).toHaveBeenCalledOnce();
   });
 
   it('should handle empty database list', async () => {
-    const mockClient = {
-      getDatabases: vi.fn().mockResolvedValue([]),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithResponse('get', []);
 
     const result = await listDatabasesDefinition.handler(mockClient, {});
 
@@ -33,11 +30,15 @@ describe('listDatabases tool', () => {
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = {
-      getDatabases: vi.fn().mockRejectedValue(new Error('API error')),
-    } as unknown as MetabaseClient;
+    const mockClient = createMockClientWithError('get', 'API error');
 
     await expect(listDatabasesDefinition.handler(mockClient, {})).rejects.toThrow('API error');
+  });
+
+  it('should propagate API errors with status codes', async () => {
+    const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
+
+    await expect(listDatabasesDefinition.handler(mockClient, {})).rejects.toThrow('Forbidden');
   });
 
   it('should have correct tool definition metadata', () => {

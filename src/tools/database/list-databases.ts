@@ -10,7 +10,7 @@ export const listDatabasesDefinition: ToolDefinition = {
   description: 'Get list of databases configured in Metabase',
   inputSchema: {},
   handler: async (client: MetabaseClient) => {
-    const databases = await client.getDatabases();
+    const databases = await client.get('/api/database');
     return formatToolResponse(databases);
   },
 };
