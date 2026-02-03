@@ -7,6 +7,7 @@ export * from './dashboard';
 export * from './database';
 export * from './dataset';
 export * from './field';
+export * from './notification';
 export * from './permissions';
 export * from './search';
 export * from './segment';

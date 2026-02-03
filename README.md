@@ -87,7 +87,7 @@ Or if installed globally:
 
 ## Available Tools
 
-This MCP server provides 87 tools organized into 14 categories:
+This MCP server provides 105 tools organized into 14 categories:
 
 ### Database Tools (11)
 
@@ -117,7 +117,7 @@ This MCP server provides 87 tools organized into 14 categories:
 | `delete_card` | Delete a card |
 | `execute_card` | Execute a card and return results |
 
-### Dashboard Tools (7)
+### Dashboard Tools (25)
 
 | Tool | Description |
 |------|-------------|
@@ -128,6 +128,24 @@ This MCP server provides 87 tools organized into 14 categories:
 | `update_dashboard` | Update an existing dashboard |
 | `delete_dashboard` | Delete a dashboard |
 | `copy_dashboard` | Copy a dashboard to a new location |
+| `add_dashboard_card` | Add a card to a dashboard (v0.49+) |
+| `update_dashboard_card` | Update a dashboard card position/size/settings (v0.49+) |
+| `remove_dashboard_card` | Remove a card from a dashboard (v0.49+) |
+| `update_dashboard_cards` | Bulk update dashboard cards (v0.49+) |
+| `add_dashboard_tab` | Add a new tab to a dashboard (v0.49+) |
+| `update_dashboard_tab` | Update a dashboard tab name/position (v0.49+) |
+| `remove_dashboard_tab` | Remove a tab from a dashboard (v0.49+) |
+| `create_dashboard_public_link` | Create a public sharing link for a dashboard |
+| `delete_dashboard_public_link` | Delete a public sharing link from a dashboard |
+| `list_public_dashboards` | List all dashboards with public sharing links (superuser only) |
+| `add_dashboard_favorite` | Add a dashboard to favorites |
+| `remove_dashboard_favorite` | Remove a dashboard from favorites |
+| `list_dashboard_revisions` | List revision history for a dashboard |
+| `revert_dashboard` | Revert a dashboard to a previous revision |
+| `list_dashboard_subscriptions` | List dashboard subscriptions (email/Slack notifications) |
+| `create_dashboard_subscription` | Create a dashboard subscription |
+| `update_dashboard_subscription` | Update a dashboard subscription |
+| `delete_dashboard_subscription` | Delete a dashboard subscription |
 
 ### Collection Tools (7)
 

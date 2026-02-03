@@ -17,6 +17,9 @@ export const createPaginatedResponseSchema = <T extends z.ZodTypeAny>(dataSchema
 // ID schema (positive integer)
 export const IdSchema = z.number().int().positive();
 
+// UUID schema (for public links, etc.)
+export const UUIDSchema = z.string().uuid().describe('UUID identifier');
+
 // Error response schema
 export const ErrorResponseSchema = z.object({
   error: z.string(),
@@ -33,4 +36,5 @@ export type PaginatedResponse<T> = {
   offset: number;
 };
 export type Id = z.infer<typeof IdSchema>;
+export type UUID = z.infer<typeof UUIDSchema>;
 export type ErrorResponse = z.infer<typeof ErrorResponseSchema>;
