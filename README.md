@@ -87,7 +87,7 @@ Or if installed globally:
 
 ## Available Tools
 
-This MCP server provides 67 tools organized into 10 categories:
+This MCP server provides 87 tools organized into 14 categories:
 
 ### Database Tools (11)
 
@@ -205,6 +205,46 @@ This MCP server provides 67 tools organized into 10 categories:
 | `update_data_permissions` | Update data permissions for groups |
 | `get_collection_permissions` | Get collection permissions graph |
 | `update_collection_permissions` | Update collection permissions for groups |
+
+### Alert Tools (5)
+
+| Tool | Description |
+|------|-------------|
+| `list_alerts` | Get list of alerts in Metabase, optionally filtered by card ID |
+| `get_alert` | Get a single alert by ID from Metabase |
+| `create_alert` | Create a new alert for a card (saved question) in Metabase |
+| `update_alert` | Update an existing alert in Metabase |
+| `delete_alert` | Delete an alert from Metabase |
+
+### Segment Tools (6)
+
+| Tool | Description |
+|------|-------------|
+| `list_segments` | Get list of all segments in Metabase |
+| `get_segment` | Get a single segment by ID from Metabase |
+| `create_segment` | Create a new segment in Metabase |
+| `update_segment` | Update an existing segment in Metabase |
+| `delete_segment` | Delete a segment from Metabase |
+| `get_segment_revisions` | Get revision history of a segment from Metabase |
+
+### Snippet Tools (5)
+
+| Tool | Description |
+|------|-------------|
+| `list_snippets` | Get list of native query snippets in Metabase, optionally filtered by archived status |
+| `get_snippet` | Get a single native query snippet by ID from Metabase |
+| `create_snippet` | Create a new native query snippet in Metabase |
+| `update_snippet` | Update an existing native query snippet in Metabase |
+| `archive_snippet` | Archive a native query snippet in Metabase |
+
+### Bookmark Tools (4)
+
+| Tool | Description |
+|------|-------------|
+| `list_bookmarks` | Get list of all bookmarks for the current user in Metabase |
+| `create_bookmark` | Create a new bookmark for a card, dashboard, or collection in Metabase |
+| `delete_bookmark` | Delete a bookmark for a card, dashboard, or collection from Metabase |
+| `reorder_bookmarks` | Reorder bookmarks by providing the new ordering for the current user |
 
 ## Requirements
 

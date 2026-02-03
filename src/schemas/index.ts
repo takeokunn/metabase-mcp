@@ -1,3 +1,5 @@
+export * from './alert';
+export * from './bookmark';
 export * from './card';
 export * from './collection';
 export * from './common';
@@ -7,5 +9,7 @@ export * from './dataset';
 export * from './field';
 export * from './permissions';
 export * from './search';
+export * from './segment';
+export * from './snippet';
 export * from './table';
 export * from './user';
