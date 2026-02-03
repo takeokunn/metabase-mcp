@@ -2,6 +2,7 @@
 
 [![npm version](https://img.shields.io/npm/v/@takeokunn/metabase-mcp.svg)](https://www.npmjs.com/package/@takeokunn/metabase-mcp)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Coverage](./badges/coverage-total.svg)](./badges/coverage-total.svg)
 
 A Model Context Protocol (MCP) server for Metabase, enabling AI assistants to interact with your Metabase instance.
 
