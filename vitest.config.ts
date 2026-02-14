@@ -19,7 +19,7 @@ export default defineConfig({
         '**/*.d.ts',
         '**/*.js',
         'vitest.config.ts',
-        'tsup.config.ts',
+        'tsdown.config.ts',
         'release.config.js',
         'src/index.ts',
         'src/types.ts',
