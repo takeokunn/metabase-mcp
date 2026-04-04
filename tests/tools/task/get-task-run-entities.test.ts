@@ -20,12 +20,16 @@ describe('getTaskRunEntities tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getTaskRunEntitiesDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
+    await expect(getTaskRunEntitiesDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getTaskRunEntitiesDefinition.name).toBe('get_task_run_entities');
-    expect(getTaskRunEntitiesDefinition.description).toBe('Get entity types tracked by task runs in Metabase');
+    expect(getTaskRunEntitiesDefinition.description).toBe(
+      'Get entity types tracked by task runs in Metabase',
+    );
     expect(getTaskRunEntitiesDefinition.inputSchema).toEqual(GetTaskRunEntitiesInputSchema);
   });
 });

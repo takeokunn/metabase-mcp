@@ -1,8 +1,5 @@
 import type { MetabaseClient } from '@src/client';
-import {
-  type RunPublicCardPivotQuery,
-  RunPublicCardPivotQuerySchema,
-} from '@src/schemas/public';
+import { type RunPublicCardPivotQuery, RunPublicCardPivotQuerySchema } from '@src/schemas/public';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

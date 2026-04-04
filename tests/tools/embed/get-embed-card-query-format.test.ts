@@ -22,24 +22,28 @@ describe('getEmbedCardQueryFormat tool', () => {
     for (const fmt of ['csv', 'json', 'xlsx', 'pdf'] as const) {
       const mockClient = createMockClientWithResponse('get', {});
       await getEmbedCardQueryFormatDefinition.handler(mockClient, { ...input, export_format: fmt });
-      expect(mockClient.get).toHaveBeenCalledWith(
-        `/api/embed/card/${input.token}/query/${fmt}`,
-      );
+      expect(mockClient.get).toHaveBeenCalledWith(`/api/embed/card/${input.token}/query/${fmt}`);
     }
   });
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getEmbedCardQueryFormatDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(getEmbedCardQueryFormatDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
-    await expect(getEmbedCardQueryFormatDefinition.handler(mockClient, input)).rejects.toThrow('Forbidden');
+    await expect(getEmbedCardQueryFormatDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Forbidden',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getEmbedCardQueryFormatDefinition.name).toBe('get_embed_card_query_format');
-    expect(getEmbedCardQueryFormatDefinition.inputSchema).toEqual(GetEmbedCardQueryFormatParamsSchema);
+    expect(getEmbedCardQueryFormatDefinition.inputSchema).toEqual(
+      GetEmbedCardQueryFormatParamsSchema,
+    );
   });
 });

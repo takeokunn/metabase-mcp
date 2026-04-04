@@ -19,20 +19,22 @@ describe('deleteActionPublicLink tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('delete', 'API error');
-    await expect(
-      deleteActionPublicLinkDefinition.handler(mockClient, { id: 1 }),
-    ).rejects.toThrow('API error');
+    await expect(deleteActionPublicLinkDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('delete', createApiError('Not found', 404));
-    await expect(
-      deleteActionPublicLinkDefinition.handler(mockClient, { id: 999 }),
-    ).rejects.toThrow('Not found');
+    await expect(deleteActionPublicLinkDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Not found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(deleteActionPublicLinkDefinition.name).toBe('delete_action_public_link');
-    expect(deleteActionPublicLinkDefinition.inputSchema).toEqual(DeleteActionPublicLinkParamsSchema);
+    expect(deleteActionPublicLinkDefinition.inputSchema).toEqual(
+      DeleteActionPublicLinkParamsSchema,
+    );
   });
 });

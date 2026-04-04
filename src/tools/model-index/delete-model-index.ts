@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type DeleteModelIndexParams, DeleteModelIndexParamsSchema } from '@src/schemas/model-index';
+import {
+  type DeleteModelIndexParams,
+  DeleteModelIndexParamsSchema,
+} from '@src/schemas/model-index';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type TranslateEntityIdsInput, TranslateEntityIdsInputSchema } from '@src/schemas/eid-translation';
+import {
+  type TranslateEntityIdsInput,
+  TranslateEntityIdsInputSchema,
+} from '@src/schemas/eid-translation';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

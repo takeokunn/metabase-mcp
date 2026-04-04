@@ -15,12 +15,16 @@ describe('disableModelPersistence tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'API error');
-    await expect(disableModelPersistenceDefinition.handler(mockClient, {})).rejects.toThrow('API error');
+    await expect(disableModelPersistenceDefinition.handler(mockClient, {})).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Forbidden', 403));
-    await expect(disableModelPersistenceDefinition.handler(mockClient, {})).rejects.toThrow('Forbidden');
+    await expect(disableModelPersistenceDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Forbidden',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

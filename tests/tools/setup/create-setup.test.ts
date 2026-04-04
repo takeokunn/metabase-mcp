@@ -12,16 +12,23 @@ describe('createSetup tool', () => {
     const input = { token: 'abc123', user: { email: 'admin@example.com', password: 'secret' } };
     const result = await createSetupDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResponse);
-    expect(mockClient.post).toHaveBeenCalledWith('/api/setup', expect.objectContaining({ token: 'abc123' }));
+    expect(mockClient.post).toHaveBeenCalledWith(
+      '/api/setup',
+      expect.objectContaining({ token: 'abc123' }),
+    );
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Setup already complete');
-    await expect(createSetupDefinition.handler(mockClient, { token: 'abc', user: {} })).rejects.toThrow('Setup already complete');
+    await expect(
+      createSetupDefinition.handler(mockClient, { token: 'abc', user: {} }),
+    ).rejects.toThrow('Setup already complete');
   });
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Bad Request', 400));
-    await expect(createSetupDefinition.handler(mockClient, { token: 'abc', user: {} })).rejects.toThrow('Bad Request');
+    await expect(
+      createSetupDefinition.handler(mockClient, { token: 'abc', user: {} }),
+    ).rejects.toThrow('Bad Request');
   });
   it('should have correct tool definition metadata', () => {
     expect(createSetupDefinition.name).toBe('create_setup');

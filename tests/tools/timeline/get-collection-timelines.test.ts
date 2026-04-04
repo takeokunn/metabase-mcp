@@ -21,7 +21,11 @@ describe('getCollectionTimelines tool', () => {
 
   it('should pass optional query params', async () => {
     const mockClient = createMockClientWithResponse('get', []);
-    await getCollectionTimelinesDefinition.handler(mockClient, { id: 5, include: 'events', archived: true });
+    await getCollectionTimelinesDefinition.handler(mockClient, {
+      id: 5,
+      include: 'events',
+      archived: true,
+    });
     expect(mockClient.get).toHaveBeenCalledWith('/api/timeline/collection/5', {
       include: 'events',
       archived: true,
@@ -30,16 +34,22 @@ describe('getCollectionTimelines tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getCollectionTimelinesDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(getCollectionTimelinesDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(getCollectionTimelinesDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(getCollectionTimelinesDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getCollectionTimelinesDefinition.name).toBe('get_collection_timelines');
-    expect(getCollectionTimelinesDefinition.inputSchema).toEqual(GetCollectionTimelinesParamsSchema);
+    expect(getCollectionTimelinesDefinition.inputSchema).toEqual(
+      GetCollectionTimelinesParamsSchema,
+    );
   });
 });

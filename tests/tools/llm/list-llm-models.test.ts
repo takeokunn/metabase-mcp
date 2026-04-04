@@ -6,7 +6,10 @@ import { createMockClientWithError, createMockClientWithResponse } from '../../_
 
 describe('listLlmModels tool', () => {
   it('should return formatted MCP response with models list', async () => {
-    const mockResult = [{ id: 'gpt-4', name: 'GPT-4' }, { id: 'claude-3', name: 'Claude 3' }];
+    const mockResult = [
+      { id: 'gpt-4', name: 'GPT-4' },
+      { id: 'claude-3', name: 'Claude 3' },
+    ];
     const mockClient = createMockClientWithResponse('get', mockResult);
     const result = await listLlmModelsDefinition.handler(mockClient, {});
     expectMcpContent(result, mockResult);

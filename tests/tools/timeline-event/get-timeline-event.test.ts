@@ -9,7 +9,12 @@ describe('getTimelineEvent tool', () => {
   const input = { id: 1 };
 
   it('should return formatted MCP response', async () => {
-    const mockResult = { id: 1, name: 'Product Launch', timeline_id: 1, timestamp: '2024-06-01T00:00:00Z' };
+    const mockResult = {
+      id: 1,
+      name: 'Product Launch',
+      timeline_id: 1,
+      timestamp: '2024-06-01T00:00:00Z',
+    };
     const mockClient = createMockClientWithResponse('get', mockResult);
     const result = await getTimelineEventDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
@@ -18,12 +23,16 @@ describe('getTimelineEvent tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getTimelineEventDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(getTimelineEventDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(getTimelineEventDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(getTimelineEventDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

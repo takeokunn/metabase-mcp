@@ -32,17 +32,25 @@ describe('getDatasetParamRemapping tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(getDatasetParamRemappingDefinition.handler(mockClient, { parameter: {} })).rejects.toThrow('Not found');
+    await expect(
+      getDatasetParamRemappingDefinition.handler(mockClient, { parameter: {} }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(getDatasetParamRemappingDefinition.handler(mockClient, { parameter: {} })).rejects.toThrow('Unauthorized');
+    await expect(
+      getDatasetParamRemappingDefinition.handler(mockClient, { parameter: {} }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getDatasetParamRemappingDefinition.name).toBe('get_dataset_param_remapping');
-    expect(getDatasetParamRemappingDefinition.description).toBe('Get remapping for a dataset parameter in Metabase');
-    expect(getDatasetParamRemappingDefinition.inputSchema).toEqual(GetDatasetParamRemappingInputSchema);
+    expect(getDatasetParamRemappingDefinition.description).toBe(
+      'Get remapping for a dataset parameter in Metabase',
+    );
+    expect(getDatasetParamRemappingDefinition.inputSchema).toEqual(
+      GetDatasetParamRemappingInputSchema,
+    );
   });
 });

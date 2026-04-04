@@ -27,16 +27,16 @@ describe('getXrayEntityCellRule tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(
-      getXrayEntityCellRuleDefinition.handler(mockClient, input),
-    ).rejects.toThrow('API error');
+    await expect(getXrayEntityCellRuleDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(
-      getXrayEntityCellRuleDefinition.handler(mockClient, input),
-    ).rejects.toThrow('Not Found');
+    await expect(getXrayEntityCellRuleDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
@@ -44,8 +44,6 @@ describe('getXrayEntityCellRule tool', () => {
     expect(getXrayEntityCellRuleDefinition.description).toBe(
       'Get an x-ray automagic dashboard for a specific cell of an entity with a rule applied in Metabase',
     );
-    expect(getXrayEntityCellRuleDefinition.inputSchema).toEqual(
-      GetXrayEntityCellRuleInputSchema,
-    );
+    expect(getXrayEntityCellRuleDefinition.inputSchema).toEqual(GetXrayEntityCellRuleInputSchema);
   });
 });

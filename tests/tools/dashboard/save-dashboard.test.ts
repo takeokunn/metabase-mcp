@@ -16,15 +16,21 @@ describe('saveDashboard tool', () => {
   });
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(saveDashboardDefinition.handler(mockClient, { dashboard: {} })).rejects.toThrow('Not found');
+    await expect(saveDashboardDefinition.handler(mockClient, { dashboard: {} })).rejects.toThrow(
+      'Not found',
+    );
   });
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(saveDashboardDefinition.handler(mockClient, { dashboard: {} })).rejects.toThrow('Unauthorized');
+    await expect(saveDashboardDefinition.handler(mockClient, { dashboard: {} })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
   it('should have correct tool definition metadata', () => {
     expect(saveDashboardDefinition.name).toBe('save_dashboard');
-    expect(saveDashboardDefinition.description).toBe('Save a dashboard (creates or updates) in Metabase');
+    expect(saveDashboardDefinition.description).toBe(
+      'Save a dashboard (creates or updates) in Metabase',
+    );
     expect(saveDashboardDefinition.inputSchema).toEqual(SaveDashboardInputSchema);
   });
 });

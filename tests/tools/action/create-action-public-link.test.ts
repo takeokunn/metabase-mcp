@@ -33,6 +33,8 @@ describe('createActionPublicLink tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(createActionPublicLinkDefinition.name).toBe('create_action_public_link');
-    expect(createActionPublicLinkDefinition.inputSchema).toEqual(CreateActionPublicLinkParamsSchema);
+    expect(createActionPublicLinkDefinition.inputSchema).toEqual(
+      CreateActionPublicLinkParamsSchema,
+    );
   });
 });

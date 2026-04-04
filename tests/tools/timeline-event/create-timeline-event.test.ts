@@ -9,7 +9,12 @@ describe('createTimelineEvent tool', () => {
   const input = { name: 'Product Launch', timeline_id: 1, timestamp: '2024-06-01T00:00:00Z' };
 
   it('should return formatted MCP response', async () => {
-    const mockResult = { id: 1, name: 'Product Launch', timeline_id: 1, timestamp: '2024-06-01T00:00:00Z' };
+    const mockResult = {
+      id: 1,
+      name: 'Product Launch',
+      timeline_id: 1,
+      timestamp: '2024-06-01T00:00:00Z',
+    };
     const mockClient = createMockClientWithResponse('post', mockResult);
     const result = await createTimelineEventDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
@@ -46,12 +51,16 @@ describe('createTimelineEvent tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'API error');
-    await expect(createTimelineEventDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(createTimelineEventDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Bad Request', 400));
-    await expect(createTimelineEventDefinition.handler(mockClient, input)).rejects.toThrow('Bad Request');
+    await expect(createTimelineEventDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Bad Request',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

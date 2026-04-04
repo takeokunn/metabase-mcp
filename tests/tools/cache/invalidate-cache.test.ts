@@ -9,7 +9,10 @@ describe('invalidateCache tool', () => {
   it('should return formatted MCP response', async () => {
     const mockResult = { success: true };
     const mockClient = createMockClientWithResponse('post', mockResult);
-    const result = await invalidateCacheDefinition.handler(mockClient, { model: 'dashboard', model_id: 1 });
+    const result = await invalidateCacheDefinition.handler(mockClient, {
+      model: 'dashboard',
+      model_id: 1,
+    });
     expectMcpContent(result, mockResult);
     expect(mockClient.post).toHaveBeenCalledWith('/api/cache/invalidate', {
       model: 'dashboard',

@@ -20,11 +20,15 @@ describe('getBugReportingDetails tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getBugReportingDetailsDefinition.handler(mockClient, {})).rejects.toThrow('API error');
+    await expect(getBugReportingDetailsDefinition.handler(mockClient, {})).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
-    await expect(getBugReportingDetailsDefinition.handler(mockClient, {})).rejects.toThrow('Forbidden');
+    await expect(getBugReportingDetailsDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Forbidden',
+    );
   });
 });

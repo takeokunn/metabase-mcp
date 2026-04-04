@@ -8,9 +8,7 @@ export const getPublicDocumentCardDefinition: ToolDefinition<GetPublicDocumentCa
   description: 'Get a card from a publicly shared document by UUID in Metabase',
   inputSchema: GetPublicDocumentCardSchema,
   handler: async (client: MetabaseClient, input: GetPublicDocumentCard) => {
-    const result = await client.get(
-      `/api/public/document/${input.uuid}/card/${input.card_id}`,
-    );
+    const result = await client.get(`/api/public/document/${input.uuid}/card/${input.card_id}`);
     return formatToolResponse(result);
   },
 };

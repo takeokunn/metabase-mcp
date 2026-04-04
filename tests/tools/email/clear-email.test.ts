@@ -30,9 +30,7 @@ describe('clearEmail tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(clearEmailDefinition.name).toBe('clear_email');
-    expect(clearEmailDefinition.description).toBe(
-      'Clear the SMTP email configuration in Metabase',
-    );
+    expect(clearEmailDefinition.description).toBe('Clear the SMTP email configuration in Metabase');
     expect(clearEmailDefinition.inputSchema).toEqual({});
   });
 });

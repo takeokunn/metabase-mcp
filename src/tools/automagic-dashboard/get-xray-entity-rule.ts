@@ -8,8 +8,7 @@ import { formatToolResponse } from '@src/tools/registry';
 
 export const getXrayEntityRuleDefinition: ToolDefinition<GetXrayEntityRuleInput> = {
   name: 'get_xray_entity_rule',
-  description:
-    'Get an x-ray automagic dashboard for an entity with a rule applied in Metabase',
+  description: 'Get an x-ray automagic dashboard for an entity with a rule applied in Metabase',
   inputSchema: GetXrayEntityRuleInputSchema,
   handler: async (client: MetabaseClient, input: GetXrayEntityRuleInput) => {
     const result = await client.get(

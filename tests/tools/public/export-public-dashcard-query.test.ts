@@ -43,6 +43,8 @@ describe('exportPublicDashcardQuery tool', () => {
     expect(exportPublicDashcardQueryDefinition.description).toBe(
       'Export results of a public dashcard query in Metabase',
     );
-    expect(exportPublicDashcardQueryDefinition.inputSchema).toEqual(ExportPublicDashcardQuerySchema);
+    expect(exportPublicDashcardQueryDefinition.inputSchema).toEqual(
+      ExportPublicDashcardQuerySchema,
+    );
   });
 });

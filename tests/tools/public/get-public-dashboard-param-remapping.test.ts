@@ -20,17 +20,27 @@ describe('getPublicDashboardParamRemapping tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getPublicDashboardParamRemappingDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(
+      getPublicDashboardParamRemappingDefinition.handler(mockClient, input),
+    ).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(getPublicDashboardParamRemappingDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(
+      getPublicDashboardParamRemappingDefinition.handler(mockClient, input),
+    ).rejects.toThrow('Not Found');
   });
 
   it('should have correct tool definition metadata', () => {
-    expect(getPublicDashboardParamRemappingDefinition.name).toBe('get_public_dashboard_param_remapping');
-    expect(getPublicDashboardParamRemappingDefinition.description).toBe('Get remapping for a parameter of a public dashboard in Metabase');
-    expect(getPublicDashboardParamRemappingDefinition.inputSchema).toEqual(GetPublicDashboardParamRemappingSchema);
+    expect(getPublicDashboardParamRemappingDefinition.name).toBe(
+      'get_public_dashboard_param_remapping',
+    );
+    expect(getPublicDashboardParamRemappingDefinition.description).toBe(
+      'Get remapping for a parameter of a public dashboard in Metabase',
+    );
+    expect(getPublicDashboardParamRemappingDefinition.inputSchema).toEqual(
+      GetPublicDashboardParamRemappingSchema,
+    );
   });
 });

@@ -31,7 +31,9 @@ describe('listApiKeys tool', () => {
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Permission denied');
 
-    await expect(listApiKeysDefinition.handler(mockClient, {})).rejects.toThrow('Permission denied');
+    await expect(listApiKeysDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Permission denied',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {

@@ -17,17 +17,23 @@ describe('getFieldRemapping tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Not found');
-    await expect(getFieldRemappingDefinition.handler(mockClient, { id: 999, remapped_id: 1 })).rejects.toThrow('Not found');
+    await expect(
+      getFieldRemappingDefinition.handler(mockClient, { id: 999, remapped_id: 1 }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getFieldRemappingDefinition.handler(mockClient, { id: 1, remapped_id: 2 })).rejects.toThrow('Unauthorized');
+    await expect(
+      getFieldRemappingDefinition.handler(mockClient, { id: 1, remapped_id: 2 }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getFieldRemappingDefinition.name).toBe('get_field_remapping');
-    expect(getFieldRemappingDefinition.description).toBe('Get remapping between two fields in Metabase');
+    expect(getFieldRemappingDefinition.description).toBe(
+      'Get remapping between two fields in Metabase',
+    );
     expect(getFieldRemappingDefinition.inputSchema).toEqual(GetFieldRemappingInputSchema);
   });
 });

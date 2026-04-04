@@ -24,16 +24,22 @@ describe('searchEmbedDashboardParams tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(searchEmbedDashboardParamsDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(searchEmbedDashboardParamsDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
-    await expect(searchEmbedDashboardParamsDefinition.handler(mockClient, input)).rejects.toThrow('Forbidden');
+    await expect(searchEmbedDashboardParamsDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Forbidden',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(searchEmbedDashboardParamsDefinition.name).toBe('search_embed_dashboard_params');
-    expect(searchEmbedDashboardParamsDefinition.inputSchema).toEqual(SearchEmbedDashboardParamsSchema);
+    expect(searchEmbedDashboardParamsDefinition.inputSchema).toEqual(
+      SearchEmbedDashboardParamsSchema,
+    );
   });
 });

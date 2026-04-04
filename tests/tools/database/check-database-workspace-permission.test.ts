@@ -17,17 +17,27 @@ describe('checkDatabaseWorkspacePermission tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(checkDatabaseWorkspacePermissionDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(
+      checkDatabaseWorkspacePermissionDefinition.handler(mockClient, { id: 999 }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(checkDatabaseWorkspacePermissionDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(
+      checkDatabaseWorkspacePermissionDefinition.handler(mockClient, { id: 1 }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {
-    expect(checkDatabaseWorkspacePermissionDefinition.name).toBe('check_database_workspace_permission');
-    expect(checkDatabaseWorkspacePermissionDefinition.description).toBe('Check workspace permission for a database in Metabase');
-    expect(checkDatabaseWorkspacePermissionDefinition.inputSchema).toEqual(CheckDatabaseWorkspacePermissionInputSchema);
+    expect(checkDatabaseWorkspacePermissionDefinition.name).toBe(
+      'check_database_workspace_permission',
+    );
+    expect(checkDatabaseWorkspacePermissionDefinition.description).toBe(
+      'Check workspace permission for a database in Metabase',
+    );
+    expect(checkDatabaseWorkspacePermissionDefinition.inputSchema).toEqual(
+      CheckDatabaseWorkspacePermissionInputSchema,
+    );
   });
 });

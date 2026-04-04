@@ -16,12 +16,16 @@ describe('addCommentReaction tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'API error');
-    await expect(addCommentReactionDefinition.handler(mockClient, { id: 1, emoji: '👍' })).rejects.toThrow('API error');
+    await expect(
+      addCommentReactionDefinition.handler(mockClient, { id: 1, emoji: '👍' }),
+    ).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(addCommentReactionDefinition.handler(mockClient, { id: 1, emoji: '👍' })).rejects.toThrow('Unauthorized');
+    await expect(
+      addCommentReactionDefinition.handler(mockClient, { id: 1, emoji: '👍' }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct metadata', () => {

@@ -1,9 +1,7 @@
 import { z } from 'zod';
 
 export const EmbedTokenSchema = z.string().describe('JWT embed token');
-export const ExportFormatSchema = z
-  .enum(['csv', 'json', 'xlsx', 'pdf'])
-  .describe('Export format');
+export const ExportFormatSchema = z.enum(['csv', 'json', 'xlsx', 'pdf']).describe('Export format');
 
 export const GetEmbedCardParamsSchema = z.object({
   token: EmbedTokenSchema,
@@ -139,7 +137,9 @@ export const RunEmbedDashboardPivotDashcardQuerySchema = z.object({
   dashcard_id: z.number(),
   card_id: z.number(),
 });
-export type RunEmbedDashboardPivotDashcardQuery = z.infer<typeof RunEmbedDashboardPivotDashcardQuerySchema>;
+export type RunEmbedDashboardPivotDashcardQuery = z.infer<
+  typeof RunEmbedDashboardPivotDashcardQuerySchema
+>;
 
 export const GetEmbedCardTileSchema = z.object({
   token: z.string(),

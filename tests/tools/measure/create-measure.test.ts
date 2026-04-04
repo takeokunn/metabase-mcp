@@ -9,20 +9,30 @@ describe('createMeasure tool', () => {
   it('should return formatted MCP response', async () => {
     const definition = { type: 'count' };
     const mockClient = createMockClientWithResponse('post', { id: 1, name: 'New Measure' });
-    const result = await createMeasureDefinition.handler(mockClient, { name: 'New Measure', definition });
+    const result = await createMeasureDefinition.handler(mockClient, {
+      name: 'New Measure',
+      definition,
+    });
     expectMcpContent(result, { id: 1, name: 'New Measure' });
-    expect(mockClient.post).toHaveBeenCalledWith('/api/measure', { name: 'New Measure', definition });
+    expect(mockClient.post).toHaveBeenCalledWith('/api/measure', {
+      name: 'New Measure',
+      definition,
+    });
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(createMeasureDefinition.handler(mockClient, { name: 'M', definition: {} })).rejects.toThrow('Not found');
+    await expect(
+      createMeasureDefinition.handler(mockClient, { name: 'M', definition: {} }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(createMeasureDefinition.handler(mockClient, { name: 'M', definition: {} })).rejects.toThrow('Unauthorized');
+    await expect(
+      createMeasureDefinition.handler(mockClient, { name: 'M', definition: {} }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {

@@ -1,7 +1,7 @@
 import type { ToolDefinition } from '@src/tools/registry';
 import { createUserDefinition } from './create-user';
-import { dismissUserModalDefinition } from './dismiss-user-modal';
 import { deleteUserDefinition } from './delete-user';
+import { dismissUserModalDefinition } from './dismiss-user-modal';
 import { getCurrentUserDefinition } from './get-current-user';
 import { getUserDefinition } from './get-user';
 import { getUserRecipientsDefinition } from './get-user-recipients';

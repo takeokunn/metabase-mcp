@@ -8,7 +8,11 @@ export const updateDocumentDefinition: ToolDefinition<UpdateDocumentInput> = {
   description: 'Update a document by ID in Metabase',
   inputSchema: UpdateDocumentInputSchema,
   handler: async (client: MetabaseClient, input: UpdateDocumentInput) => {
-    const result = await client.put(`/api/document/${input.id}`, { name: input.name, content: input.content, archived: input.archived });
+    const result = await client.put(`/api/document/${input.id}`, {
+      name: input.name,
+      content: input.content,
+      archived: input.archived,
+    });
     return formatToolResponse(result);
   },
 };

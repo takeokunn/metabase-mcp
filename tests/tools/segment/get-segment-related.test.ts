@@ -15,17 +15,23 @@ describe('getSegmentRelated tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Not found');
-    await expect(getSegmentRelatedDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(getSegmentRelatedDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Not found',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getSegmentRelatedDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(getSegmentRelatedDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getSegmentRelatedDefinition.name).toBe('get_segment_related');
-    expect(getSegmentRelatedDefinition.description).toBe('Get related items for a segment in Metabase');
+    expect(getSegmentRelatedDefinition.description).toBe(
+      'Get related items for a segment in Metabase',
+    );
     expect(getSegmentRelatedDefinition.inputSchema).toEqual(GetSegmentRelatedInputSchema);
   });
 });

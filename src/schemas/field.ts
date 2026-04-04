@@ -95,7 +95,9 @@ export const SearchFieldValuesInputSchema = z.object({
 // Create field dimension input schema
 export const CreateFieldDimensionInputSchema = z.object({
   id: z.number().int().positive().describe('Field ID'),
-  type: z.enum(['external', 'internal']).describe('Dimension type: external (remapping) or internal (FK lookup)'),
+  type: z
+    .enum(['external', 'internal'])
+    .describe('Dimension type: external (remapping) or internal (FK lookup)'),
   name: z.string().describe('Display name for the dimension'),
   human_readable_field_id: z
     .number()

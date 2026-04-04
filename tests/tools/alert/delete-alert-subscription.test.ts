@@ -31,9 +31,9 @@ describe('deleteAlertSubscription tool', () => {
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('delete', 'Not found');
 
-    await expect(deleteAlertSubscriptionDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
-      'Not found',
-    );
+    await expect(
+      deleteAlertSubscriptionDefinition.handler(mockClient, { id: 999 }),
+    ).rejects.toThrow('Not found');
     expect(mockClient.delete).toHaveBeenCalledWith('/api/alert/999/subscription');
   });
 
@@ -50,6 +50,8 @@ describe('deleteAlertSubscription tool', () => {
     expect(deleteAlertSubscriptionDefinition.description).toBe(
       'Delete subscription to an alert in Metabase',
     );
-    expect(deleteAlertSubscriptionDefinition.inputSchema).toEqual(DeleteAlertSubscriptionInputSchema);
+    expect(deleteAlertSubscriptionDefinition.inputSchema).toEqual(
+      DeleteAlertSubscriptionInputSchema,
+    );
   });
 });

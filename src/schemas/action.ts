@@ -43,7 +43,10 @@ export const UpdateActionInputSchema = z.object({
   type: ActionTypeSchema.optional(),
   parameters: z.array(z.record(z.unknown())).optional().describe('Action parameter definitions'),
   template: z.record(z.unknown()).optional().describe('Template for HTTP actions'),
-  visualization_settings: z.record(z.unknown()).optional().describe('Updated visualization settings'),
+  visualization_settings: z
+    .record(z.unknown())
+    .optional()
+    .describe('Updated visualization settings'),
   archived: z.boolean().optional().describe('Whether to archive the action'),
 });
 

@@ -43,9 +43,7 @@ describe('syncTableSchema tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(syncTableSchemaDefinition.name).toBe('sync_table_schema');
-    expect(syncTableSchemaDefinition.description).toBe(
-      'Sync the schema for a table in Metabase',
-    );
+    expect(syncTableSchemaDefinition.description).toBe('Sync the schema for a table in Metabase');
     expect(syncTableSchemaDefinition.inputSchema).toEqual(TableIdInputSchema);
   });
 });

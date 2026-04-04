@@ -22,12 +22,16 @@ describe('forceReindexSearch tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(forceReindexSearchDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
+    await expect(forceReindexSearchDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(forceReindexSearchDefinition.name).toBe('force_reindex_search');
-    expect(forceReindexSearchDefinition.description).toBe('Force a full reindex of the search index in Metabase');
+    expect(forceReindexSearchDefinition.description).toBe(
+      'Force a full reindex of the search index in Metabase',
+    );
     expect(forceReindexSearchDefinition.inputSchema).toEqual(ForceReindexSearchInputSchema);
   });
 });

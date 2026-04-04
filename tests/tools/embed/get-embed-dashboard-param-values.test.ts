@@ -20,17 +20,25 @@ describe('getEmbedDashboardParamValues tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getEmbedDashboardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(getEmbedDashboardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(getEmbedDashboardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(getEmbedDashboardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getEmbedDashboardParamValuesDefinition.name).toBe('get_embed_dashboard_param_values');
-    expect(getEmbedDashboardParamValuesDefinition.description).toBe('Get values for a parameter of an embedded dashboard in Metabase');
-    expect(getEmbedDashboardParamValuesDefinition.inputSchema).toEqual(GetEmbedDashboardParamValuesSchema);
+    expect(getEmbedDashboardParamValuesDefinition.description).toBe(
+      'Get values for a parameter of an embedded dashboard in Metabase',
+    );
+    expect(getEmbedDashboardParamValuesDefinition.inputSchema).toEqual(
+      GetEmbedDashboardParamValuesSchema,
+    );
   });
 });

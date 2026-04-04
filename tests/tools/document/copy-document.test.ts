@@ -16,12 +16,16 @@ describe('copyDocument tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(copyDocumentDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(copyDocumentDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Not found',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(copyDocumentDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(copyDocumentDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

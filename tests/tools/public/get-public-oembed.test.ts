@@ -6,7 +6,11 @@ import { expectMcpContent } from '../../__helpers__';
 import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getPublicOembed tool', () => {
-  const input = { url: 'https://metabase.example.com/public/question/abc123', maxheight: 600, maxwidth: 800 };
+  const input = {
+    url: 'https://metabase.example.com/public/question/abc123',
+    maxheight: 600,
+    maxwidth: 800,
+  };
 
   it('should return formatted MCP response', async () => {
     const mockResult = { type: 'rich', html: '<iframe></iframe>' };
@@ -32,7 +36,9 @@ describe('getPublicOembed tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(getPublicOembedDefinition.name).toBe('get_public_oembed');
-    expect(getPublicOembedDefinition.description).toBe('Get oEmbed metadata for a public Metabase resource');
+    expect(getPublicOembedDefinition.description).toBe(
+      'Get oEmbed metadata for a public Metabase resource',
+    );
     expect(getPublicOembedDefinition.inputSchema).toEqual(GetPublicOembedSchema);
   });
 });

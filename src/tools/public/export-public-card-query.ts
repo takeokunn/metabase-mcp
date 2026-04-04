@@ -8,9 +8,7 @@ export const exportPublicCardQueryDefinition: ToolDefinition<ExportPublicCardQue
   description: 'Export results of a public card query in Metabase',
   inputSchema: ExportPublicCardQuerySchema,
   handler: async (client: MetabaseClient, input: ExportPublicCardQuery) => {
-    const result = await client.get(
-      `/api/public/card/${input.uuid}/query/${input.export_format}`,
-    );
+    const result = await client.get(`/api/public/card/${input.uuid}/query/${input.export_format}`);
     return formatToolResponse(result);
   },
 };

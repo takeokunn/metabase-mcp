@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type CreateGlossaryEntryInput, CreateGlossaryEntryInputSchema } from '@src/schemas/glossary';
+import {
+  type CreateGlossaryEntryInput,
+  CreateGlossaryEntryInputSchema,
+} from '@src/schemas/glossary';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

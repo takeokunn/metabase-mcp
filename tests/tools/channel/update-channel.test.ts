@@ -16,12 +16,16 @@ describe('updateChannel tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('put', 'API error');
-    await expect(updateChannelDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('API error');
+    await expect(updateChannelDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('put', createApiError('Not Found', 404));
-    await expect(updateChannelDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not Found');
+    await expect(updateChannelDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

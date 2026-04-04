@@ -13,25 +13,28 @@ describe('runEmbedCardPivotQuery tool', () => {
     const mockClient = createMockClientWithResponse('get', mockResult);
     const result = await runEmbedCardPivotQueryDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
-    expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/embed/pivot/card/${input.token}/query`,
-      {},
-    );
+    expect(mockClient.get).toHaveBeenCalledWith(`/api/embed/pivot/card/${input.token}/query`, {});
   });
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(runEmbedCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(runEmbedCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(runEmbedCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(runEmbedCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(runEmbedCardPivotQueryDefinition.name).toBe('run_embed_card_pivot_query');
-    expect(runEmbedCardPivotQueryDefinition.description).toBe('Run a pivot query for an embedded card in Metabase');
+    expect(runEmbedCardPivotQueryDefinition.description).toBe(
+      'Run a pivot query for an embedded card in Metabase',
+    );
     expect(runEmbedCardPivotQueryDefinition.inputSchema).toEqual(RunEmbedCardPivotQuerySchema);
   });
 });

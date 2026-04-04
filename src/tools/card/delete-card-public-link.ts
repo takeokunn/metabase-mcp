@@ -1,8 +1,5 @@
 import type { MetabaseClient } from '@src/client';
-import {
-  type DeleteCardPublicLinkInput,
-  DeleteCardPublicLinkInputSchema,
-} from '@src/schemas/card';
+import { type DeleteCardPublicLinkInput, DeleteCardPublicLinkInputSchema } from '@src/schemas/card';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type GetDatasetQueryMetadataInput, GetDatasetQueryMetadataInputSchema } from '@src/schemas/dataset';
+import {
+  type GetDatasetQueryMetadataInput,
+  GetDatasetQueryMetadataInputSchema,
+} from '@src/schemas/dataset';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

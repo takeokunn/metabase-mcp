@@ -20,17 +20,25 @@ describe('runPreviewEmbedCardPivotQuery tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(runPreviewEmbedCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(
+      runPreviewEmbedCardPivotQueryDefinition.handler(mockClient, input),
+    ).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(runPreviewEmbedCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(
+      runPreviewEmbedCardPivotQueryDefinition.handler(mockClient, input),
+    ).rejects.toThrow('Not Found');
   });
 
   it('should have correct tool definition metadata', () => {
     expect(runPreviewEmbedCardPivotQueryDefinition.name).toBe('run_preview_embed_card_pivot_query');
-    expect(runPreviewEmbedCardPivotQueryDefinition.description).toBe('Run a pivot query for a preview embedded card in Metabase');
-    expect(runPreviewEmbedCardPivotQueryDefinition.inputSchema).toEqual(RunPreviewEmbedCardPivotQuerySchema);
+    expect(runPreviewEmbedCardPivotQueryDefinition.description).toBe(
+      'Run a pivot query for a preview embedded card in Metabase',
+    );
+    expect(runPreviewEmbedCardPivotQueryDefinition.inputSchema).toEqual(
+      RunPreviewEmbedCardPivotQuerySchema,
+    );
   });
 });

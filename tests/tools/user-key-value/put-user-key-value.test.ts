@@ -17,17 +17,24 @@ describe('putUserKeyValue tool', () => {
   it('should call correct URL and pass value as body', async () => {
     const mockClient = createMockClientWithResponse('put', {});
     await putUserKeyValueDefinition.handler(mockClient, input);
-    expect(mockClient.put).toHaveBeenCalledWith('/api/user-key-value/namespace/ui-settings/key/theme', 'dark');
+    expect(mockClient.put).toHaveBeenCalledWith(
+      '/api/user-key-value/namespace/ui-settings/key/theme',
+      'dark',
+    );
   });
 
   it('should handle object values', async () => {
-    const inputWithObject = { namespace: 'prefs', key: 'filters', value: { active: true, count: 5 } };
+    const inputWithObject = {
+      namespace: 'prefs',
+      key: 'filters',
+      value: { active: true, count: 5 },
+    };
     const mockClient = createMockClientWithResponse('put', {});
     await putUserKeyValueDefinition.handler(mockClient, inputWithObject);
-    expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/user-key-value/namespace/prefs/key/filters',
-      { active: true, count: 5 },
-    );
+    expect(mockClient.put).toHaveBeenCalledWith('/api/user-key-value/namespace/prefs/key/filters', {
+      active: true,
+      count: 5,
+    });
   });
 
   it('should propagate client errors', async () => {

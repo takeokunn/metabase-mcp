@@ -15,15 +15,21 @@ describe('getMostRecentlyViewedDashboard tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getMostRecentlyViewedDashboardDefinition.handler(mockClient, {})).rejects.toThrow('API error');
+    await expect(getMostRecentlyViewedDashboardDefinition.handler(mockClient, {})).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getMostRecentlyViewedDashboardDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
+    await expect(getMostRecentlyViewedDashboardDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
-    expect(getMostRecentlyViewedDashboardDefinition.name).toBe('get_most_recently_viewed_dashboard');
+    expect(getMostRecentlyViewedDashboardDefinition.name).toBe(
+      'get_most_recently_viewed_dashboard',
+    );
   });
 });

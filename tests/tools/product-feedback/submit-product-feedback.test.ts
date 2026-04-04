@@ -46,9 +46,7 @@ describe('submitProductFeedback tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(submitProductFeedbackDefinition.name).toBe('submit_product_feedback');
-    expect(submitProductFeedbackDefinition.description).toBe(
-      'Submit product feedback to Metabase',
-    );
+    expect(submitProductFeedbackDefinition.description).toBe('Submit product feedback to Metabase');
     expect(submitProductFeedbackDefinition.inputSchema).toEqual(SubmitProductFeedbackInputSchema);
   });
 });

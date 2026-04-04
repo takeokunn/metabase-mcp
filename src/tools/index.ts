@@ -1,7 +1,7 @@
 import { actionTools } from './action';
 import { activityTools } from './activity';
 import { alertTools } from './alert';
-import { pulseTools } from './pulse';
+import { analyticsTools } from './analytics';
 import { apiKeyTools } from './api-key';
 import { automagicDashboardTools } from './automagic-dashboard';
 import { bookmarkTools } from './bookmark';
@@ -32,12 +32,14 @@ import { measureTools } from './measure';
 import { modelIndexTools } from './model-index';
 import { moderationReviewTools } from './moderation-review';
 import { notificationTools } from './notification';
+import { notifyTools } from './notify';
 import { permissionsTools } from './permissions';
 import { persistTools } from './persist';
 import { premiumFeaturesTools } from './premium-features';
 import { previewEmbedTools } from './preview-embed';
 import { productFeedbackTools } from './product-feedback';
 import { publicTools } from './public';
+import { pulseTools } from './pulse';
 import type { ToolDefinition } from './registry';
 import { revisionTools } from './revision';
 import { searchTools } from './search';
@@ -49,14 +51,12 @@ import { snippetTools } from './snippet';
 import { tableTools } from './table';
 import { taskTools } from './task';
 import { tilesTools } from './tiles';
-import { timelineEventTools } from './timeline-event';
 import { timelineTools } from './timeline';
+import { timelineEventTools } from './timeline-event';
 import { uploadTools } from './upload';
-import { utilTools } from './util';
-import { analyticsTools } from './analytics';
-import { notifyTools } from './notify';
-import { userKeyValueTools } from './user-key-value';
 import { userTools } from './user';
+import { userKeyValueTools } from './user-key-value';
+import { utilTools } from './util';
 
 /**
  * All tool definitions combined from all categories

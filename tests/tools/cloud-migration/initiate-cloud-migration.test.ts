@@ -24,11 +24,15 @@ describe('initiateCloudMigration tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'API error');
-    await expect(initiateCloudMigrationDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(initiateCloudMigrationDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Forbidden', 403));
-    await expect(initiateCloudMigrationDefinition.handler(mockClient, input)).rejects.toThrow('Forbidden');
+    await expect(initiateCloudMigrationDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Forbidden',
+    );
   });
 });

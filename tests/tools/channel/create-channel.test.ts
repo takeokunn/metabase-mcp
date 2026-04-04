@@ -8,7 +8,11 @@ describe('createChannel tool', () => {
   it('should return formatted MCP response', async () => {
     const mockResult = { id: 1, name: 'My Webhook', type: 'http', active: true };
     const mockClient = createMockClientWithResponse('post', mockResult);
-    const input = { name: 'My Webhook', type: 'http', details: { url: 'https://example.com/hook' } };
+    const input = {
+      name: 'My Webhook',
+      type: 'http',
+      details: { url: 'https://example.com/hook' },
+    };
     const result = await createChannelDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
     expect(mockClient.post).toHaveBeenCalledWith('/api/channel', input);

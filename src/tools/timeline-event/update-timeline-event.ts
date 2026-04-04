@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type UpdateTimelineEventInput, UpdateTimelineEventInputSchema } from '@src/schemas/timeline';
+import {
+  type UpdateTimelineEventInput,
+  UpdateTimelineEventInputSchema,
+} from '@src/schemas/timeline';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

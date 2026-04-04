@@ -31,20 +31,22 @@ describe('unsubscribeNotification tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'API error');
-    await expect(
-      unsubscribeNotificationDefinition.handler(mockClient, { id: 1 }),
-    ).rejects.toThrow('API error');
+    await expect(unsubscribeNotificationDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Not found', 404));
-    await expect(
-      unsubscribeNotificationDefinition.handler(mockClient, { id: 1 }),
-    ).rejects.toThrow('Not found');
+    await expect(unsubscribeNotificationDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Not found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(unsubscribeNotificationDefinition.name).toBe('unsubscribe_notification');
-    expect(unsubscribeNotificationDefinition.inputSchema).toEqual(UnsubscribeNotificationInputSchema);
+    expect(unsubscribeNotificationDefinition.inputSchema).toEqual(
+      UnsubscribeNotificationInputSchema,
+    );
   });
 });

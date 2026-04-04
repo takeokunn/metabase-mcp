@@ -8,9 +8,7 @@ export const exportEmbedCardQueryDefinition: ToolDefinition<ExportEmbedCardQuery
   description: 'Export results of an embedded card query in Metabase',
   inputSchema: ExportEmbedCardQuerySchema,
   handler: async (client: MetabaseClient, input: ExportEmbedCardQuery) => {
-    const result = await client.get(
-      `/api/embed/card/${input.token}/query/${input.export_format}`,
-    );
+    const result = await client.get(`/api/embed/card/${input.token}/query/${input.export_format}`);
     return formatToolResponse(result);
   },
 };

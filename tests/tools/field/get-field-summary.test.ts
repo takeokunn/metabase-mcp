@@ -17,17 +17,23 @@ describe('getFieldSummary tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Not found');
-    await expect(getFieldSummaryDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(getFieldSummaryDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Not found',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getFieldSummaryDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(getFieldSummaryDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getFieldSummaryDefinition.name).toBe('get_field_summary');
-    expect(getFieldSummaryDefinition.description).toBe('Get summary statistics for a field in Metabase');
+    expect(getFieldSummaryDefinition.description).toBe(
+      'Get summary statistics for a field in Metabase',
+    );
     expect(getFieldSummaryDefinition.inputSchema).toEqual(GetFieldSummaryInputSchema);
   });
 });

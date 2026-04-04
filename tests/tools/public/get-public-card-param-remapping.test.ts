@@ -20,17 +20,25 @@ describe('getPublicCardParamRemapping tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getPublicCardParamRemappingDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(getPublicCardParamRemappingDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(getPublicCardParamRemappingDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(getPublicCardParamRemappingDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getPublicCardParamRemappingDefinition.name).toBe('get_public_card_param_remapping');
-    expect(getPublicCardParamRemappingDefinition.description).toBe('Get remapping for a parameter of a public card in Metabase');
-    expect(getPublicCardParamRemappingDefinition.inputSchema).toEqual(GetPublicCardParamRemappingSchema);
+    expect(getPublicCardParamRemappingDefinition.description).toBe(
+      'Get remapping for a parameter of a public card in Metabase',
+    );
+    expect(getPublicCardParamRemappingDefinition.inputSchema).toEqual(
+      GetPublicCardParamRemappingSchema,
+    );
   });
 });

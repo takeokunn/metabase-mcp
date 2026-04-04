@@ -12,9 +12,7 @@ export const getPublicCardQueryFormatDefinition: ToolDefinition<GetPublicCardQue
     'Get query results for a publicly shared card in a specific export format from Metabase',
   inputSchema: GetPublicCardQueryFormatParamsSchema,
   handler: async (client: MetabaseClient, input: GetPublicCardQueryFormatParams) => {
-    const result = await client.get(
-      `/api/public/card/${input.uuid}/query/${input.export_format}`,
-    );
+    const result = await client.get(`/api/public/card/${input.uuid}/query/${input.export_format}`);
     return formatToolResponse(result);
   },
 };

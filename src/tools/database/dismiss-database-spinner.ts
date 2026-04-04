@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type DismissDatabaseSpinnerInput, DismissDatabaseSpinnerInputSchema } from '@src/schemas/database';
+import {
+  type DismissDatabaseSpinnerInput,
+  DismissDatabaseSpinnerInputSchema,
+} from '@src/schemas/database';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

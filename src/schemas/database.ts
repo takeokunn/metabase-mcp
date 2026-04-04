@@ -179,9 +179,19 @@ export type SyncDatabaseSchemaParams = z.infer<typeof SyncDatabaseSchemaParamsSc
 export type DeleteDatabaseSchemaParams = z.infer<typeof DeleteDatabaseSchemaParamsSchema>;
 export type GetDatabaseVirtualSchemaParams = z.infer<typeof GetDatabaseVirtualSchemaParamsSchema>;
 export type UploadCsvToDatabaseInput = z.infer<typeof UploadCsvToDatabaseInputSchema>;
-export type GetDatabaseCardAutocompleteParams = z.infer<typeof GetDatabaseCardAutocompleteParamsSchema>;
-export type GetDatabaseAvailableSettingsParams = z.infer<typeof GetDatabaseAvailableSettingsParamsSchema>;
-export type GetDatabaseSyncableSchemasParams = z.infer<typeof GetDatabaseSyncableSchemasParamsSchema>;
-export type GetVirtualDatabaseDatasetsParams = z.infer<typeof GetVirtualDatabaseDatasetsParamsSchema>;
+export type GetDatabaseCardAutocompleteParams = z.infer<
+  typeof GetDatabaseCardAutocompleteParamsSchema
+>;
+export type GetDatabaseAvailableSettingsParams = z.infer<
+  typeof GetDatabaseAvailableSettingsParamsSchema
+>;
+export type GetDatabaseSyncableSchemasParams = z.infer<
+  typeof GetDatabaseSyncableSchemasParamsSchema
+>;
+export type GetVirtualDatabaseDatasetsParams = z.infer<
+  typeof GetVirtualDatabaseDatasetsParamsSchema
+>;
 export type DismissDatabaseSpinnerInput = z.infer<typeof DismissDatabaseSpinnerInputSchema>;
-export type CheckDatabaseWorkspacePermissionInput = z.infer<typeof CheckDatabaseWorkspacePermissionInputSchema>;
+export type CheckDatabaseWorkspacePermissionInput = z.infer<
+  typeof CheckDatabaseWorkspacePermissionInputSchema
+>;

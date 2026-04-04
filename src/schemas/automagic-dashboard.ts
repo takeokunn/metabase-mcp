@@ -21,9 +21,7 @@ export const GetXrayDatabaseCandidatesParamsSchema = z.object({
 
 // X-ray generic entity params schema
 export const GetXrayEntityInputSchema = z.object({
-  entity: z
-    .enum(['table', 'segment', 'question', 'field', 'metric'])
-    .describe('Entity type'),
+  entity: z.enum(['table', 'segment', 'question', 'field', 'metric']).describe('Entity type'),
   entity_id: z.union([z.number(), z.string()]).describe('Entity ID or query'),
 });
 
@@ -114,7 +112,9 @@ export type GetXrayEntityInput = z.infer<typeof GetXrayEntityInputSchema>;
 export type GetXrayEntityCellInput = z.infer<typeof GetXrayEntityCellInputSchema>;
 export type GetXrayEntityCellCompareInput = z.infer<typeof GetXrayEntityCellCompareInputSchema>;
 export type GetXrayEntityCellRuleInput = z.infer<typeof GetXrayEntityCellRuleInputSchema>;
-export type GetXrayEntityCellRuleCompareInput = z.infer<typeof GetXrayEntityCellRuleCompareInputSchema>;
+export type GetXrayEntityCellRuleCompareInput = z.infer<
+  typeof GetXrayEntityCellRuleCompareInputSchema
+>;
 export type GetXrayEntityCompareInput = z.infer<typeof GetXrayEntityCompareInputSchema>;
 export type GetXrayEntityQueryMetadataInput = z.infer<typeof GetXrayEntityQueryMetadataInputSchema>;
 export type GetXrayEntityRuleInput = z.infer<typeof GetXrayEntityRuleInputSchema>;

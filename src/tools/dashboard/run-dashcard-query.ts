@@ -8,7 +8,10 @@ export const runDashcardQueryDefinition: ToolDefinition<RunDashcardQueryInput> =
   description: 'Run the query for a specific card on a dashboard in Metabase',
   inputSchema: RunDashcardQueryInputSchema,
   handler: async (client: MetabaseClient, input: RunDashcardQueryInput) => {
-    const result = await client.post(`/api/dashboard/${input.dashboard_id}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`, { parameters: input.parameters ?? [] });
+    const result = await client.post(
+      `/api/dashboard/${input.dashboard_id}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+      { parameters: input.parameters ?? [] },
+    );
     return formatToolResponse(result);
   },
 };

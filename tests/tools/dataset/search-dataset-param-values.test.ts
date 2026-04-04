@@ -32,17 +32,25 @@ describe('searchDatasetParamValues tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(searchDatasetParamValuesDefinition.handler(mockClient, { query: 'x', parameter: {} })).rejects.toThrow('Not found');
+    await expect(
+      searchDatasetParamValuesDefinition.handler(mockClient, { query: 'x', parameter: {} }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(searchDatasetParamValuesDefinition.handler(mockClient, { query: 'x', parameter: {} })).rejects.toThrow('Unauthorized');
+    await expect(
+      searchDatasetParamValuesDefinition.handler(mockClient, { query: 'x', parameter: {} }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {
     expect(searchDatasetParamValuesDefinition.name).toBe('search_dataset_param_values');
-    expect(searchDatasetParamValuesDefinition.description).toBe('Search values for a dataset parameter in Metabase');
-    expect(searchDatasetParamValuesDefinition.inputSchema).toEqual(SearchDatasetParamValuesInputSchema);
+    expect(searchDatasetParamValuesDefinition.description).toBe(
+      'Search values for a dataset parameter in Metabase',
+    );
+    expect(searchDatasetParamValuesDefinition.inputSchema).toEqual(
+      SearchDatasetParamValuesInputSchema,
+    );
   });
 });

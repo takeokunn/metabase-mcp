@@ -15,17 +15,25 @@ describe('unpersistDatabaseModels tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(unpersistDatabaseModelsDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(
+      unpersistDatabaseModelsDefinition.handler(mockClient, { id: 999 }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(unpersistDatabaseModelsDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(unpersistDatabaseModelsDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(unpersistDatabaseModelsDefinition.name).toBe('unpersist_database_models');
-    expect(unpersistDatabaseModelsDefinition.description).toBe('Unpersist all persisted models for a database in Metabase');
-    expect(unpersistDatabaseModelsDefinition.inputSchema).toEqual(UnpersistDatabaseModelsInputSchema);
+    expect(unpersistDatabaseModelsDefinition.description).toBe(
+      'Unpersist all persisted models for a database in Metabase',
+    );
+    expect(unpersistDatabaseModelsDefinition.inputSchema).toEqual(
+      UnpersistDatabaseModelsInputSchema,
+    );
   });
 });

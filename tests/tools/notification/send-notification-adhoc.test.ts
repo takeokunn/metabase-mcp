@@ -10,7 +10,9 @@ describe('sendAdhocNotification tool', () => {
     const mockResult = { success: true };
     const payload = { card_id: 1, recipients: ['user@example.com'] };
     const mockClient = createMockClientWithResponse('post', mockResult);
-    const result = await sendAdhocNotificationDefinition.handler(mockClient, { notification: payload });
+    const result = await sendAdhocNotificationDefinition.handler(mockClient, {
+      notification: payload,
+    });
     expectMcpContent(result, mockResult);
     expect(mockClient.post).toHaveBeenCalledWith('/api/notification/send', payload);
   });

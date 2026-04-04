@@ -7,7 +7,10 @@ import { createMockClientWithError, createMockClientWithResponse } from '../../_
 
 describe('listNotifications tool', () => {
   it('should return formatted MCP response', async () => {
-    const mockResult = [{ id: 1, dashboard_id: 10 }, { id: 2, dashboard_id: 20 }];
+    const mockResult = [
+      { id: 1, dashboard_id: 10 },
+      { id: 2, dashboard_id: 20 },
+    ];
     const mockClient = createMockClientWithResponse('get', mockResult);
     const result = await listNotificationsDefinition.handler(mockClient, {});
     expectMcpContent(result, mockResult);
@@ -46,7 +49,9 @@ describe('listNotifications tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(listNotificationsDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
+    await expect(listNotificationsDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

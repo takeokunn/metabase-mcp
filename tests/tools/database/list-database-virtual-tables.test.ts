@@ -7,9 +7,7 @@ import { createMockClientWithError, createMockClientWithResponse } from '../../_
 
 describe('listDatabaseVirtualTables tool', () => {
   it('should return formatted MCP response with virtual tables', async () => {
-    const mockTables = [
-      { id: 'card__1', name: 'My Question', schema: '__virtual' },
-    ];
+    const mockTables = [{ id: 'card__1', name: 'My Question', schema: '__virtual' }];
 
     const mockClient = createMockClientWithResponse('get', mockTables);
 

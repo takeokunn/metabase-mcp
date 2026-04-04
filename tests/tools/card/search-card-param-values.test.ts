@@ -29,9 +29,7 @@ describe('searchCardParamValues tool', () => {
       query: 'search term',
     });
 
-    expect(mockClient.get).toHaveBeenCalledWith(
-      '/api/card/2/params/my%20key/search/search%20term',
-    );
+    expect(mockClient.get).toHaveBeenCalledWith('/api/card/2/params/my%20key/search/search%20term');
   });
 
   it('should propagate client errors', async () => {

@@ -8,8 +8,7 @@ import { formatToolResponse } from '@src/tools/registry';
  */
 export const listRevisionsDefinition: ToolDefinition<ListRevisionsParams> = {
   name: 'list_revisions',
-  description:
-    'List revisions in Metabase, optionally filtered by entity type and ID',
+  description: 'List revisions in Metabase, optionally filtered by entity type and ID',
   inputSchema: ListRevisionsParamsSchema,
   handler: async (client: MetabaseClient, input: ListRevisionsParams) => {
     const params = new URLSearchParams();

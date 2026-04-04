@@ -15,12 +15,16 @@ describe('deleteModelIndex tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('delete', 'API error');
-    await expect(deleteModelIndexDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('API error');
+    await expect(deleteModelIndexDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('delete', createApiError('Not Found', 404));
-    await expect(deleteModelIndexDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not Found');
+    await expect(deleteModelIndexDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

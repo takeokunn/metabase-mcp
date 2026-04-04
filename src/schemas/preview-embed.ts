@@ -48,7 +48,9 @@ export const SearchPreviewEmbedCardParamValuesSchema = z.object({
   param_key: z.string(),
   query: z.string(),
 });
-export type SearchPreviewEmbedCardParamValues = z.infer<typeof SearchPreviewEmbedCardParamValuesSchema>;
+export type SearchPreviewEmbedCardParamValues = z.infer<
+  typeof SearchPreviewEmbedCardParamValuesSchema
+>;
 
 export const ExportPreviewEmbedCardQuerySchema = z.object({
   token: z.string(),
@@ -60,14 +62,18 @@ export const GetPreviewEmbedDashboardParamValuesSchema = z.object({
   token: z.string().describe('Preview embed token'),
   param_key: z.string(),
 });
-export type GetPreviewEmbedDashboardParamValues = z.infer<typeof GetPreviewEmbedDashboardParamValuesSchema>;
+export type GetPreviewEmbedDashboardParamValues = z.infer<
+  typeof GetPreviewEmbedDashboardParamValuesSchema
+>;
 
 export const SearchPreviewEmbedDashboardParamValuesSchema = z.object({
   token: z.string(),
   param_key: z.string(),
   query: z.string(),
 });
-export type SearchPreviewEmbedDashboardParamValues = z.infer<typeof SearchPreviewEmbedDashboardParamValuesSchema>;
+export type SearchPreviewEmbedDashboardParamValues = z.infer<
+  typeof SearchPreviewEmbedDashboardParamValuesSchema
+>;
 
 export const RunPreviewEmbedCardPivotQuerySchema = z.object({
   token: z.string(),
@@ -79,26 +85,34 @@ export const RunPreviewEmbedDashboardPivotQuerySchema = z.object({
   dashcard_id: z.number(),
   card_id: z.number(),
 });
-export type RunPreviewEmbedDashboardPivotQuery = z.infer<typeof RunPreviewEmbedDashboardPivotQuerySchema>;
+export type RunPreviewEmbedDashboardPivotQuery = z.infer<
+  typeof RunPreviewEmbedDashboardPivotQuerySchema
+>;
 
 export const ExecutePreviewEmbedDashcardActionSchema = z.object({
   token: z.string(),
   dashcard_id: z.number(),
   parameters: z.record(z.unknown()).optional(),
 });
-export type ExecutePreviewEmbedDashcardAction = z.infer<typeof ExecutePreviewEmbedDashcardActionSchema>;
+export type ExecutePreviewEmbedDashcardAction = z.infer<
+  typeof ExecutePreviewEmbedDashcardActionSchema
+>;
 
 export const GetPreviewEmbedCardParamRemappingSchema = z.object({
   token: z.string().describe('Preview embed token'),
   param_key: z.string().describe('Parameter key'),
 });
-export type GetPreviewEmbedCardParamRemapping = z.infer<typeof GetPreviewEmbedCardParamRemappingSchema>;
+export type GetPreviewEmbedCardParamRemapping = z.infer<
+  typeof GetPreviewEmbedCardParamRemappingSchema
+>;
 
 export const GetPreviewEmbedDashboardParamRemappingSchema = z.object({
   token: z.string(),
   param_key: z.string(),
 });
-export type GetPreviewEmbedDashboardParamRemapping = z.infer<typeof GetPreviewEmbedDashboardParamRemappingSchema>;
+export type GetPreviewEmbedDashboardParamRemapping = z.infer<
+  typeof GetPreviewEmbedDashboardParamRemappingSchema
+>;
 
 export const RunPreviewEmbedDashcardQuerySchema = z.object({
   token: z.string(),
@@ -120,7 +134,9 @@ export const RunPreviewEmbedDashboardPivotDashcardQuerySchema = z.object({
   dashcard_id: z.number(),
   card_id: z.number(),
 });
-export type RunPreviewEmbedDashboardPivotDashcardQuery = z.infer<typeof RunPreviewEmbedDashboardPivotDashcardQuerySchema>;
+export type RunPreviewEmbedDashboardPivotDashcardQuery = z.infer<
+  typeof RunPreviewEmbedDashboardPivotDashcardQuerySchema
+>;
 
 export const GetPreviewEmbedCardTileSchema = z.object({
   token: z.string(),

@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type SetPersistRefreshScheduleInput, SetPersistRefreshScheduleInputSchema } from '@src/schemas/persist';
+import {
+  type SetPersistRefreshScheduleInput,
+  SetPersistRefreshScheduleInputSchema,
+} from '@src/schemas/persist';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

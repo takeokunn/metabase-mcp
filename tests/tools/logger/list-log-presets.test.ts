@@ -6,7 +6,9 @@ import { createMockClientWithError, createMockClientWithResponse } from '../../_
 
 describe('listLogPresets tool', () => {
   it('should return formatted MCP response with presets', async () => {
-    const mockResult = [{ name: 'verbose-db', loggers: [{ logger: 'metabase.db', level: 'DEBUG' }] }];
+    const mockResult = [
+      { name: 'verbose-db', loggers: [{ logger: 'metabase.db', level: 'DEBUG' }] },
+    ];
     const mockClient = createMockClientWithResponse('get', mockResult);
     const result = await listLogPresetsDefinition.handler(mockClient, {});
     expectMcpContent(result, mockResult);

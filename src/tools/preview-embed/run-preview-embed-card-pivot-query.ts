@@ -12,9 +12,7 @@ export const runPreviewEmbedCardPivotQueryDefinition: ToolDefinition<RunPreviewE
     description: 'Run a pivot query for a preview embedded card in Metabase',
     inputSchema: RunPreviewEmbedCardPivotQuerySchema,
     handler: async (client: MetabaseClient, input: RunPreviewEmbedCardPivotQuery) => {
-      const result = await client.get(
-        `/api/preview_embed/pivot/card/${input.token}/query`,
-      );
+      const result = await client.get(`/api/preview_embed/pivot/card/${input.token}/query`);
       return formatToolResponse(result);
     },
   };

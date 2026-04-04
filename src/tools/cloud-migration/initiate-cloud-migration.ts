@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type InitiateCloudMigrationInput, InitiateCloudMigrationInputSchema } from '@src/schemas/cloud-migration';
+import {
+  type InitiateCloudMigrationInput,
+  InitiateCloudMigrationInputSchema,
+} from '@src/schemas/cloud-migration';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

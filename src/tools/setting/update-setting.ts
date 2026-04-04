@@ -11,7 +11,9 @@ export const updateSettingDefinition: ToolDefinition<UpdateSettingInput> = {
   description: 'Update the value of a single Metabase setting by key',
   inputSchema: UpdateSettingInputSchema,
   handler: async (client: MetabaseClient, input: UpdateSettingInput) => {
-    const result = await client.put(`/api/setting/${encodeURIComponent(input.key)}`, { value: input.value });
+    const result = await client.put(`/api/setting/${encodeURIComponent(input.key)}`, {
+      value: input.value,
+    });
     return formatToolResponse(result);
   },
 };

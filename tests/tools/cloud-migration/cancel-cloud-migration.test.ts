@@ -20,11 +20,15 @@ describe('cancelCloudMigration tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('put', 'API error');
-    await expect(cancelCloudMigrationDefinition.handler(mockClient, {})).rejects.toThrow('API error');
+    await expect(cancelCloudMigrationDefinition.handler(mockClient, {})).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('put', createApiError('Conflict', 409));
-    await expect(cancelCloudMigrationDefinition.handler(mockClient, {})).rejects.toThrow('Conflict');
+    await expect(cancelCloudMigrationDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Conflict',
+    );
   });
 });

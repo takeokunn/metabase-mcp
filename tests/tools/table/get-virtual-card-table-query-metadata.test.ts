@@ -16,15 +16,23 @@ describe('getVirtualCardTableQueryMetadata tool', () => {
   });
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Not found');
-    await expect(getVirtualCardTableQueryMetadataDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(
+      getVirtualCardTableQueryMetadataDefinition.handler(mockClient, { id: 999 }),
+    ).rejects.toThrow('Not found');
   });
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getVirtualCardTableQueryMetadataDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(
+      getVirtualCardTableQueryMetadataDefinition.handler(mockClient, { id: 1 }),
+    ).rejects.toThrow('Unauthorized');
   });
   it('should have correct tool definition metadata', () => {
-    expect(getVirtualCardTableQueryMetadataDefinition.name).toBe('get_virtual_card_table_query_metadata');
-    expect(getVirtualCardTableQueryMetadataDefinition.description).toBe('Get query metadata for a virtual card-based table in Metabase');
+    expect(getVirtualCardTableQueryMetadataDefinition.name).toBe(
+      'get_virtual_card_table_query_metadata',
+    );
+    expect(getVirtualCardTableQueryMetadataDefinition.description).toBe(
+      'Get query metadata for a virtual card-based table in Metabase',
+    );
     expect(getVirtualCardTableQueryMetadataDefinition.inputSchema).toEqual(TableIdInputSchema);
   });
 });

@@ -78,14 +78,23 @@ export const RestoreCollectionInputSchema = z.object({
 
 // Move collection items input schema
 export const MoveCollectionItemsInputSchema = z.object({
-  source_collection_id: z.number().int().positive().describe('Source collection ID to move items from'),
+  source_collection_id: z
+    .number()
+    .int()
+    .positive()
+    .describe('Source collection ID to move items from'),
   destination_collection_id: z
     .number()
     .int()
     .positive()
     .describe('Destination collection ID to move items into'),
   items: z
-    .array(z.object({ id: z.number().describe('Item ID'), model: z.string().describe('Item model type (card, dashboard, etc.)') }))
+    .array(
+      z.object({
+        id: z.number().describe('Item ID'),
+        model: z.string().describe('Item model type (card, dashboard, etc.)'),
+      }),
+    )
     .describe('Array of items to move'),
 });
 
@@ -126,8 +135,18 @@ export type GetRootCollectionItemsParams = z.infer<typeof GetRootCollectionItems
 export type HardDeleteCollectionInput = z.infer<typeof HardDeleteCollectionInputSchema>;
 export type RestoreCollectionInput = z.infer<typeof RestoreCollectionInputSchema>;
 export type MoveCollectionItemsInput = z.infer<typeof MoveCollectionItemsInputSchema>;
-export type GetCollectionPermissionGraphParams = z.infer<typeof GetCollectionPermissionGraphParamsSchema>;
-export type GetRootDashboardQuestionCandidatesParams = z.infer<typeof GetRootDashboardQuestionCandidatesParamsSchema>;
-export type GetCollectionDashboardQuestionCandidatesParams = z.infer<typeof GetCollectionDashboardQuestionCandidatesParamsSchema>;
-export type MoveRootDashboardQuestionCandidatesInput = z.infer<typeof MoveRootDashboardQuestionCandidatesInputSchema>;
-export type MoveCollectionDashboardQuestionCandidatesInput = z.infer<typeof MoveCollectionDashboardQuestionCandidatesInputSchema>;
+export type GetCollectionPermissionGraphParams = z.infer<
+  typeof GetCollectionPermissionGraphParamsSchema
+>;
+export type GetRootDashboardQuestionCandidatesParams = z.infer<
+  typeof GetRootDashboardQuestionCandidatesParamsSchema
+>;
+export type GetCollectionDashboardQuestionCandidatesParams = z.infer<
+  typeof GetCollectionDashboardQuestionCandidatesParamsSchema
+>;
+export type MoveRootDashboardQuestionCandidatesInput = z.infer<
+  typeof MoveRootDashboardQuestionCandidatesInputSchema
+>;
+export type MoveCollectionDashboardQuestionCandidatesInput = z.infer<
+  typeof MoveCollectionDashboardQuestionCandidatesInputSchema
+>;

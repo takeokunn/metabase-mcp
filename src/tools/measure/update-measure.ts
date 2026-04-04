@@ -8,7 +8,10 @@ export const updateMeasureDefinition: ToolDefinition<UpdateMeasureInput> = {
   description: 'Update a measure by ID in Metabase',
   inputSchema: UpdateMeasureInputSchema,
   handler: async (client: MetabaseClient, input: UpdateMeasureInput) => {
-    const result = await client.put(`/api/measure/${input.id}`, { name: input.name, definition: input.definition });
+    const result = await client.put(`/api/measure/${input.id}`, {
+      name: input.name,
+      definition: input.definition,
+    });
     return formatToolResponse(result);
   },
 };

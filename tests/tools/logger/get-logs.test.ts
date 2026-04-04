@@ -6,7 +6,9 @@ import { createMockClientWithError, createMockClientWithResponse } from '../../_
 
 describe('getLogs tool', () => {
   it('should return formatted MCP response with logs', async () => {
-    const mockResult = [{ level: 'INFO', message: 'Server started', timestamp: '2024-01-01T00:00:00Z' }];
+    const mockResult = [
+      { level: 'INFO', message: 'Server started', timestamp: '2024-01-01T00:00:00Z' },
+    ];
     const mockClient = createMockClientWithResponse('get', mockResult);
     const result = await getLogsDefinition.handler(mockClient, {});
     expectMcpContent(result, mockResult);
@@ -26,7 +28,11 @@ describe('getLogs tool', () => {
 
   it('should pass all filters when provided', async () => {
     const mockClient = createMockClientWithResponse('get', []);
-    await getLogsDefinition.handler(mockClient, { level: 'DEBUG', namespace: 'metabase.db', last_n_lines: 100 });
+    await getLogsDefinition.handler(mockClient, {
+      level: 'DEBUG',
+      namespace: 'metabase.db',
+      last_n_lines: 100,
+    });
     expect(mockClient.get).toHaveBeenCalledWith('/api/logger/logs', {
       level: 'DEBUG',
       namespace: 'metabase.db',

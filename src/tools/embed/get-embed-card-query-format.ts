@@ -11,9 +11,7 @@ export const getEmbedCardQueryFormatDefinition: ToolDefinition<GetEmbedCardQuery
   description: 'Get query results for an embedded card in a specific export format from Metabase',
   inputSchema: GetEmbedCardQueryFormatParamsSchema,
   handler: async (client: MetabaseClient, input: GetEmbedCardQueryFormatParams) => {
-    const result = await client.get(
-      `/api/embed/card/${input.token}/query/${input.export_format}`,
-    );
+    const result = await client.get(`/api/embed/card/${input.token}/query/${input.export_format}`);
     return formatToolResponse(result);
   },
 };

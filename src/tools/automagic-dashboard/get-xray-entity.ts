@@ -11,9 +11,7 @@ export const getXrayEntityDefinition: ToolDefinition<GetXrayEntityInput> = {
   description: 'Get an x-ray automagic dashboard for any entity in Metabase',
   inputSchema: GetXrayEntityInputSchema,
   handler: async (client: MetabaseClient, input: GetXrayEntityInput) => {
-    const result = await client.get(
-      `/api/automagic-dashboards/${input.entity}/${input.entity_id}`,
-    );
+    const result = await client.get(`/api/automagic-dashboards/${input.entity}/${input.entity_id}`);
     return formatToolResponse(result);
   },
 };

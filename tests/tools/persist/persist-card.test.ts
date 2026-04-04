@@ -15,12 +15,16 @@ describe('persistCard tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'API error');
-    await expect(persistCardDefinition.handler(mockClient, { card_id: 5 })).rejects.toThrow('API error');
+    await expect(persistCardDefinition.handler(mockClient, { card_id: 5 })).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Forbidden', 403));
-    await expect(persistCardDefinition.handler(mockClient, { card_id: 5 })).rejects.toThrow('Forbidden');
+    await expect(persistCardDefinition.handler(mockClient, { card_id: 5 })).rejects.toThrow(
+      'Forbidden',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

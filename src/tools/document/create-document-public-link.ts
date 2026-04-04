@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type GetDocumentPublicLinkInput, GetDocumentPublicLinkInputSchema } from '@src/schemas/document';
+import {
+  type GetDocumentPublicLinkInput,
+  GetDocumentPublicLinkInputSchema,
+} from '@src/schemas/document';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

@@ -1,7 +1,7 @@
 import type { MetabaseClient } from '@src/client';
-import { z } from 'zod';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
+import { z } from 'zod';
 
 export const ReplaceTableCsvParamsSchema = z.object({
   table_id: z.number().describe('ID of the table to replace with CSV data'),

@@ -7,7 +7,12 @@ export const CommentIdSchema = IdSchema;
 // List comments params schema
 export const ListCommentsParamsSchema = z.object({
   model: z.string().describe('Model type (e.g., "card", "dashboard")').optional(),
-  model_id: z.number().int().positive().describe('ID of the model to filter comments by').optional(),
+  model_id: z
+    .number()
+    .int()
+    .positive()
+    .describe('ID of the model to filter comments by')
+    .optional(),
 });
 
 // Create comment input schema
@@ -15,7 +20,10 @@ export const CreateCommentInputSchema = z.object({
   text: z.string().describe('Text content of the comment'),
   model: z.string().describe('Model type the comment belongs to (e.g., "card", "dashboard")'),
   model_id: z.number().int().positive().describe('ID of the model the comment belongs to'),
-  mentioned_users: z.array(z.number()).describe('List of user IDs mentioned in the comment').optional(),
+  mentioned_users: z
+    .array(z.number())
+    .describe('List of user IDs mentioned in the comment')
+    .optional(),
 });
 
 // Update comment input schema

@@ -8,7 +8,10 @@ export const addRecentActivityDefinition: ToolDefinition<AddRecentActivityInput>
   description: 'Add an item to recent activity in Metabase',
   inputSchema: AddRecentActivityInputSchema,
   handler: async (client: MetabaseClient, input: AddRecentActivityInput) => {
-    const result = await client.post('/api/activity/recents', { model_type: input.model_type, model_id: input.model_id });
+    const result = await client.post('/api/activity/recents', {
+      model_type: input.model_type,
+      model_id: input.model_id,
+    });
     return formatToolResponse(result);
   },
 };

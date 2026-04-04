@@ -41,9 +41,7 @@ describe('listSettings tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(listSettingsDefinition.name).toBe('list_settings');
-    expect(listSettingsDefinition.description).toBe(
-      'List all settings in Metabase (admin only)',
-    );
+    expect(listSettingsDefinition.description).toBe('List all settings in Metabase (admin only)');
     expect(listSettingsDefinition.inputSchema).toEqual({});
   });
 });

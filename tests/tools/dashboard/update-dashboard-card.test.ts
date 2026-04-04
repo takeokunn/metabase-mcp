@@ -53,9 +53,7 @@ describe('updateDashboardCard tool', () => {
     expect(mockClient.put).toHaveBeenCalledWith(
       '/api/dashboard/1/cards',
       expect.objectContaining({
-        cards: expect.arrayContaining([
-          expect.objectContaining({ id: 10, size_x: 8, size_y: 6 }),
-        ]),
+        cards: expect.arrayContaining([expect.objectContaining({ id: 10, size_x: 8, size_y: 6 })]),
       }),
     );
   });

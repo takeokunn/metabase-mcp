@@ -20,7 +20,9 @@ describe('getChannel tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(getChannelDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not Found');
+    await expect(getChannelDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

@@ -39,8 +39,6 @@ describe('getRootCollection tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(getRootCollectionDefinition.name).toBe('get_root_collection');
-    expect(getRootCollectionDefinition.description).toBe(
-      'Get the root collection from Metabase',
-    );
+    expect(getRootCollectionDefinition.description).toBe('Get the root collection from Metabase');
   });
 });

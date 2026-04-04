@@ -12,7 +12,10 @@ export const listRecentsDefinition: ToolDefinition<ListRecentsParams> = {
     if (input.context !== undefined) {
       params.context = input.context;
     }
-    const result = await client.get('/api/activity/recents', Object.keys(params).length > 0 ? params : undefined);
+    const result = await client.get(
+      '/api/activity/recents',
+      Object.keys(params).length > 0 ? params : undefined,
+    );
     return formatToolResponse(result);
   },
 };

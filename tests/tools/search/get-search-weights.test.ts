@@ -22,12 +22,16 @@ describe('getSearchWeights tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getSearchWeightsDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
+    await expect(getSearchWeightsDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getSearchWeightsDefinition.name).toBe('get_search_weights');
-    expect(getSearchWeightsDefinition.description).toBe('Get search result ranking weights in Metabase');
+    expect(getSearchWeightsDefinition.description).toBe(
+      'Get search result ranking weights in Metabase',
+    );
     expect(getSearchWeightsDefinition.inputSchema).toEqual(GetSearchWeightsParamsSchema);
   });
 });

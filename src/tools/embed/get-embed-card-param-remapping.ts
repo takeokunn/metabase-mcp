@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type GetEmbedCardParamRemapping, GetEmbedCardParamRemappingSchema } from '@src/schemas/embed';
+import {
+  type GetEmbedCardParamRemapping,
+  GetEmbedCardParamRemappingSchema,
+} from '@src/schemas/embed';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

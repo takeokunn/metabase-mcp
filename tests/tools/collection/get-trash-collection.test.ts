@@ -38,8 +38,6 @@ describe('getTrashCollection tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(getTrashCollectionDefinition.name).toBe('get_trash_collection');
-    expect(getTrashCollectionDefinition.description).toBe(
-      'Get the trash collection from Metabase',
-    );
+    expect(getTrashCollectionDefinition.description).toBe('Get the trash collection from Metabase');
   });
 });

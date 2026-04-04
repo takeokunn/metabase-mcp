@@ -16,12 +16,16 @@ describe('deleteComment tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('delete', 'API error');
-    await expect(deleteCommentDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('API error');
+    await expect(deleteCommentDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('delete', createApiError('Unauthorized', 401));
-    await expect(deleteCommentDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(deleteCommentDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct metadata', () => {

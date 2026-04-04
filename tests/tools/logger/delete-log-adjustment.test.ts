@@ -20,11 +20,15 @@ describe('deleteLogAdjustment tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('delete', 'API error');
-    await expect(deleteLogAdjustmentDefinition.handler(mockClient, {})).rejects.toThrow('API error');
+    await expect(deleteLogAdjustmentDefinition.handler(mockClient, {})).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('delete', createApiError('Forbidden', 403));
-    await expect(deleteLogAdjustmentDefinition.handler(mockClient, {})).rejects.toThrow('Forbidden');
+    await expect(deleteLogAdjustmentDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Forbidden',
+    );
   });
 });

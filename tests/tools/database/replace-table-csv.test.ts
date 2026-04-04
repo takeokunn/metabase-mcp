@@ -1,4 +1,7 @@
-import { replaceTableCsvDefinition, ReplaceTableCsvParamsSchema } from '@src/tools/database/replace-table-csv';
+import {
+  ReplaceTableCsvParamsSchema,
+  replaceTableCsvDefinition,
+} from '@src/tools/database/replace-table-csv';
 import { describe, expect, it } from 'vitest';
 import { createApiError } from '../../__factories__';
 import { expectMcpContent } from '../../__helpers__';
@@ -20,17 +23,17 @@ describe('replaceTableCsv tool', () => {
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Database not found');
 
-    await expect(
-      replaceTableCsvDefinition.handler(mockClient, { table_id: 1 }),
-    ).rejects.toThrow('Database not found');
+    await expect(replaceTableCsvDefinition.handler(mockClient, { table_id: 1 })).rejects.toThrow(
+      'Database not found',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
 
-    await expect(
-      replaceTableCsvDefinition.handler(mockClient, { table_id: 5 }),
-    ).rejects.toThrow('Unauthorized');
+    await expect(replaceTableCsvDefinition.handler(mockClient, { table_id: 5 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

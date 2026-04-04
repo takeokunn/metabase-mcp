@@ -26,16 +26,16 @@ describe('getXrayEntityCompare tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(
-      getXrayEntityCompareDefinition.handler(mockClient, input),
-    ).rejects.toThrow('API error');
+    await expect(getXrayEntityCompareDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(
-      getXrayEntityCompareDefinition.handler(mockClient, input),
-    ).rejects.toThrow('Not Found');
+    await expect(getXrayEntityCompareDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
@@ -43,8 +43,6 @@ describe('getXrayEntityCompare tool', () => {
     expect(getXrayEntityCompareDefinition.description).toBe(
       'Get a comparison x-ray automagic dashboard for an entity in Metabase',
     );
-    expect(getXrayEntityCompareDefinition.inputSchema).toEqual(
-      GetXrayEntityCompareInputSchema,
-    );
+    expect(getXrayEntityCompareDefinition.inputSchema).toEqual(GetXrayEntityCompareInputSchema);
   });
 });

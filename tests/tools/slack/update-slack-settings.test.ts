@@ -36,7 +36,9 @@ describe('updateSlackSettings tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('put', createApiError('Forbidden', 403));
-    await expect(updateSlackSettingsDefinition.handler(mockClient, {})).rejects.toThrow('Forbidden');
+    await expect(updateSlackSettingsDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Forbidden',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

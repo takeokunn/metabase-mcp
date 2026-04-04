@@ -21,7 +21,11 @@ export const GetTimelineParamsSchema = z.object({
 // Create timeline input schema
 export const CreateTimelineInputSchema = z.object({
   name: z.string().describe('Name of the timeline'),
-  collection_id: z.number().int().positive().describe('ID of the collection to create the timeline in'),
+  collection_id: z
+    .number()
+    .int()
+    .positive()
+    .describe('ID of the collection to create the timeline in'),
   description: z.string().optional().describe('Description of the timeline'),
   icon: z.string().optional().describe('Icon for the timeline'),
   archived: z.boolean().optional().describe('Whether the timeline is archived'),
@@ -34,7 +38,12 @@ export const UpdateTimelineInputSchema = z.object({
   description: z.string().optional().describe('Description of the timeline'),
   icon: z.string().optional().describe('Icon for the timeline'),
   archived: z.boolean().optional().describe('Whether the timeline is archived'),
-  collection_id: z.number().int().positive().optional().describe('ID of the collection for the timeline'),
+  collection_id: z
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .describe('ID of the collection for the timeline'),
 });
 
 // Delete timeline params schema
@@ -79,7 +88,12 @@ export const UpdateTimelineEventInputSchema = z.object({
   description: z.string().optional().describe('Description of the timeline event'),
   timestamp: z.string().optional().describe('Timestamp of the event (ISO 8601 format)'),
   icon: z.string().optional().describe('Icon for the timeline event'),
-  timeline_id: z.number().int().positive().optional().describe('ID of the timeline this event belongs to'),
+  timeline_id: z
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .describe('ID of the timeline this event belongs to'),
   time_matters: z.boolean().optional().describe('Whether the time of day matters for this event'),
   timezone: z.string().optional().describe('Timezone for the event timestamp'),
   archived: z.boolean().optional().describe('Whether the timeline event is archived'),
@@ -97,7 +111,9 @@ export type CreateTimelineInput = z.infer<typeof CreateTimelineInputSchema>;
 export type UpdateTimelineInput = z.infer<typeof UpdateTimelineInputSchema>;
 export type DeleteTimelineParams = z.infer<typeof DeleteTimelineParamsSchema>;
 export type GetCollectionTimelinesParams = z.infer<typeof GetCollectionTimelinesParamsSchema>;
-export type GetCollectionRootTimelinesParams = z.infer<typeof GetCollectionRootTimelinesParamsSchema>;
+export type GetCollectionRootTimelinesParams = z.infer<
+  typeof GetCollectionRootTimelinesParamsSchema
+>;
 export type CreateTimelineEventInput = z.infer<typeof CreateTimelineEventInputSchema>;
 export type GetTimelineEventParams = z.infer<typeof GetTimelineEventParamsSchema>;
 export type UpdateTimelineEventInput = z.infer<typeof UpdateTimelineEventInputSchema>;

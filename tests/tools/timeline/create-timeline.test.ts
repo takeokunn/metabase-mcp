@@ -13,7 +13,10 @@ describe('createTimeline tool', () => {
     const mockClient = createMockClientWithResponse('post', mockResult);
     const result = await createTimelineDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
-    expect(mockClient.post).toHaveBeenCalledWith('/api/timeline', expect.objectContaining({ name: 'Q4 Events' }));
+    expect(mockClient.post).toHaveBeenCalledWith(
+      '/api/timeline',
+      expect.objectContaining({ name: 'Q4 Events' }),
+    );
   });
 
   it('should pass all optional fields', async () => {
@@ -42,7 +45,9 @@ describe('createTimeline tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Bad Request', 400));
-    await expect(createTimelineDefinition.handler(mockClient, input)).rejects.toThrow('Bad Request');
+    await expect(createTimelineDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Bad Request',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

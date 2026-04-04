@@ -5,7 +5,9 @@ import { IdSchema } from './common';
 export const ChannelIdSchema = IdSchema;
 
 // Channel type schema
-export const ChannelTypeSchema = z.string().describe('Type of notification channel (e.g. http, slack)');
+export const ChannelTypeSchema = z
+  .string()
+  .describe('Type of notification channel (e.g. http, slack)');
 
 // Get channel params schema
 export const GetChannelParamsSchema = z.object({
@@ -26,7 +28,10 @@ export const UpdateChannelInputSchema = z.object({
   id: z.number().int().positive().describe('Channel ID to update'),
   name: z.string().optional().describe('Updated name of the notification channel'),
   type: ChannelTypeSchema.optional(),
-  details: z.record(z.unknown()).optional().describe('Updated channel-specific configuration details'),
+  details: z
+    .record(z.unknown())
+    .optional()
+    .describe('Updated channel-specific configuration details'),
   description: z.string().optional().describe('Updated description of the channel'),
   active: z.boolean().optional().describe('Updated active status of the channel'),
 });

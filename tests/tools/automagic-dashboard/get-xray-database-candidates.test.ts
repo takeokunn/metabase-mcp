@@ -16,16 +16,22 @@ describe('getXrayDatabaseCandidates tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getXrayDatabaseCandidatesDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('API error');
+    await expect(
+      getXrayDatabaseCandidatesDefinition.handler(mockClient, { id: 1 }),
+    ).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getXrayDatabaseCandidatesDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(
+      getXrayDatabaseCandidatesDefinition.handler(mockClient, { id: 1 }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct metadata', () => {
     expect(getXrayDatabaseCandidatesDefinition.name).toBe('get_xray_database_candidates');
-    expect(getXrayDatabaseCandidatesDefinition.inputSchema).toEqual(GetXrayDatabaseCandidatesParamsSchema);
+    expect(getXrayDatabaseCandidatesDefinition.inputSchema).toEqual(
+      GetXrayDatabaseCandidatesParamsSchema,
+    );
   });
 });

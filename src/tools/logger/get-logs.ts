@@ -12,7 +12,10 @@ export const getLogsDefinition: ToolDefinition<GetLogsParams> = {
     if (input.level !== undefined) params.level = input.level;
     if (input.namespace !== undefined) params.namespace = input.namespace;
     if (input.last_n_lines !== undefined) params.last_n_lines = input.last_n_lines;
-    const result = await client.get('/api/logger/logs', Object.keys(params).length > 0 ? params : undefined);
+    const result = await client.get(
+      '/api/logger/logs',
+      Object.keys(params).length > 0 ? params : undefined,
+    );
     return formatToolResponse(result);
   },
 };

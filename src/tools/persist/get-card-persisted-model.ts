@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type GetCardPersistedModelParams, GetCardPersistedModelParamsSchema } from '@src/schemas/persist';
+import {
+  type GetCardPersistedModelParams,
+  GetCardPersistedModelParamsSchema,
+} from '@src/schemas/persist';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

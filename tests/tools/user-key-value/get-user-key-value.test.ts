@@ -17,7 +17,9 @@ describe('getUserKeyValue tool', () => {
   it('should call correct URL with namespace and key in path', async () => {
     const mockClient = createMockClientWithResponse('get', {});
     await getUserKeyValueDefinition.handler(mockClient, input);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/user-key-value/namespace/ui-settings/key/sidebar-collapsed');
+    expect(mockClient.get).toHaveBeenCalledWith(
+      '/api/user-key-value/namespace/ui-settings/key/sidebar-collapsed',
+    );
   });
 
   it('should propagate client errors', async () => {

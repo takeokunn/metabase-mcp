@@ -29,23 +29,21 @@ describe('getDashboardParamValues tool', () => {
       param_key: 'my param/key',
     });
 
-    expect(mockClient.get).toHaveBeenCalledWith(
-      '/api/dashboard/2/params/my%20param%2Fkey/values',
-    );
+    expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/2/params/my%20param%2Fkey/values');
   });
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Dashboard not found');
-    await expect(
-      getDashboardParamValuesDefinition.handler(mockClient, baseInput),
-    ).rejects.toThrow('Dashboard not found');
+    await expect(getDashboardParamValuesDefinition.handler(mockClient, baseInput)).rejects.toThrow(
+      'Dashboard not found',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
-    await expect(
-      getDashboardParamValuesDefinition.handler(mockClient, baseInput),
-    ).rejects.toThrow('Forbidden');
+    await expect(getDashboardParamValuesDefinition.handler(mockClient, baseInput)).rejects.toThrow(
+      'Forbidden',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

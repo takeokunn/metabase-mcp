@@ -12,23 +12,33 @@ describe('getDatasetQueryMetadata tool', () => {
     const input = { query: { 'source-table': 1 } };
     const result = await getDatasetQueryMetadataDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResponse);
-    expect(mockClient.post).toHaveBeenCalledWith('/api/dataset/query_metadata', { 'source-table': 1 });
+    expect(mockClient.post).toHaveBeenCalledWith('/api/dataset/query_metadata', {
+      'source-table': 1,
+    });
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(getDatasetQueryMetadataDefinition.handler(mockClient, { query: {} })).rejects.toThrow('Not found');
+    await expect(
+      getDatasetQueryMetadataDefinition.handler(mockClient, { query: {} }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(getDatasetQueryMetadataDefinition.handler(mockClient, { query: {} })).rejects.toThrow('Unauthorized');
+    await expect(
+      getDatasetQueryMetadataDefinition.handler(mockClient, { query: {} }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getDatasetQueryMetadataDefinition.name).toBe('get_dataset_query_metadata');
-    expect(getDatasetQueryMetadataDefinition.description).toBe('Get metadata for a dataset query in Metabase');
-    expect(getDatasetQueryMetadataDefinition.inputSchema).toEqual(GetDatasetQueryMetadataInputSchema);
+    expect(getDatasetQueryMetadataDefinition.description).toBe(
+      'Get metadata for a dataset query in Metabase',
+    );
+    expect(getDatasetQueryMetadataDefinition.inputSchema).toEqual(
+      GetDatasetQueryMetadataInputSchema,
+    );
   });
 });

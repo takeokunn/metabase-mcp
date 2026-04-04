@@ -86,13 +86,17 @@ export const SearchPublicDashboardParamValuesSchema = z.object({
   param_key: z.string(),
   query: z.string(),
 });
-export type SearchPublicDashboardParamValues = z.infer<typeof SearchPublicDashboardParamValuesSchema>;
+export type SearchPublicDashboardParamValues = z.infer<
+  typeof SearchPublicDashboardParamValuesSchema
+>;
 
 export const GetPublicDashboardParamRemappingSchema = z.object({
   uuid: z.string(),
   param_key: z.string(),
 });
-export type GetPublicDashboardParamRemapping = z.infer<typeof GetPublicDashboardParamRemappingSchema>;
+export type GetPublicDashboardParamRemapping = z.infer<
+  typeof GetPublicDashboardParamRemappingSchema
+>;
 
 export const ExecutePublicActionSchema = z.object({
   uuid: z.string().describe('Public UUID of the action'),
@@ -167,7 +171,9 @@ export const RunPublicDashboardPivotDashcardQuerySchema = z.object({
   dashcard_id: z.number(),
   card_id: z.number(),
 });
-export type RunPublicDashboardPivotDashcardQuery = z.infer<typeof RunPublicDashboardPivotDashcardQuerySchema>;
+export type RunPublicDashboardPivotDashcardQuery = z.infer<
+  typeof RunPublicDashboardPivotDashcardQuerySchema
+>;
 
 export const GetPublicCardTileSchema = z.object({
   uuid: z.string(),

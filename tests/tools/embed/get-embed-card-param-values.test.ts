@@ -20,17 +20,23 @@ describe('getEmbedCardParamValues tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getEmbedCardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(getEmbedCardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(getEmbedCardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(getEmbedCardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getEmbedCardParamValuesDefinition.name).toBe('get_embed_card_param_values');
-    expect(getEmbedCardParamValuesDefinition.description).toBe('Get values for a parameter of an embedded card in Metabase');
+    expect(getEmbedCardParamValuesDefinition.description).toBe(
+      'Get values for a parameter of an embedded card in Metabase',
+    );
     expect(getEmbedCardParamValuesDefinition.inputSchema).toEqual(GetEmbedCardParamValuesSchema);
   });
 });

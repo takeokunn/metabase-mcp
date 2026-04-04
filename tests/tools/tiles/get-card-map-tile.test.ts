@@ -5,7 +5,14 @@ import { expectMcpContent } from '../../__helpers__';
 import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getCardMapTile tool', () => {
-  const input = { zoom: 10, x: 512, y: 512, lat_field: 'latitude', lon_field: 'longitude', card_id: 42 };
+  const input = {
+    zoom: 10,
+    x: 512,
+    y: 512,
+    lat_field: 'latitude',
+    lon_field: 'longitude',
+    card_id: 42,
+  };
 
   it('should return formatted MCP response', async () => {
     const mockResult = { data: 'png-binary-data' };
@@ -27,10 +34,9 @@ describe('getCardMapTile tool', () => {
     const inputWithQuery = { ...input, query: '{"filter": []}' };
     const mockClient = createMockClientWithResponse('get', {});
     await getCardMapTileDefinition.handler(mockClient, inputWithQuery);
-    expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/tiles/42/10/512/512/latitude/longitude`,
-      { query: '{"filter": []}' },
-    );
+    expect(mockClient.get).toHaveBeenCalledWith(`/api/tiles/42/10/512/512/latitude/longitude`, {
+      query: '{"filter": []}',
+    });
   });
 
   it('should propagate client errors', async () => {

@@ -13,7 +13,9 @@ describe('listDatabaseVirtualSchemaTables tool', () => {
 
     const mockClient = createMockClientWithResponse('get', mockTables);
 
-    const result = await listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, { virtual_db: 1 });
+    const result = await listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, {
+      virtual_db: 1,
+    });
 
     expectMcpContent(result, mockTables);
     expect(mockClient.get).toHaveBeenCalledWith('/api/database/1/datasets');
@@ -23,7 +25,9 @@ describe('listDatabaseVirtualSchemaTables tool', () => {
   it('should handle empty list', async () => {
     const mockClient = createMockClientWithResponse('get', []);
 
-    const result = await listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, { virtual_db: 2 });
+    const result = await listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, {
+      virtual_db: 2,
+    });
 
     expectMcpContent(result, []);
     expect(mockClient.get).toHaveBeenCalledWith('/api/database/2/datasets');

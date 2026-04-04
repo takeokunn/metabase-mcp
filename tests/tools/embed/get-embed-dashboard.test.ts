@@ -18,12 +18,16 @@ describe('getEmbedDashboard tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getEmbedDashboardDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(getEmbedDashboardDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(getEmbedDashboardDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(getEmbedDashboardDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

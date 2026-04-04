@@ -8,7 +8,9 @@ export const getUserKeyValueDefinition: ToolDefinition<UserKeyValueParams> = {
   description: 'Get a per-user key-value preference by namespace and key',
   inputSchema: UserKeyValueParamsSchema,
   handler: async (client: MetabaseClient, input: UserKeyValueParams) => {
-    const result = await client.get(`/api/user-key-value/namespace/${encodeURIComponent(input.namespace)}/key/${encodeURIComponent(input.key)}`);
+    const result = await client.get(
+      `/api/user-key-value/namespace/${encodeURIComponent(input.namespace)}/key/${encodeURIComponent(input.key)}`,
+    );
     return formatToolResponse(result);
   },
 };

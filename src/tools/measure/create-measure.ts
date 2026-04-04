@@ -8,7 +8,10 @@ export const createMeasureDefinition: ToolDefinition<CreateMeasureInput> = {
   description: 'Create a new measure in Metabase',
   inputSchema: CreateMeasureInputSchema,
   handler: async (client: MetabaseClient, input: CreateMeasureInput) => {
-    const result = await client.post('/api/measure', { name: input.name, definition: input.definition });
+    const result = await client.post('/api/measure', {
+      name: input.name,
+      definition: input.definition,
+    });
     return formatToolResponse(result);
   },
 };

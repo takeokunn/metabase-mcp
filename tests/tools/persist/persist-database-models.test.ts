@@ -15,12 +15,16 @@ describe('persistDatabaseModels tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'API error');
-    await expect(persistDatabaseModelsDefinition.handler(mockClient, { db_id: 3 })).rejects.toThrow('API error');
+    await expect(persistDatabaseModelsDefinition.handler(mockClient, { db_id: 3 })).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Not Found', 404));
-    await expect(persistDatabaseModelsDefinition.handler(mockClient, { db_id: 999 })).rejects.toThrow('Not Found');
+    await expect(
+      persistDatabaseModelsDefinition.handler(mockClient, { db_id: 999 }),
+    ).rejects.toThrow('Not Found');
   });
 
   it('should have correct tool definition metadata', () => {

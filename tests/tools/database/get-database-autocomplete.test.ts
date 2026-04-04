@@ -7,7 +7,10 @@ import { createMockClientWithError, createMockClientWithResponse } from '../../_
 
 describe('getDatabaseAutocomplete tool', () => {
   it('should return formatted MCP response with autocomplete suggestions', async () => {
-    const mockSuggestions = [['orders', 'table'], ['orders.id', 'field']];
+    const mockSuggestions = [
+      ['orders', 'table'],
+      ['orders.id', 'field'],
+    ];
 
     const mockClient = createMockClientWithResponse('get', mockSuggestions);
 

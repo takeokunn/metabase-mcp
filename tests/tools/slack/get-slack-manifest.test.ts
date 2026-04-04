@@ -24,7 +24,9 @@ describe('getSlackManifest tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getSlackManifestDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
+    await expect(getSlackManifestDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

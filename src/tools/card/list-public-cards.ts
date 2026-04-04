@@ -8,7 +8,8 @@ import { formatToolResponse } from '@src/tools/registry';
  */
 export const listPublicCardsDefinition: ToolDefinition<ListPublicCardsParams> = {
   name: 'list_public_cards',
-  description: 'List all cards (saved questions) with public sharing links in Metabase (admin only)',
+  description:
+    'List all cards (saved questions) with public sharing links in Metabase (admin only)',
   inputSchema: ListPublicCardsParamsSchema,
   handler: async (client: MetabaseClient, _input: ListPublicCardsParams) => {
     const result = await client.get('/api/card/public');

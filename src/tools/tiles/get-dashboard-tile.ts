@@ -8,7 +8,9 @@ export const getDashboardTileDefinition: ToolDefinition<GetDashboardTileInput> =
   description: 'Get a map tile for a dashboard card in Metabase',
   inputSchema: GetDashboardTileInputSchema,
   handler: async (client: MetabaseClient, input: GetDashboardTileInput) => {
-    const result = await client.get(`/api/tiles/${input.dashboard_id}/dashcard/${input.dashcard_id}/card/${input.card_id}/${input.zoom}/${input.x}/${input.y}`);
+    const result = await client.get(
+      `/api/tiles/${input.dashboard_id}/dashcard/${input.dashcard_id}/card/${input.card_id}/${input.zoom}/${input.x}/${input.y}`,
+    );
     return formatToolResponse(result);
   },
 };

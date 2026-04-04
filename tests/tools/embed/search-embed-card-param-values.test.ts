@@ -20,17 +20,25 @@ describe('searchEmbedCardParamValues tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(searchEmbedCardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(searchEmbedCardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(searchEmbedCardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(searchEmbedCardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(searchEmbedCardParamValuesDefinition.name).toBe('search_embed_card_param_values');
-    expect(searchEmbedCardParamValuesDefinition.description).toBe('Search values for a parameter of an embedded card in Metabase');
-    expect(searchEmbedCardParamValuesDefinition.inputSchema).toEqual(SearchEmbedCardParamValuesSchema);
+    expect(searchEmbedCardParamValuesDefinition.description).toBe(
+      'Search values for a parameter of an embedded card in Metabase',
+    );
+    expect(searchEmbedCardParamValuesDefinition.inputSchema).toEqual(
+      SearchEmbedCardParamValuesSchema,
+    );
   });
 });

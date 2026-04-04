@@ -20,17 +20,27 @@ describe('searchEmbedDashboardParamValues tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(searchEmbedDashboardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(
+      searchEmbedDashboardParamValuesDefinition.handler(mockClient, input),
+    ).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(searchEmbedDashboardParamValuesDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(
+      searchEmbedDashboardParamValuesDefinition.handler(mockClient, input),
+    ).rejects.toThrow('Not Found');
   });
 
   it('should have correct tool definition metadata', () => {
-    expect(searchEmbedDashboardParamValuesDefinition.name).toBe('search_embed_dashboard_param_values');
-    expect(searchEmbedDashboardParamValuesDefinition.description).toBe('Search values for a parameter of an embedded dashboard in Metabase');
-    expect(searchEmbedDashboardParamValuesDefinition.inputSchema).toEqual(SearchEmbedDashboardParamValuesSchema);
+    expect(searchEmbedDashboardParamValuesDefinition.name).toBe(
+      'search_embed_dashboard_param_values',
+    );
+    expect(searchEmbedDashboardParamValuesDefinition.description).toBe(
+      'Search values for a parameter of an embedded dashboard in Metabase',
+    );
+    expect(searchEmbedDashboardParamValuesDefinition.inputSchema).toEqual(
+      SearchEmbedDashboardParamValuesSchema,
+    );
   });
 });

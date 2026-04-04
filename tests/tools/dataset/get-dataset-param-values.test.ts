@@ -32,17 +32,23 @@ describe('getDatasetParamValues tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(getDatasetParamValuesDefinition.handler(mockClient, { parameter: {} })).rejects.toThrow('Not found');
+    await expect(
+      getDatasetParamValuesDefinition.handler(mockClient, { parameter: {} }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(getDatasetParamValuesDefinition.handler(mockClient, { parameter: {} })).rejects.toThrow('Unauthorized');
+    await expect(
+      getDatasetParamValuesDefinition.handler(mockClient, { parameter: {} }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getDatasetParamValuesDefinition.name).toBe('get_dataset_param_values');
-    expect(getDatasetParamValuesDefinition.description).toBe('Get values for a dataset parameter in Metabase');
+    expect(getDatasetParamValuesDefinition.description).toBe(
+      'Get values for a dataset parameter in Metabase',
+    );
     expect(getDatasetParamValuesDefinition.inputSchema).toEqual(GetDatasetParamValuesInputSchema);
   });
 });

@@ -16,10 +16,9 @@ describe('exportDashboardCardQuery tool', () => {
     const result = await exportDashboardCardQueryDefinition.handler(mockClient, baseInput);
 
     expectMcpContent(result, mockResult);
-    expect(mockClient.post).toHaveBeenCalledWith(
-      '/api/dashboard/1/dashcard/2/card/3/query/csv',
-      { parameters: [] },
-    );
+    expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/1/dashcard/2/card/3/query/csv', {
+      parameters: [],
+    });
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
 
@@ -33,10 +32,9 @@ describe('exportDashboardCardQuery tool', () => {
     });
 
     expectMcpContent(result, mockResult);
-    expect(mockClient.post).toHaveBeenCalledWith(
-      '/api/dashboard/1/dashcard/2/card/3/query/json',
-      { parameters: [] },
-    );
+    expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/1/dashcard/2/card/3/query/json', {
+      parameters: [],
+    });
   });
 
   it('should pass provided parameters', async () => {
@@ -49,24 +47,23 @@ describe('exportDashboardCardQuery tool', () => {
       parameters: params,
     });
 
-    expect(mockClient.post).toHaveBeenCalledWith(
-      '/api/dashboard/1/dashcard/2/card/3/query/csv',
-      { parameters: params },
-    );
+    expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/1/dashcard/2/card/3/query/csv', {
+      parameters: params,
+    });
   });
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Dashboard not found');
-    await expect(
-      exportDashboardCardQueryDefinition.handler(mockClient, baseInput),
-    ).rejects.toThrow('Dashboard not found');
+    await expect(exportDashboardCardQueryDefinition.handler(mockClient, baseInput)).rejects.toThrow(
+      'Dashboard not found',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(
-      exportDashboardCardQueryDefinition.handler(mockClient, baseInput),
-    ).rejects.toThrow('Unauthorized');
+    await expect(exportDashboardCardQueryDefinition.handler(mockClient, baseInput)).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

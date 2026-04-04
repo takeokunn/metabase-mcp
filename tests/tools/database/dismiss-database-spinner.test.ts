@@ -17,17 +17,23 @@ describe('dismissDatabaseSpinner tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(dismissDatabaseSpinnerDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(dismissDatabaseSpinnerDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Not found',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(dismissDatabaseSpinnerDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(dismissDatabaseSpinnerDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(dismissDatabaseSpinnerDefinition.name).toBe('dismiss_database_spinner');
-    expect(dismissDatabaseSpinnerDefinition.description).toBe('Dismiss the loading spinner for a database in Metabase');
+    expect(dismissDatabaseSpinnerDefinition.description).toBe(
+      'Dismiss the loading spinner for a database in Metabase',
+    );
     expect(dismissDatabaseSpinnerDefinition.inputSchema).toEqual(DismissDatabaseSpinnerInputSchema);
   });
 });

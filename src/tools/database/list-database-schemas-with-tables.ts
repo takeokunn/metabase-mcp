@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type DeleteDatabaseSchemaParams, DeleteDatabaseSchemaParamsSchema } from '@src/schemas/database';
+import {
+  type DeleteDatabaseSchemaParams,
+  DeleteDatabaseSchemaParamsSchema,
+} from '@src/schemas/database';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 
@@ -11,7 +14,9 @@ export const listDatabaseSchemasWithTablesDefinition: ToolDefinition<DeleteDatab
   description: 'List all tables within a specific schema of a database in Metabase',
   inputSchema: DeleteDatabaseSchemaParamsSchema,
   handler: async (client: MetabaseClient, input: DeleteDatabaseSchemaParams) => {
-    const result = await client.get(`/api/database/${input.id}/schema/${encodeURIComponent(input.schema)}`);
+    const result = await client.get(
+      `/api/database/${input.id}/schema/${encodeURIComponent(input.schema)}`,
+    );
     return formatToolResponse(result);
   },
 };

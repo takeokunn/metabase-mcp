@@ -15,12 +15,16 @@ describe('listPersistedModels tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(listPersistedModelsDefinition.handler(mockClient, {})).rejects.toThrow('API error');
+    await expect(listPersistedModelsDefinition.handler(mockClient, {})).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(listPersistedModelsDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
+    await expect(listPersistedModelsDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

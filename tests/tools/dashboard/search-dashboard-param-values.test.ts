@@ -16,9 +16,7 @@ describe('searchDashboardParamValues tool', () => {
     const result = await searchDashboardParamValuesDefinition.handler(mockClient, baseInput);
 
     expectMcpContent(result, mockResult);
-    expect(mockClient.get).toHaveBeenCalledWith(
-      '/api/dashboard/1/params/category/search/Elec',
-    );
+    expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1/params/category/search/Elec');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
 

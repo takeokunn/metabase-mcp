@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type UnsubscribeGlobalInput, UnsubscribeGlobalInputSchema } from '@src/schemas/notification';
+import {
+  type UnsubscribeGlobalInput,
+  UnsubscribeGlobalInputSchema,
+} from '@src/schemas/notification';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

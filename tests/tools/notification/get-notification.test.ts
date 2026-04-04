@@ -16,12 +16,16 @@ describe('getNotification tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getNotificationDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('API error');
+    await expect(getNotificationDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not found', 404));
-    await expect(getNotificationDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Not found');
+    await expect(getNotificationDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Not found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

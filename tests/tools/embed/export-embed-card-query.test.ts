@@ -20,17 +20,23 @@ describe('exportEmbedCardQuery tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(exportEmbedCardQueryDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(exportEmbedCardQueryDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
-    await expect(exportEmbedCardQueryDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(exportEmbedCardQueryDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(exportEmbedCardQueryDefinition.name).toBe('export_embed_card_query');
-    expect(exportEmbedCardQueryDefinition.description).toBe('Export results of an embedded card query in Metabase');
+    expect(exportEmbedCardQueryDefinition.description).toBe(
+      'Export results of an embedded card query in Metabase',
+    );
     expect(exportEmbedCardQueryDefinition.inputSchema).toEqual(ExportEmbedCardQuerySchema);
   });
 });

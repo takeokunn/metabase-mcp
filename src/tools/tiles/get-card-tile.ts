@@ -8,7 +8,9 @@ export const getCardTileDefinition: ToolDefinition<GetCardTileInput> = {
   description: 'Get a map tile for a card in Metabase',
   inputSchema: GetCardTileInputSchema,
   handler: async (client: MetabaseClient, input: GetCardTileInput) => {
-    const result = await client.get(`/api/tiles/${input.card_id}/${input.zoom}/${input.x}/${input.y}`);
+    const result = await client.get(
+      `/api/tiles/${input.card_id}/${input.zoom}/${input.x}/${input.y}`,
+    );
     return formatToolResponse(result);
   },
 };

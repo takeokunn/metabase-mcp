@@ -42,6 +42,8 @@ describe('unsubscribeNotificationGlobal tool', () => {
 
   it('should have correct tool definition metadata', () => {
     expect(unsubscribeNotificationGlobalDefinition.name).toBe('unsubscribe_notification_global');
-    expect(unsubscribeNotificationGlobalDefinition.inputSchema).toEqual(UnsubscribeGlobalInputSchema);
+    expect(unsubscribeNotificationGlobalDefinition.inputSchema).toEqual(
+      UnsubscribeGlobalInputSchema,
+    );
   });
 });

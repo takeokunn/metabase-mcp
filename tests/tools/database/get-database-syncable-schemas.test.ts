@@ -17,17 +17,25 @@ describe('getDatabaseSyncableSchemas tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Not found');
-    await expect(getDatabaseSyncableSchemasDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(
+      getDatabaseSyncableSchemasDefinition.handler(mockClient, { id: 999 }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getDatabaseSyncableSchemasDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(
+      getDatabaseSyncableSchemasDefinition.handler(mockClient, { id: 1 }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getDatabaseSyncableSchemasDefinition.name).toBe('get_database_syncable_schemas');
-    expect(getDatabaseSyncableSchemasDefinition.description).toBe('Get syncable schemas for a database in Metabase');
-    expect(getDatabaseSyncableSchemasDefinition.inputSchema).toEqual(GetDatabaseSyncableSchemasParamsSchema);
+    expect(getDatabaseSyncableSchemasDefinition.description).toBe(
+      'Get syncable schemas for a database in Metabase',
+    );
+    expect(getDatabaseSyncableSchemasDefinition.inputSchema).toEqual(
+      GetDatabaseSyncableSchemasParamsSchema,
+    );
   });
 });

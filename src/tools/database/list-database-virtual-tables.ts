@@ -8,7 +8,8 @@ import { formatToolResponse } from '@src/tools/registry';
  */
 export const listDatabaseVirtualTablesDefinition: ToolDefinition<GetDatabaseParams> = {
   name: 'list_database_virtual_tables',
-  description: 'List virtual tables (saved questions) available as tables in a database in Metabase',
+  description:
+    'List virtual tables (saved questions) available as tables in a database in Metabase',
   inputSchema: GetDatabaseParamsSchema,
   handler: async (client: MetabaseClient, input: GetDatabaseParams) => {
     const result = await client.get(`/api/database/${input.id}/schema`);

@@ -9,7 +9,9 @@ describe('getVirtualDatabaseDatasets tool', () => {
   it('should return formatted MCP response', async () => {
     const mockResponse = [{ id: 1, name: 'Dataset 1' }];
     const mockClient = createMockClientWithResponse('get', mockResponse);
-    const result = await getVirtualDatabaseDatasetsDefinition.handler(mockClient, { virtual_db: 5 });
+    const result = await getVirtualDatabaseDatasetsDefinition.handler(mockClient, {
+      virtual_db: 5,
+    });
     expectMcpContent(result, mockResponse);
     expect(mockClient.get).toHaveBeenCalledWith('/api/database/5/datasets');
     expect(mockClient.get).toHaveBeenCalledOnce();
@@ -17,17 +19,25 @@ describe('getVirtualDatabaseDatasets tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Not found');
-    await expect(getVirtualDatabaseDatasetsDefinition.handler(mockClient, { virtual_db: 999 })).rejects.toThrow('Not found');
+    await expect(
+      getVirtualDatabaseDatasetsDefinition.handler(mockClient, { virtual_db: 999 }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getVirtualDatabaseDatasetsDefinition.handler(mockClient, { virtual_db: 1 })).rejects.toThrow('Unauthorized');
+    await expect(
+      getVirtualDatabaseDatasetsDefinition.handler(mockClient, { virtual_db: 1 }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getVirtualDatabaseDatasetsDefinition.name).toBe('get_virtual_database_datasets');
-    expect(getVirtualDatabaseDatasetsDefinition.description).toBe('Get datasets for a virtual database in Metabase');
-    expect(getVirtualDatabaseDatasetsDefinition.inputSchema).toEqual(GetVirtualDatabaseDatasetsParamsSchema);
+    expect(getVirtualDatabaseDatasetsDefinition.description).toBe(
+      'Get datasets for a virtual database in Metabase',
+    );
+    expect(getVirtualDatabaseDatasetsDefinition.inputSchema).toEqual(
+      GetVirtualDatabaseDatasetsParamsSchema,
+    );
   });
 });

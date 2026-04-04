@@ -11,7 +11,10 @@ describe('getPreviewEmbedDashboardParamRemapping tool', () => {
   it('should return formatted MCP response', async () => {
     const mockResult = { values: [['1', 'One']] };
     const mockClient = createMockClientWithResponse('get', mockResult);
-    const result = await getPreviewEmbedDashboardParamRemappingDefinition.handler(mockClient, input);
+    const result = await getPreviewEmbedDashboardParamRemappingDefinition.handler(
+      mockClient,
+      input,
+    );
     expectMcpContent(result, mockResult);
     expect(mockClient.get).toHaveBeenCalledWith(
       `/api/preview_embed/dashboard/${input.token}/params/${input.param_key}/remapping`,

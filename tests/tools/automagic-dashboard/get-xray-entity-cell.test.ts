@@ -13,9 +13,7 @@ describe('getXrayEntityCell tool', () => {
     const mockClient = createMockClientWithResponse('get', mockResult);
     const result = await getXrayEntityCellDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
-    expect(mockClient.get).toHaveBeenCalledWith(
-      '/api/automagic-dashboards/table/1/cell/col1',
-    );
+    expect(mockClient.get).toHaveBeenCalledWith('/api/automagic-dashboards/table/1/cell/col1');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
 

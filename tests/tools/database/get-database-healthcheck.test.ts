@@ -21,9 +21,9 @@ describe('getDatabaseHealthcheck tool', () => {
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Database not found');
 
-    await expect(
-      getDatabaseHealthcheckDefinition.handler(mockClient, { id: 999 }),
-    ).rejects.toThrow('Database not found');
+    await expect(getDatabaseHealthcheckDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Database not found',
+    );
     expect(mockClient.get).toHaveBeenCalledWith('/api/database/999/healthcheck');
   });
 

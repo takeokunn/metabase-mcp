@@ -15,15 +15,21 @@ describe('getDashboardRelated tool', () => {
   });
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'Not found');
-    await expect(getDashboardRelatedDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(getDashboardRelatedDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
+      'Not found',
+    );
   });
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
-    await expect(getDashboardRelatedDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(getDashboardRelatedDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
   it('should have correct tool definition metadata', () => {
     expect(getDashboardRelatedDefinition.name).toBe('get_dashboard_related');
-    expect(getDashboardRelatedDefinition.description).toBe('Get related items for a dashboard in Metabase');
+    expect(getDashboardRelatedDefinition.description).toBe(
+      'Get related items for a dashboard in Metabase',
+    );
     expect(getDashboardRelatedDefinition.inputSchema).toEqual(GetDashboardRelatedInputSchema);
   });
 });

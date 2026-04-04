@@ -20,16 +20,22 @@ describe('getEmbedDashboardQuery tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
-    await expect(getEmbedDashboardQueryDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(getEmbedDashboardQueryDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('get', createApiError('Forbidden', 403));
-    await expect(getEmbedDashboardQueryDefinition.handler(mockClient, input)).rejects.toThrow('Forbidden');
+    await expect(getEmbedDashboardQueryDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Forbidden',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(getEmbedDashboardQueryDefinition.name).toBe('get_embed_dashboard_query');
-    expect(getEmbedDashboardQueryDefinition.inputSchema).toEqual(GetEmbedDashboardQueryParamsSchema);
+    expect(getEmbedDashboardQueryDefinition.inputSchema).toEqual(
+      GetEmbedDashboardQueryParamsSchema,
+    );
   });
 });

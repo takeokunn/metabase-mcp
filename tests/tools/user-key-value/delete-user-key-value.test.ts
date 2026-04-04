@@ -17,16 +17,22 @@ describe('deleteUserKeyValue tool', () => {
   it('should call correct URL with namespace and key in path', async () => {
     const mockClient = createMockClientWithResponse('delete', null);
     await deleteUserKeyValueDefinition.handler(mockClient, input);
-    expect(mockClient.delete).toHaveBeenCalledWith('/api/user-key-value/namespace/ui-settings/key/sidebar-collapsed');
+    expect(mockClient.delete).toHaveBeenCalledWith(
+      '/api/user-key-value/namespace/ui-settings/key/sidebar-collapsed',
+    );
   });
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('delete', 'API error');
-    await expect(deleteUserKeyValueDefinition.handler(mockClient, input)).rejects.toThrow('API error');
+    await expect(deleteUserKeyValueDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('delete', createApiError('Not Found', 404));
-    await expect(deleteUserKeyValueDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
+    await expect(deleteUserKeyValueDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 });

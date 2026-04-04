@@ -8,7 +8,11 @@ import { createMockClientWithError, createMockClientWithResponse } from '../../_
 describe('exportDocumentCardQuery tool', () => {
   it('should return formatted MCP response', async () => {
     const mockClient = createMockClientWithResponse('post', 'col1,col2\nval1,val2');
-    const result = await exportDocumentCardQueryDefinition.handler(mockClient, { id: 1, card_id: 42, export_format: 'csv' });
+    const result = await exportDocumentCardQueryDefinition.handler(mockClient, {
+      id: 1,
+      card_id: 42,
+      export_format: 'csv',
+    });
     expectMcpContent(result, 'col1,col2\nval1,val2');
     expect(mockClient.post).toHaveBeenCalledWith('/api/document/1/card/42/query/csv', {});
     expect(mockClient.post).toHaveBeenCalledOnce();
@@ -16,17 +20,31 @@ describe('exportDocumentCardQuery tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(exportDocumentCardQueryDefinition.handler(mockClient, { id: 999, card_id: 1, export_format: 'json' })).rejects.toThrow('Not found');
+    await expect(
+      exportDocumentCardQueryDefinition.handler(mockClient, {
+        id: 999,
+        card_id: 1,
+        export_format: 'json',
+      }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(exportDocumentCardQueryDefinition.handler(mockClient, { id: 1, card_id: 1, export_format: 'xlsx' })).rejects.toThrow('Unauthorized');
+    await expect(
+      exportDocumentCardQueryDefinition.handler(mockClient, {
+        id: 1,
+        card_id: 1,
+        export_format: 'xlsx',
+      }),
+    ).rejects.toThrow('Unauthorized');
   });
 
   it('should have correct tool definition metadata', () => {
     expect(exportDocumentCardQueryDefinition.name).toBe('export_document_card_query');
-    expect(exportDocumentCardQueryDefinition.description).toBe('Export a card query result from a document in Metabase');
+    expect(exportDocumentCardQueryDefinition.description).toBe(
+      'Export a card query result from a document in Metabase',
+    );
     expect(exportDocumentCardQueryDefinition.inputSchema).toEqual(RunDocumentCardQueryInputSchema);
   });
 });

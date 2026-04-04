@@ -8,7 +8,10 @@ import { createMockClientWithError, createMockClientWithResponse } from '../../_
 
 describe('getCardSeries tool', () => {
   it('should return formatted MCP response with series data', async () => {
-    const mockResult = [{ id: 2, name: 'Revenue Series' }, { id: 3, name: 'Cost Series' }];
+    const mockResult = [
+      { id: 2, name: 'Revenue Series' },
+      { id: 3, name: 'Cost Series' },
+    ];
     const mockClient = createMockClientWithResponse('get', mockResult);
 
     const result = await getCardSeriesDefinition.handler(mockClient, { id: 1 });

@@ -1,4 +1,7 @@
-import { appendCsvToTableDefinition, AppendCsvToTableParamsSchema } from '@src/tools/database/append-csv-to-table';
+import {
+  AppendCsvToTableParamsSchema,
+  appendCsvToTableDefinition,
+} from '@src/tools/database/append-csv-to-table';
 import { describe, expect, it } from 'vitest';
 import { createApiError } from '../../__factories__';
 import { expectMcpContent } from '../../__helpers__';
@@ -20,17 +23,17 @@ describe('appendCsvToTable tool', () => {
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Database not found');
 
-    await expect(
-      appendCsvToTableDefinition.handler(mockClient, { table_id: 1 }),
-    ).rejects.toThrow('Database not found');
+    await expect(appendCsvToTableDefinition.handler(mockClient, { table_id: 1 })).rejects.toThrow(
+      'Database not found',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
 
-    await expect(
-      appendCsvToTableDefinition.handler(mockClient, { table_id: 5 }),
-    ).rejects.toThrow('Unauthorized');
+    await expect(appendCsvToTableDefinition.handler(mockClient, { table_id: 5 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

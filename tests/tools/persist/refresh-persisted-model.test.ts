@@ -15,12 +15,16 @@ describe('refreshPersistedModel tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'API error');
-    await expect(refreshPersistedModelDefinition.handler(mockClient, { card_id: 5 })).rejects.toThrow('API error');
+    await expect(
+      refreshPersistedModelDefinition.handler(mockClient, { card_id: 5 }),
+    ).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Not Found', 404));
-    await expect(refreshPersistedModelDefinition.handler(mockClient, { card_id: 999 })).rejects.toThrow('Not Found');
+    await expect(
+      refreshPersistedModelDefinition.handler(mockClient, { card_id: 999 }),
+    ).rejects.toThrow('Not Found');
   });
 
   it('should have correct tool definition metadata', () => {

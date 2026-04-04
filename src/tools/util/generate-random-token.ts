@@ -1,8 +1,5 @@
 import type { MetabaseClient } from '@src/client';
-import {
-  type GenerateRandomTokenInput,
-  GenerateRandomTokenInputSchema,
-} from '@src/schemas/util';
+import { type GenerateRandomTokenInput, GenerateRandomTokenInputSchema } from '@src/schemas/util';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

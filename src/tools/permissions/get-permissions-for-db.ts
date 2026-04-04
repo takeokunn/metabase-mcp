@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type GetDbPermissionsParams, GetDbPermissionsParamsSchema } from '@src/schemas/permissions';
+import {
+  type GetDbPermissionsParams,
+  GetDbPermissionsParamsSchema,
+} from '@src/schemas/permissions';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 

@@ -1,5 +1,8 @@
 import type { MetabaseClient } from '@src/client';
-import { type SyncDatabaseSchemaParams, SyncDatabaseSchemaParamsSchema } from '@src/schemas/database';
+import {
+  type SyncDatabaseSchemaParams,
+  SyncDatabaseSchemaParamsSchema,
+} from '@src/schemas/database';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 
@@ -12,6 +15,8 @@ export const syncDatabaseSchemaDefinition: ToolDefinition<SyncDatabaseSchemaPara
   inputSchema: SyncDatabaseSchemaParamsSchema,
   handler: async (client: MetabaseClient, input: SyncDatabaseSchemaParams) => {
     const result = await client.post(`/api/database/${input.id}/sync_schema`);
-    return formatToolResponse(result ?? { success: true, message: 'Database schema sync triggered' });
+    return formatToolResponse(
+      result ?? { success: true, message: 'Database schema sync triggered' },
+    );
   },
 };

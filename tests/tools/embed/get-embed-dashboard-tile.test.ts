@@ -6,7 +6,14 @@ import { expectMcpContent } from '../../__helpers__';
 import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('getEmbedDashboardTile tool', () => {
-  const input = { token: 'test-embed-token-abc123', dashcard_id: 42, card_id: 1, zoom: 10, x: 5, y: 3 };
+  const input = {
+    token: 'test-embed-token-abc123',
+    dashcard_id: 42,
+    card_id: 1,
+    zoom: 10,
+    x: 5,
+    y: 3,
+  };
 
   it('should return formatted MCP response', async () => {
     const mockResult = {};

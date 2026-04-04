@@ -20,7 +20,9 @@ describe('deleteCacheConfig tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('delete', createApiError('Unauthorized', 401));
-    await expect(deleteCacheConfigDefinition.handler(mockClient, {})).rejects.toThrow('Unauthorized');
+    await expect(deleteCacheConfigDefinition.handler(mockClient, {})).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {

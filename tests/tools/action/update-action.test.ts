@@ -32,16 +32,16 @@ describe('updateAction tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('put', 'Failed to update action');
-    await expect(updateActionDefinition.handler(mockClient, { id: 1, name: 'Test' })).rejects.toThrow(
-      'Failed to update action',
-    );
+    await expect(
+      updateActionDefinition.handler(mockClient, { id: 1, name: 'Test' }),
+    ).rejects.toThrow('Failed to update action');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('put', createApiError('Not found', 404));
-    await expect(updateActionDefinition.handler(mockClient, { id: 999, name: 'Test' })).rejects.toThrow(
-      'Not found',
-    );
+    await expect(
+      updateActionDefinition.handler(mockClient, { id: 999, name: 'Test' }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should have correct tool definition metadata', () => {

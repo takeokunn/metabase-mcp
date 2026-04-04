@@ -26,16 +26,16 @@ describe('exportPublicDocumentCard tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'API error');
-    await expect(
-      exportPublicDocumentCardDefinition.handler(mockClient, input),
-    ).rejects.toThrow('API error');
+    await expect(exportPublicDocumentCardDefinition.handler(mockClient, input)).rejects.toThrow(
+      'API error',
+    );
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Not Found', 404));
-    await expect(
-      exportPublicDocumentCardDefinition.handler(mockClient, input),
-    ).rejects.toThrow('Not Found');
+    await expect(exportPublicDocumentCardDefinition.handler(mockClient, input)).rejects.toThrow(
+      'Not Found',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
@@ -43,8 +43,6 @@ describe('exportPublicDocumentCard tool', () => {
     expect(exportPublicDocumentCardDefinition.description).toBe(
       'Export a card from a publicly shared document in Metabase',
     );
-    expect(exportPublicDocumentCardDefinition.inputSchema).toEqual(
-      ExportPublicDocumentCardSchema,
-    );
+    expect(exportPublicDocumentCardDefinition.inputSchema).toEqual(ExportPublicDocumentCardSchema);
   });
 });

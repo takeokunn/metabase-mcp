@@ -52,7 +52,9 @@ export const TableIdInputSchema = z.object({
 
 // Bulk update tables input schema
 export const BulkUpdateTablesInputSchema = z.object({
-  tables: z.array(z.record(z.unknown())).describe('Array of table update objects, each must include an id field'),
+  tables: z
+    .array(z.record(z.unknown()))
+    .describe('Array of table update objects, each must include an id field'),
 });
 
 // Append CSV to table input schema
@@ -97,5 +99,7 @@ export type BulkUpdateTablesInput = z.infer<typeof BulkUpdateTablesInputSchema>;
 export type AppendCsvToTableInput = z.infer<typeof AppendCsvToTableInputSchema>;
 export type UpdateTableFieldsOrderInput = z.infer<typeof UpdateTableFieldsOrderInputSchema>;
 export type GetVirtualCardTableFksInput = z.infer<typeof GetVirtualCardTableFksInputSchema>;
-export type GetVirtualCardTableQueryMetadataInput = z.infer<typeof GetVirtualCardTableQueryMetadataInputSchema>;
+export type GetVirtualCardTableQueryMetadataInput = z.infer<
+  typeof GetVirtualCardTableQueryMetadataInputSchema
+>;
 export type GetTableDataInput = z.infer<typeof GetTableDataInputSchema>;

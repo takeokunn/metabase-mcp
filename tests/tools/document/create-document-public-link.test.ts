@@ -16,17 +16,25 @@ describe('createDocumentPublicLink tool', () => {
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('post', 'Not found');
-    await expect(createDocumentPublicLinkDefinition.handler(mockClient, { id: 999 })).rejects.toThrow('Not found');
+    await expect(
+      createDocumentPublicLinkDefinition.handler(mockClient, { id: 999 }),
+    ).rejects.toThrow('Not found');
   });
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
-    await expect(createDocumentPublicLinkDefinition.handler(mockClient, { id: 1 })).rejects.toThrow('Unauthorized');
+    await expect(createDocumentPublicLinkDefinition.handler(mockClient, { id: 1 })).rejects.toThrow(
+      'Unauthorized',
+    );
   });
 
   it('should have correct tool definition metadata', () => {
     expect(createDocumentPublicLinkDefinition.name).toBe('create_document_public_link');
-    expect(createDocumentPublicLinkDefinition.description).toBe('Create a public link for a document in Metabase');
-    expect(createDocumentPublicLinkDefinition.inputSchema).toEqual(GetDocumentPublicLinkInputSchema);
+    expect(createDocumentPublicLinkDefinition.description).toBe(
+      'Create a public link for a document in Metabase',
+    );
+    expect(createDocumentPublicLinkDefinition.inputSchema).toEqual(
+      GetDocumentPublicLinkInputSchema,
+    );
   });
 });

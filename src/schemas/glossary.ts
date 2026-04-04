@@ -17,7 +17,10 @@ export const UpdateGlossaryEntryInputSchema = z.object({
   id: z.number().describe('Glossary entry ID to update'),
   name: z.string().describe('Updated name of the glossary entry').optional(),
   definition: z.string().describe('Updated definition of the glossary entry').optional(),
-  synonyms: z.array(z.string()).describe('Updated list of synonyms for the glossary entry').optional(),
+  synonyms: z
+    .array(z.string())
+    .describe('Updated list of synonyms for the glossary entry')
+    .optional(),
 });
 
 // Delete glossary entry params schema

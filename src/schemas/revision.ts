@@ -16,9 +16,7 @@ export const GetEntityRevisionInputSchema = z.object({
 export type GetEntityRevisionInput = z.infer<typeof GetEntityRevisionInputSchema>;
 
 export const RevertRevisionInputSchema = z.object({
-  entity: z
-    .string()
-    .describe('Entity type to revert (e.g., "dashboard", "card")'),
+  entity: z.string().describe('Entity type to revert (e.g., "dashboard", "card")'),
   id: z.number().int().positive().describe('Entity ID to revert'),
   revision_id: z.number().int().positive().describe('Revision ID to revert to'),
 });

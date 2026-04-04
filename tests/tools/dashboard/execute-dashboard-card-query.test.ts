@@ -19,10 +19,9 @@ describe('executeDashboardCardQuery tool', () => {
     const result = await executeDashboardCardQueryDefinition.handler(mockClient, baseInput);
 
     expectMcpContent(result, mockResult);
-    expect(mockClient.post).toHaveBeenCalledWith(
-      '/api/dashboard/1/dashcard/2/card/3/query',
-      { parameters: [] },
-    );
+    expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/1/dashcard/2/card/3/query', {
+      parameters: [],
+    });
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
 
@@ -37,10 +36,9 @@ describe('executeDashboardCardQuery tool', () => {
     });
 
     expectMcpContent(result, mockResult);
-    expect(mockClient.post).toHaveBeenCalledWith(
-      '/api/dashboard/1/dashcard/2/card/3/query',
-      { parameters: params },
-    );
+    expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/1/dashcard/2/card/3/query', {
+      parameters: params,
+    });
   });
 
   it('should propagate client errors', async () => {
