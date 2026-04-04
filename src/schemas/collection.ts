@@ -94,6 +94,25 @@ export const GetCollectionPermissionGraphParamsSchema = z.object({
   id: z.number().int().positive().describe('Collection ID to get permission graph for'),
 });
 
+// Get root dashboard question candidates params schema
+export const GetRootDashboardQuestionCandidatesParamsSchema = z.object({});
+
+// Get collection dashboard question candidates params schema
+export const GetCollectionDashboardQuestionCandidatesParamsSchema = z.object({
+  id: z.string().describe('Collection ID'),
+});
+
+// Move root dashboard question candidates input schema
+export const MoveRootDashboardQuestionCandidatesInputSchema = z.object({
+  card_ids: z.array(z.number()).describe('Card IDs to move'),
+});
+
+// Move collection dashboard question candidates input schema
+export const MoveCollectionDashboardQuestionCandidatesInputSchema = z.object({
+  id: z.string().describe('Collection ID'),
+  card_ids: z.array(z.number()).describe('Card IDs to move'),
+});
+
 // Inferred types
 export type CollectionId = z.infer<typeof CollectionIdSchema>;
 export type Collection = z.infer<typeof CollectionSchema>;
@@ -108,3 +127,7 @@ export type HardDeleteCollectionInput = z.infer<typeof HardDeleteCollectionInput
 export type RestoreCollectionInput = z.infer<typeof RestoreCollectionInputSchema>;
 export type MoveCollectionItemsInput = z.infer<typeof MoveCollectionItemsInputSchema>;
 export type GetCollectionPermissionGraphParams = z.infer<typeof GetCollectionPermissionGraphParamsSchema>;
+export type GetRootDashboardQuestionCandidatesParams = z.infer<typeof GetRootDashboardQuestionCandidatesParamsSchema>;
+export type GetCollectionDashboardQuestionCandidatesParams = z.infer<typeof GetCollectionDashboardQuestionCandidatesParamsSchema>;
+export type MoveRootDashboardQuestionCandidatesInput = z.infer<typeof MoveRootDashboardQuestionCandidatesInputSchema>;
+export type MoveCollectionDashboardQuestionCandidatesInput = z.infer<typeof MoveCollectionDashboardQuestionCandidatesInputSchema>;

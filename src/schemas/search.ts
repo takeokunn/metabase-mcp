@@ -56,6 +56,20 @@ export const GetSearchContextParamsSchema = z.object({});
 // List search indexed entities params schema (no parameters required)
 export const ListSearchIndexedEntitiesParamsSchema = z.object({});
 
+// Get search weights params schema
+export const GetSearchWeightsParamsSchema = z.object({});
+
+// Update search weights input schema
+export const UpdateSearchWeightsInputSchema = z.object({
+  weights: z.record(z.number()).describe('Map of model type to weight value'),
+});
+
+// Force reindex search input schema
+export const ForceReindexSearchInputSchema = z.object({});
+
+// Reinit search input schema
+export const ReinitSearchInputSchema = z.object({});
+
 // Inferred types
 export type SearchModel = z.infer<typeof SearchModelSchema>;
 export type SearchParams = z.infer<typeof SearchParamsSchema>;
@@ -64,3 +78,7 @@ export type SearchResponse = z.infer<typeof SearchResponseSchema>;
 export type SearchModelsResponse = z.infer<typeof SearchModelsResponseSchema>;
 export type GetSearchContextParams = z.infer<typeof GetSearchContextParamsSchema>;
 export type ListSearchIndexedEntitiesParams = z.infer<typeof ListSearchIndexedEntitiesParamsSchema>;
+export type GetSearchWeightsParams = z.infer<typeof GetSearchWeightsParamsSchema>;
+export type UpdateSearchWeightsInput = z.infer<typeof UpdateSearchWeightsInputSchema>;
+export type ForceReindexSearchInput = z.infer<typeof ForceReindexSearchInputSchema>;
+export type ReinitSearchInput = z.infer<typeof ReinitSearchInputSchema>;

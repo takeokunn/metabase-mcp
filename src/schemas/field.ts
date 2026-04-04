@@ -118,6 +118,17 @@ export const UpdateFieldRemappingInputSchema = z.object({
     .describe('Array of [original_value, human_readable_value] pairs'),
 });
 
+// Get field remapping input schema
+export const GetFieldRemappingInputSchema = z.object({
+  id: z.number().describe('Source field ID'),
+  remapped_id: z.number().describe('Target remapped field ID'),
+});
+
+// Get field summary input schema
+export const GetFieldSummaryInputSchema = z.object({
+  id: z.number().describe('The field ID'),
+});
+
 // Type exports
 export type GetFieldInput = z.infer<typeof GetFieldInputSchema>;
 export type UpdateFieldInput = z.infer<typeof UpdateFieldInputSchema>;
@@ -130,3 +141,5 @@ export type SearchFieldValuesInput = z.infer<typeof SearchFieldValuesInputSchema
 export type CreateFieldDimensionInput = z.infer<typeof CreateFieldDimensionInputSchema>;
 export type FieldDimensionParams = z.infer<typeof FieldDimensionParamsSchema>;
 export type UpdateFieldRemappingInput = z.infer<typeof UpdateFieldRemappingInputSchema>;
+export type GetFieldRemappingInput = z.infer<typeof GetFieldRemappingInputSchema>;
+export type GetFieldSummaryInput = z.infer<typeof GetFieldSummaryInputSchema>;

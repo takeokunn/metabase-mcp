@@ -13,27 +13,27 @@ describe('listDatabaseVirtualSchemaTables tool', () => {
 
     const mockClient = createMockClientWithResponse('get', mockTables);
 
-    const result = await listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, {});
+    const result = await listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, { virtual_db: 1 });
 
     expectMcpContent(result, mockTables);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/database/virtual/table');
+    expect(mockClient.get).toHaveBeenCalledWith('/api/database/1/datasets');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
 
   it('should handle empty list', async () => {
     const mockClient = createMockClientWithResponse('get', []);
 
-    const result = await listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, {});
+    const result = await listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, { virtual_db: 2 });
 
     expectMcpContent(result, []);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/database/virtual/table');
+    expect(mockClient.get).toHaveBeenCalledWith('/api/database/2/datasets');
   });
 
   it('should propagate client errors', async () => {
     const mockClient = createMockClientWithError('get', 'API error');
 
     await expect(
-      listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, {}),
+      listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, { virtual_db: 1 }),
     ).rejects.toThrow('API error');
   });
 
@@ -41,7 +41,7 @@ describe('listDatabaseVirtualSchemaTables tool', () => {
     const mockClient = createMockClientWithError('get', createApiError('Unauthorized', 401));
 
     await expect(
-      listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, {}),
+      listDatabaseVirtualSchemaTablesDefinition.handler(mockClient, { virtual_db: 1 }),
     ).rejects.toThrow('Unauthorized');
   });
 
@@ -52,6 +52,5 @@ describe('listDatabaseVirtualSchemaTables tool', () => {
     expect(listDatabaseVirtualSchemaTablesDefinition.description).toBe(
       'List all virtual tables (saved questions as tables) across all databases in Metabase',
     );
-    expect(listDatabaseVirtualSchemaTablesDefinition.inputSchema).toEqual({});
   });
 });

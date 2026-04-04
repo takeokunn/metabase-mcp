@@ -1,9 +1,14 @@
 import type { ToolDefinition } from '@src/tools/registry';
 import { appendCsvToTableDefinition } from './append-csv-to-table';
+import { checkDatabaseWorkspacePermissionDefinition } from './check-database-workspace-permission';
+import { dismissDatabaseSpinnerDefinition } from './dismiss-database-spinner';
+import { getDatabaseAvailableSettingsDefinition } from './get-database-available-settings';
+import { getDatabaseCardAutocompleteDefinition } from './get-database-card-autocomplete';
+import { getDatabaseSyncableSchemasDefinition } from './get-database-syncable-schemas';
+import { getVirtualDatabaseDatasetsDefinition } from './get-virtual-database-datasets';
 import { createDatabaseDefinition } from './create-database';
 import { createSampleDatabaseDefinition } from './create-sample-database';
 import { deleteDatabaseDefinition } from './delete-database';
-import { deleteDatabaseSchemaDefinition } from './delete-database-schema';
 import { discardDatabaseValuesDefinition } from './discard-database-values';
 import { getDatabaseDefinition } from './get-database';
 import { getDatabaseAutocompleteDefinition } from './get-database-autocomplete';
@@ -51,11 +56,16 @@ export const databaseTools: ToolDefinition<unknown>[] = [
   getDatabaseUsageInfoDefinition,
   getDatabaseHealthcheckDefinition,
   listDatabaseSchemasWithTablesDefinition,
-  deleteDatabaseSchemaDefinition,
   listDatabaseVirtualTablesDefinition,
   getDatabaseVirtualSchemaDefinition,
   listDatabaseVirtualSchemaTablesDefinition,
   appendCsvToTableDefinition,
   replaceTableCsvDefinition,
   uploadCsvToDatabaseDefinition,
+  getDatabaseCardAutocompleteDefinition,
+  getDatabaseAvailableSettingsDefinition,
+  getDatabaseSyncableSchemasDefinition,
+  getVirtualDatabaseDatasetsDefinition,
+  dismissDatabaseSpinnerDefinition,
+  checkDatabaseWorkspacePermissionDefinition,
 ];

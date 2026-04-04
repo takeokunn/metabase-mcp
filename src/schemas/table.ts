@@ -69,6 +69,21 @@ export const UpdateTableFieldsOrderInputSchema = z.object({
     .describe('Array of field IDs in the desired display order'),
 });
 
+// Get virtual card table FKs input schema
+export const GetVirtualCardTableFksInputSchema = z.object({
+  id: z.number().describe('Card ID for the virtual table'),
+});
+
+// Get virtual card table query metadata input schema
+export const GetVirtualCardTableQueryMetadataInputSchema = z.object({
+  id: z.number().describe('Card ID for the virtual table'),
+});
+
+// Get table data input schema
+export const GetTableDataInputSchema = z.object({
+  table_id: z.number().describe('The table ID'),
+});
+
 // Inferred types
 export type TableId = z.infer<typeof TableIdSchema>;
 export type TableVisibilityType = z.infer<typeof TableVisibilityTypeSchema>;
@@ -81,3 +96,6 @@ export type TableIdInput = z.infer<typeof TableIdInputSchema>;
 export type BulkUpdateTablesInput = z.infer<typeof BulkUpdateTablesInputSchema>;
 export type AppendCsvToTableInput = z.infer<typeof AppendCsvToTableInputSchema>;
 export type UpdateTableFieldsOrderInput = z.infer<typeof UpdateTableFieldsOrderInputSchema>;
+export type GetVirtualCardTableFksInput = z.infer<typeof GetVirtualCardTableFksInputSchema>;
+export type GetVirtualCardTableQueryMetadataInput = z.infer<typeof GetVirtualCardTableQueryMetadataInputSchema>;
+export type GetTableDataInput = z.infer<typeof GetTableDataInputSchema>;

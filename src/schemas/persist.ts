@@ -39,6 +39,11 @@ export const PersistDatabaseModelsParamsSchema = z.object({
   db_id: z.number().int().positive().describe('Database ID to persist models for'),
 });
 
+// Unpersist database models params schema
+export const UnpersistDatabaseModelsInputSchema = z.object({
+  id: z.number().describe('Database ID'),
+});
+
 // Inferred types
 export type PersistId = z.infer<typeof PersistIdSchema>;
 export type GetPersistedModelParams = z.infer<typeof GetPersistedModelParamsSchema>;
@@ -48,3 +53,4 @@ export type UnpersistCardParams = z.infer<typeof UnpersistCardParamsSchema>;
 export type RefreshPersistedModelParams = z.infer<typeof RefreshPersistedModelParamsSchema>;
 export type SetPersistRefreshScheduleInput = z.infer<typeof SetPersistRefreshScheduleInputSchema>;
 export type PersistDatabaseModelsParams = z.infer<typeof PersistDatabaseModelsParamsSchema>;
+export type UnpersistDatabaseModelsInput = z.infer<typeof UnpersistDatabaseModelsInputSchema>;

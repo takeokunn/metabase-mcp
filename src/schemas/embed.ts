@@ -55,3 +55,54 @@ export const SearchEmbedDashboardParamsSchema = z.object({
   search_string: z.string().describe('Search string to filter parameter values'),
 });
 export type SearchEmbedDashboardParams = z.infer<typeof SearchEmbedDashboardParamsSchema>;
+
+export const GetEmbedCardParamValuesSchema = z.object({
+  token: z.string().describe('Embed token'),
+  param_key: z.string(),
+});
+export type GetEmbedCardParamValues = z.infer<typeof GetEmbedCardParamValuesSchema>;
+
+export const SearchEmbedCardParamValuesSchema = z.object({
+  token: z.string(),
+  param_key: z.string(),
+  query: z.string(),
+});
+export type SearchEmbedCardParamValues = z.infer<typeof SearchEmbedCardParamValuesSchema>;
+
+export const ExportEmbedCardQuerySchema = z.object({
+  token: z.string(),
+  export_format: z.enum(['csv', 'json', 'xlsx']).describe('Export format'),
+});
+export type ExportEmbedCardQuery = z.infer<typeof ExportEmbedCardQuerySchema>;
+
+export const GetEmbedDashboardParamValuesSchema = z.object({
+  token: z.string().describe('Embed token'),
+  param_key: z.string(),
+});
+export type GetEmbedDashboardParamValues = z.infer<typeof GetEmbedDashboardParamValuesSchema>;
+
+export const SearchEmbedDashboardParamValuesSchema = z.object({
+  token: z.string(),
+  param_key: z.string(),
+  query: z.string(),
+});
+export type SearchEmbedDashboardParamValues = z.infer<typeof SearchEmbedDashboardParamValuesSchema>;
+
+export const RunEmbedCardPivotQuerySchema = z.object({
+  token: z.string(),
+});
+export type RunEmbedCardPivotQuery = z.infer<typeof RunEmbedCardPivotQuerySchema>;
+
+export const RunEmbedDashboardPivotQuerySchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+});
+export type RunEmbedDashboardPivotQuery = z.infer<typeof RunEmbedDashboardPivotQuerySchema>;
+
+export const ExecuteEmbedDashcardActionSchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  parameters: z.record(z.unknown()).optional(),
+});
+export type ExecuteEmbedDashcardAction = z.infer<typeof ExecuteEmbedDashcardActionSchema>;

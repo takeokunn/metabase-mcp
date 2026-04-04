@@ -35,6 +35,17 @@ import { searchDashboardParamValuesDefinition } from './search-dashboard-param-v
 import { getDashboardEmbeddableDefinition } from './get-dashboard-embeddable';
 import { getDashboardFieldValuesDefinition } from './get-dashboard-field-values';
 import { searchDashboardFieldValuesDefinition } from './search-dashboard-field-values';
+import { getDashboardParamRemappingDefinition } from './get-dashboard-param-remapping';
+import { getDashboardRelatedDefinition } from './get-dashboard-related';
+import { getValidFilterFieldsDefinition } from './get-valid-filter-fields';
+import { saveDashboardDefinition } from './save-dashboard';
+import { saveDashboardToCollectionDefinition } from './save-dashboard-to-collection';
+import { getDashboardItemsDefinition } from './get-dashboard-items';
+import { getDashcardActionParamsDefinition } from './get-dashcard-action-params';
+import { runDashcardQueryDefinition } from './run-dashcard-query';
+import { exportDashcardQueryDefinition } from './export-dashcard-query';
+import { executeDashcardActionDefinition } from './execute-dashcard-action';
+import { pivotDashcardQueryDefinition } from './pivot-dashcard-query';
 
 /**
  * All dashboard-related tool definitions
@@ -83,4 +94,15 @@ export const dashboardTools: ToolDefinition<unknown>[] = [
   getDashboardEmbeddableDefinition,
   getDashboardFieldValuesDefinition,
   searchDashboardFieldValuesDefinition,
+  getDashboardParamRemappingDefinition,
+  getDashboardRelatedDefinition,
+  getValidFilterFieldsDefinition,
+  saveDashboardDefinition,
+  saveDashboardToCollectionDefinition,
+  getDashboardItemsDefinition,
+  getDashcardActionParamsDefinition,
+  runDashcardQueryDefinition,
+  exportDashcardQueryDefinition,
+  executeDashcardActionDefinition,
+  pivotDashcardQueryDefinition,
 ];

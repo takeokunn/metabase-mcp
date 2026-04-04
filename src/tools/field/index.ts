@@ -1,5 +1,7 @@
 import type { ToolDefinition } from '@src/tools/registry';
 import { createFieldDimensionDefinition } from './create-field-dimension';
+import { getFieldRemappingDefinition } from './get-field-remapping';
+import { getFieldSummaryDefinition } from './get-field-summary';
 import { deleteFieldDimensionDefinition } from './delete-field-dimension';
 import { discardFieldValuesDefinition } from './discard-field-values';
 import { getFieldDefinition } from './get-field';
@@ -24,4 +26,6 @@ export const fieldTools: ToolDefinition<unknown>[] = [
   searchFieldValuesDefinition,
   createFieldDimensionDefinition,
   deleteFieldDimensionDefinition,
+  getFieldRemappingDefinition,
+  getFieldSummaryDefinition,
 ];

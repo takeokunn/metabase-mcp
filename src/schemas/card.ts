@@ -219,3 +219,44 @@ export type GetCardFieldValuesParams = z.infer<typeof GetCardFieldValuesParamsSc
 export type SearchCardFieldValuesParams = z.infer<typeof SearchCardFieldValuesParamsSchema>;
 export type ExportCardQueryParams = z.infer<typeof ExportCardQueryParamsSchema>;
 export type ExecuteCardPivotParams = z.infer<typeof ExecuteCardPivotParamsSchema>;
+
+// ---------------------------------------------------------------------------
+// New Input Schemas (card_id naming convention)
+// ---------------------------------------------------------------------------
+
+// Get card param values input schema
+export const GetCardParamValuesInputSchema = z.object({
+  card_id: z.number().describe('The card ID'),
+  param_key: z.string().describe('The parameter key'),
+});
+
+// Search card param values input schema
+export const SearchCardParamValuesInputSchema = z.object({
+  card_id: z.number().describe('The card ID'),
+  param_key: z.string().describe('The parameter key'),
+  query: z.string().describe('The search query'),
+});
+
+// Get card param remapping input schema
+export const GetCardParamRemappingInputSchema = z.object({
+  card_id: z.number().describe('The card ID'),
+  param_key: z.string().describe('The parameter key'),
+});
+
+// Get card dashboards input schema
+export const GetCardDashboardsInputSchema = z.object({
+  id: z.number().describe('The card ID'),
+});
+
+// Move cards to collection input schema
+export const MoveCardsToCollectionInputSchema = z.object({
+  card_ids: z.array(z.number()).describe('Array of card IDs to move'),
+  collection_id: z.number().nullable().describe('The target collection ID (null for root)'),
+});
+
+// Inferred types - New Input Schemas
+export type GetCardParamValuesInput = z.infer<typeof GetCardParamValuesInputSchema>;
+export type SearchCardParamValuesInput = z.infer<typeof SearchCardParamValuesInputSchema>;
+export type GetCardParamRemappingInput = z.infer<typeof GetCardParamRemappingInputSchema>;
+export type GetCardDashboardsInput = z.infer<typeof GetCardDashboardsInputSchema>;
+export type MoveCardsToCollectionInput = z.infer<typeof MoveCardsToCollectionInputSchema>;

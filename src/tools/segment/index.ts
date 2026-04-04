@@ -2,6 +2,7 @@ import type { ToolDefinition } from '@src/tools/registry';
 import { createSegmentDefinition } from './create-segment';
 import { deleteSegmentDefinition } from './delete-segment';
 import { getSegmentDefinition } from './get-segment';
+import { getSegmentRelatedDefinition } from './get-segment-related';
 import { getSegmentRevisionsDefinition } from './get-segment-revisions';
 import { listSegmentsDefinition } from './list-segments';
 import { updateSegmentDefinition } from './update-segment';
@@ -16,4 +17,5 @@ export const segmentTools: ToolDefinition<unknown>[] = [
   updateSegmentDefinition,
   deleteSegmentDefinition,
   getSegmentRevisionsDefinition,
+  getSegmentRelatedDefinition,
 ];

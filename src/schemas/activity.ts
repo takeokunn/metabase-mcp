@@ -5,3 +5,9 @@ export const ListRecentsParamsSchema = z.object({
 });
 
 export type ListRecentsParams = z.infer<typeof ListRecentsParamsSchema>;
+
+export const AddRecentActivityInputSchema = z.object({
+  model_type: z.string().describe('Type of model (e.g., card, dashboard)'),
+  model_id: z.number().describe('ID of the model'),
+});
+export type AddRecentActivityInput = z.infer<typeof AddRecentActivityInputSchema>;

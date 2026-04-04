@@ -11,7 +11,7 @@ export const getAnalyticsStatsDefinition: ToolDefinition = {
     'Retrieve anonymous usage statistics from Metabase. Returns aggregated analytics data about how Metabase is being used.',
   inputSchema: {},
   handler: async (client: MetabaseClient) => {
-    const result = await client.get('/api/analytics');
+    const result = await client.get('/api/analytics/anonymous-stats');
     return formatToolResponse(result);
   },
 };

@@ -18,6 +18,9 @@ import { getCardSeriesDefinition } from './get-card-series';
 import { getCardParamValuesDefinition } from './get-card-param-values';
 import { searchCardParamValuesDefinition } from './search-card-param-values';
 import { searchCardFieldValuesDefinition } from './search-card-field-values';
+import { getCardParamRemappingDefinition } from './get-card-param-remapping';
+import { getCardDashboardsDefinition } from './get-card-dashboards';
+import { moveCardsToCollectionDefinition } from './move-cards-to-collection';
 // Query Execution & Export
 import { executeCardPivotDefinition } from './execute-card-pivot';
 import { exportCardQueryDefinition } from './export-card-query';
@@ -48,6 +51,9 @@ export const cardTools: ToolDefinition<unknown>[] = [
   getCardParamValuesDefinition,
   searchCardParamValuesDefinition,
   searchCardFieldValuesDefinition,
+  getCardParamRemappingDefinition,
+  getCardDashboardsDefinition,
+  moveCardsToCollectionDefinition,
 
   // Query Execution & Export
   executeCardPivotDefinition,

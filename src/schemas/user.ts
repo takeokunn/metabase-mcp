@@ -68,6 +68,12 @@ export const GetUserMembershipsParamsSchema = z.object({
   id: z.number().int().positive().describe('User ID to get group memberships for'),
 });
 
+// Dismiss user modal input schema
+export const DismissUserModalInputSchema = z.object({
+  id: z.number().describe('User ID'),
+  modal: z.string().describe('Modal type to dismiss'),
+});
+
 // Inferred types
 export type UserStatus = z.infer<typeof UserStatusSchema>;
 export type ListUsersInput = z.infer<typeof ListUsersInputSchema>;
@@ -80,3 +86,4 @@ export type UpdateUserPasswordInput = z.infer<typeof UpdateUserPasswordInputSche
 export type ReactivateUserInput = z.infer<typeof ReactivateUserInputSchema>;
 export type SendInviteInput = z.infer<typeof SendInviteInputSchema>;
 export type GetUserMembershipsParams = z.infer<typeof GetUserMembershipsParamsSchema>;
+export type DismissUserModalInput = z.infer<typeof DismissUserModalInputSchema>;

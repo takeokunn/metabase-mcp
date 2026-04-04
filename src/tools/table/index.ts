@@ -10,6 +10,9 @@ import { resyncTableFieldsDefinition } from './resync-table-fields';
 import { syncTableSchemaDefinition } from './sync-table-schema';
 import { updateTableDefinition } from './update-table';
 import { updateTableFieldsOrderDefinition } from './update-table-fields-order';
+import { getVirtualCardTableFksDefinition } from './get-virtual-card-table-fks';
+import { getVirtualCardTableQueryMetadataDefinition } from './get-virtual-card-table-query-metadata';
+import { getTableDataDefinition } from './get-table-data';
 
 /**
  * All table-related tool definitions
@@ -26,4 +29,7 @@ export const tableTools: ToolDefinition<unknown>[] = [
   discardTableValuesDefinition,
   getTableRelatedDefinition,
   updateTableFieldsOrderDefinition,
+  getVirtualCardTableFksDefinition,
+  getVirtualCardTableQueryMetadataDefinition,
+  getTableDataDefinition,
 ];

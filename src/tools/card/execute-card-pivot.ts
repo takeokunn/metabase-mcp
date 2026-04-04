@@ -12,7 +12,7 @@ export const executeCardPivotDefinition: ToolDefinition<ExecuteCardPivotParams> 
   inputSchema: ExecuteCardPivotParamsSchema,
   handler: async (client: MetabaseClient, input: ExecuteCardPivotParams) => {
     const body = input.parameters ? { parameters: input.parameters } : undefined;
-    const result = await client.post(`/api/card/${input.id}/query/pivot`, body);
+    const result = await client.post(`/api/card/pivot/${input.id}/query`, body);
     return formatToolResponse(result);
   },
 };

@@ -57,6 +57,30 @@ export const FormatQueryForVizInputSchema = z.object({
   query: z.record(z.unknown()).describe('MBQL query to format for visualization'),
 });
 
+// Get dataset param values input schema
+export const GetDatasetParamValuesInputSchema = z.object({
+  parameter: z.record(z.unknown()).describe('Parameter definition'),
+  field_ids: z.array(z.number()).optional().describe('Field IDs to get values from'),
+});
+
+// Search dataset param values input schema
+export const SearchDatasetParamValuesInputSchema = z.object({
+  query: z.string().describe('Search query'),
+  parameter: z.record(z.unknown()).describe('Parameter definition'),
+  field_ids: z.array(z.number()).optional().describe('Field IDs to search'),
+});
+
+// Get dataset param remapping input schema
+export const GetDatasetParamRemappingInputSchema = z.object({
+  parameter: z.record(z.unknown()).describe('Parameter definition'),
+  field_ids: z.array(z.number()).optional().describe('Field IDs'),
+});
+
+// Get dataset query metadata input schema
+export const GetDatasetQueryMetadataInputSchema = z.object({
+  query: z.record(z.unknown()).describe('The query to get metadata for'),
+});
+
 // Inferred types
 export type QueryType = z.infer<typeof QueryTypeSchema>;
 export type DatasetQuery = z.infer<typeof DatasetQuerySchema>;
@@ -67,3 +91,7 @@ export type ExecutePivotQueryInput = z.infer<typeof ExecutePivotQueryInputSchema
 export type GetNativeQueryInput = z.infer<typeof GetNativeQueryInputSchema>;
 export type GetQueryDurationInput = z.infer<typeof GetQueryDurationInputSchema>;
 export type FormatQueryForVizInput = z.infer<typeof FormatQueryForVizInputSchema>;
+export type GetDatasetParamValuesInput = z.infer<typeof GetDatasetParamValuesInputSchema>;
+export type SearchDatasetParamValuesInput = z.infer<typeof SearchDatasetParamValuesInputSchema>;
+export type GetDatasetParamRemappingInput = z.infer<typeof GetDatasetParamRemappingInputSchema>;
+export type GetDatasetQueryMetadataInput = z.infer<typeof GetDatasetQueryMetadataInputSchema>;

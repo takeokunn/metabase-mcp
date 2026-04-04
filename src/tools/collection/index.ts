@@ -1,5 +1,9 @@
 import type { ToolDefinition } from '@src/tools/registry';
 import { createCollectionDefinition } from './create-collection';
+import { getCollectionDashboardQuestionCandidatesDefinition } from './get-collection-dashboard-question-candidates';
+import { getRootDashboardQuestionCandidatesDefinition } from './get-root-dashboard-question-candidates';
+import { moveCollectionDashboardQuestionCandidatesDefinition } from './move-collection-dashboard-question-candidates';
+import { moveRootDashboardQuestionCandidatesDefinition } from './move-root-dashboard-question-candidates';
 import { deleteCollectionDefinition } from './delete-collection';
 import { getCollectionDefinition } from './get-collection';
 import { getCollectionItemsDefinition } from './get-collection-items';
@@ -26,4 +30,8 @@ export const collectionTools: ToolDefinition<unknown>[] = [
   updateCollectionDefinition,
   deleteCollectionDefinition,
   hardDeleteCollectionDefinition,
+  getRootDashboardQuestionCandidatesDefinition,
+  getCollectionDashboardQuestionCandidatesDefinition,
+  moveRootDashboardQuestionCandidatesDefinition,
+  moveCollectionDashboardQuestionCandidatesDefinition,
 ];

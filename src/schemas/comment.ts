@@ -42,3 +42,7 @@ export type CreateCommentInput = z.infer<typeof CreateCommentInputSchema>;
 export type UpdateCommentInput = z.infer<typeof UpdateCommentInputSchema>;
 export type DeleteCommentParams = z.infer<typeof DeleteCommentParamsSchema>;
 export type AddCommentReactionInput = z.infer<typeof AddCommentReactionInputSchema>;
+
+// Get comment mentions schema (no parameters)
+export const GetCommentMentionsInputSchema = z.object({});
+export type GetCommentMentionsInput = z.infer<typeof GetCommentMentionsInputSchema>;

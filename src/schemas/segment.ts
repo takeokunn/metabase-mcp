@@ -62,6 +62,11 @@ export const GetSegmentRevisionsParamsSchema = z.object({
   id: SegmentIdSchema.describe('Segment ID to get revisions for'),
 });
 
+// Get segment related params schema
+export const GetSegmentRelatedInputSchema = z.object({
+  id: z.number().describe('The segment ID'),
+});
+
 // Inferred types
 export type SegmentId = z.infer<typeof SegmentIdSchema>;
 export type Segment = z.infer<typeof SegmentSchema>;
@@ -71,3 +76,4 @@ export type CreateSegmentInput = z.infer<typeof CreateSegmentInputSchema>;
 export type UpdateSegmentInput = z.infer<typeof UpdateSegmentInputSchema>;
 export type DeleteSegmentInput = z.infer<typeof DeleteSegmentInputSchema>;
 export type GetSegmentRevisionsParams = z.infer<typeof GetSegmentRevisionsParamsSchema>;
+export type GetSegmentRelatedInput = z.infer<typeof GetSegmentRelatedInputSchema>;

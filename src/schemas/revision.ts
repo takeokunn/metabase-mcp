@@ -9,6 +9,12 @@ export const ListRevisionsParamsSchema = z.object({
 });
 export type ListRevisionsParams = z.infer<typeof ListRevisionsParamsSchema>;
 
+export const GetEntityRevisionInputSchema = z.object({
+  entity: z.string().describe('Entity type (e.g., card, dashboard)'),
+  id: z.number().describe('Entity ID'),
+});
+export type GetEntityRevisionInput = z.infer<typeof GetEntityRevisionInputSchema>;
+
 export const RevertRevisionInputSchema = z.object({
   entity: z
     .string()

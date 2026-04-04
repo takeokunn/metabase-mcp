@@ -17,7 +17,7 @@ describe('executeCardPivot tool', () => {
     const result = await executeCardPivotDefinition.handler(mockClient, { id: 1 });
 
     expectMcpContent(result, mockResult);
-    expect(mockClient.post).toHaveBeenCalledWith('/api/card/1/query/pivot', undefined);
+    expect(mockClient.post).toHaveBeenCalledWith('/api/card/pivot/1/query', undefined);
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
 
@@ -28,7 +28,7 @@ describe('executeCardPivot tool', () => {
 
     await executeCardPivotDefinition.handler(mockClient, { id: 5, parameters: params });
 
-    expect(mockClient.post).toHaveBeenCalledWith('/api/card/5/query/pivot', {
+    expect(mockClient.post).toHaveBeenCalledWith('/api/card/pivot/5/query', {
       parameters: params,
     });
   });

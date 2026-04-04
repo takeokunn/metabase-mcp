@@ -9,6 +9,7 @@ import { persistDatabaseModelsDefinition } from './persist-database-models';
 import { refreshPersistedModelDefinition } from './refresh-persisted-model';
 import { setPersistRefreshScheduleDefinition } from './set-persist-refresh-schedule';
 import { unpersistCardDefinition } from './unpersist-card';
+import { unpersistDatabaseModelsDefinition } from './unpersist-database-models';
 
 /**
  * All persist-related tool definitions
@@ -24,4 +25,5 @@ export const persistTools: ToolDefinition<unknown>[] = [
   disableModelPersistenceDefinition,
   setPersistRefreshScheduleDefinition,
   persistDatabaseModelsDefinition,
+  unpersistDatabaseModelsDefinition,
 ];

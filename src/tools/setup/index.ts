@@ -1,4 +1,6 @@
 import type { ToolDefinition } from '@src/tools/registry';
-import { checkSetupTokenDefinition } from './check-setup-token';
+import { createSetupDefinition } from './create-setup';
 
-export const setupTools: ToolDefinition<unknown>[] = [checkSetupTokenDefinition];
+export const setupTools: ToolDefinition<unknown>[] = [
+  createSetupDefinition,
+];

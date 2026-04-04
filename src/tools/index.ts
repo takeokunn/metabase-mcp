@@ -1,5 +1,7 @@
 import { actionTools } from './action';
 import { activityTools } from './activity';
+import { alertTools } from './alert';
+import { pulseTools } from './pulse';
 import { apiKeyTools } from './api-key';
 import { automagicDashboardTools } from './automagic-dashboard';
 import { bookmarkTools } from './bookmark';
@@ -47,12 +49,9 @@ import { timelineEventTools } from './timeline-event';
 import { timelineTools } from './timeline';
 import { uploadTools } from './upload';
 import { analyticsTools } from './analytics';
-import { cardsBulkTools } from './cards-bulk';
 import { notifyTools } from './notify';
-import { productFeedbackTools } from './product-feedback';
 import { userKeyValueTools } from './user-key-value';
 import { userTools } from './user';
-import { utilTools } from './util';
 
 /**
  * All tool definitions combined from all categories
@@ -74,6 +73,8 @@ export const allTools: ToolDefinition<unknown>[] = [
   ...bookmarkTools,
   // Notifications & alerts
   ...notificationTools,
+  ...alertTools,
+  ...pulseTools,
   // Actions
   ...actionTools,
   // Admin & settings
@@ -124,14 +125,8 @@ export const allTools: ToolDefinition<unknown>[] = [
   ...eidTranslationTools,
   // Notifications (push/email dispatch)
   ...notifyTools,
-  // Bulk card operations
-  ...cardsBulkTools,
-  // Utilities
-  ...utilTools,
   // Analytics
   ...analyticsTools,
-  // Feedback
-  ...productFeedbackTools,
 ];
 
 export type { ToolDefinition, ToolResponse } from './registry';

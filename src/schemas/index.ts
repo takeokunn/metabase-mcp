@@ -1,5 +1,8 @@
 export * from './action';
 export * from './activity';
+export * from './alert';
+export * from './pulse';
+export * from './setup';
 export * from './api-key';
 export * from './automagic-dashboard';
 export * from './bookmark';
@@ -45,8 +48,6 @@ export * from './tiles';
 export * from './timeline';
 export * from './upload';
 export * from './analytics';
-export * from './cards-bulk';
 export * from './notify';
-export * from './product-feedback';
 export * from './user';
 export * from './user-key-value';

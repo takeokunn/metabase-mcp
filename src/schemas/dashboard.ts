@@ -416,3 +416,107 @@ export type GetDashboardFieldValuesParams = z.infer<typeof GetDashboardFieldValu
 export type SearchDashboardFieldValuesParams = z.infer<
   typeof SearchDashboardFieldValuesParamsSchema
 >;
+
+// ---------------------------------------------------------------------------
+// New Dashboard Input Schemas
+// ---------------------------------------------------------------------------
+
+// Get dashboard param values input schema
+export const GetDashboardParamValuesInputSchema = z.object({
+  id: z.number().describe('The dashboard ID'),
+  param_key: z.string().describe('The parameter key'),
+});
+
+// Search dashboard param values input schema
+export const SearchDashboardParamValuesInputSchema = z.object({
+  id: z.number().describe('The dashboard ID'),
+  param_key: z.string().describe('The parameter key'),
+  query: z.string().describe('The search query'),
+});
+
+// Get dashboard param remapping input schema
+export const GetDashboardParamRemappingInputSchema = z.object({
+  id: z.number().describe('The dashboard ID'),
+  param_key: z.string().describe('The parameter key'),
+});
+
+// Get dashboard related input schema
+export const GetDashboardRelatedInputSchema = z.object({
+  id: z.number().describe('The dashboard ID'),
+});
+
+// Get valid filter fields input schema
+export const GetValidFilterFieldsInputSchema = z.object({
+  filtered: z.array(z.number()).describe('Array of field IDs to filter'),
+  filtering: z.array(z.number()).describe('Array of field IDs doing the filtering'),
+});
+
+// Save dashboard input schema
+export const SaveDashboardInputSchema = z.object({
+  dashboard: z.record(z.unknown()).describe('Dashboard object to save'),
+});
+
+// Save dashboard to collection input schema
+export const SaveDashboardToCollectionInputSchema = z.object({
+  parent_collection_id: z.number().describe('The parent collection ID'),
+  dashboard: z.record(z.unknown()).describe('Dashboard object to save'),
+});
+
+// Get dashboard items input schema
+export const GetDashboardItemsInputSchema = z.object({
+  id: z.number().describe('The dashboard ID'),
+});
+
+// Get dashcard action params input schema
+export const GetDashcardActionParamsInputSchema = z.object({
+  dashboard_id: z.number().describe('The dashboard ID'),
+  dashcard_id: z.number().describe('The dashcard ID'),
+  parameters: z.record(z.unknown()).optional().describe('Parameter values'),
+});
+
+// Run dashcard query input schema
+export const RunDashcardQueryInputSchema = z.object({
+  dashboard_id: z.number().describe('The dashboard ID'),
+  dashcard_id: z.number().describe('The dashcard ID'),
+  card_id: z.number().describe('The card ID'),
+  parameters: z.array(z.record(z.unknown())).optional().describe('Parameter values'),
+});
+
+// Export dashcard query input schema
+export const ExportDashcardQueryInputSchema = z.object({
+  dashboard_id: z.number().describe('The dashboard ID'),
+  dashcard_id: z.number().describe('The dashcard ID'),
+  card_id: z.number().describe('The card ID'),
+  export_format: z.enum(['csv', 'json', 'xlsx']).describe('Export format'),
+  parameters: z.array(z.record(z.unknown())).optional().describe('Parameter values'),
+});
+
+// Execute dashcard action input schema
+export const ExecuteDashcardActionInputSchema = z.object({
+  dashboard_id: z.number().describe('The dashboard ID'),
+  dashcard_id: z.number().describe('The dashcard ID'),
+  parameters: z.record(z.unknown()).describe('Action parameters'),
+});
+
+// Pivot dashcard query input schema
+export const PivotDashcardQueryInputSchema = z.object({
+  dashboard_id: z.number().describe('The dashboard ID'),
+  dashcard_id: z.number().describe('The dashcard ID'),
+  card_id: z.number().describe('The card ID'),
+  parameters: z.array(z.record(z.unknown())).optional().describe('Parameter values'),
+});
+
+// Inferred types - New Dashboard Input Schemas
+export type GetDashboardParamValuesInput = z.infer<typeof GetDashboardParamValuesInputSchema>;
+export type SearchDashboardParamValuesInput = z.infer<typeof SearchDashboardParamValuesInputSchema>;
+export type GetDashboardParamRemappingInput = z.infer<typeof GetDashboardParamRemappingInputSchema>;
+export type GetDashboardRelatedInput = z.infer<typeof GetDashboardRelatedInputSchema>;
+export type GetValidFilterFieldsInput = z.infer<typeof GetValidFilterFieldsInputSchema>;
+export type SaveDashboardInput = z.infer<typeof SaveDashboardInputSchema>;
+export type SaveDashboardToCollectionInput = z.infer<typeof SaveDashboardToCollectionInputSchema>;
+export type GetDashboardItemsInput = z.infer<typeof GetDashboardItemsInputSchema>;
+export type GetDashcardActionParamsInput = z.infer<typeof GetDashcardActionParamsInputSchema>;
+export type RunDashcardQueryInput = z.infer<typeof RunDashcardQueryInputSchema>;
+export type ExportDashcardQueryInput = z.infer<typeof ExportDashcardQueryInputSchema>;
+export type ExecuteDashcardActionInput = z.infer<typeof ExecuteDashcardActionInputSchema>;
+export type PivotDashcardQueryInput = z.infer<typeof PivotDashcardQueryInputSchema>;

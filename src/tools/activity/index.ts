@@ -1,4 +1,5 @@
 import type { ToolDefinition } from '@src/tools/registry';
+import { addRecentActivityDefinition } from './add-recent-activity';
 import { getMostRecentlyViewedDashboardDefinition } from './get-most-recently-viewed-dashboard';
 import { listPopularItemsDefinition } from './list-popular-items';
 import { listRecentViewsDefinition } from './list-recent-views';
@@ -9,4 +10,5 @@ export const activityTools: ToolDefinition<unknown>[] = [
   listRecentsDefinition,
   listPopularItemsDefinition,
   getMostRecentlyViewedDashboardDefinition,
+  addRecentActivityDefinition,
 ];

@@ -129,6 +129,37 @@ export const UploadCsvToDatabaseInputSchema = z.object({
   collection_id: z.number().optional().describe('Collection ID to associate the new table with'),
 });
 
+// Get database card autocomplete params schema
+export const GetDatabaseCardAutocompleteParamsSchema = z.object({
+  id: z.number().describe('Database ID'),
+  query: z.string().describe('Search query for autocomplete'),
+});
+
+// Get database available settings params schema
+export const GetDatabaseAvailableSettingsParamsSchema = z.object({
+  id: z.number().describe('Database ID'),
+});
+
+// Get database syncable schemas params schema
+export const GetDatabaseSyncableSchemasParamsSchema = z.object({
+  id: z.number().describe('Database ID'),
+});
+
+// Get virtual database datasets params schema
+export const GetVirtualDatabaseDatasetsParamsSchema = z.object({
+  virtual_db: z.number().describe('Virtual database ID'),
+});
+
+// Dismiss database spinner input schema
+export const DismissDatabaseSpinnerInputSchema = z.object({
+  id: z.number().describe('Database ID'),
+});
+
+// Check database workspace permission input schema
+export const CheckDatabaseWorkspacePermissionInputSchema = z.object({
+  id: z.number().describe('Database ID'),
+});
+
 // Inferred types
 export type DatabaseId = z.infer<typeof DatabaseIdSchema>;
 export type DatabaseEngine = z.infer<typeof DatabaseEngineSchema>;
@@ -148,3 +179,9 @@ export type SyncDatabaseSchemaParams = z.infer<typeof SyncDatabaseSchemaParamsSc
 export type DeleteDatabaseSchemaParams = z.infer<typeof DeleteDatabaseSchemaParamsSchema>;
 export type GetDatabaseVirtualSchemaParams = z.infer<typeof GetDatabaseVirtualSchemaParamsSchema>;
 export type UploadCsvToDatabaseInput = z.infer<typeof UploadCsvToDatabaseInputSchema>;
+export type GetDatabaseCardAutocompleteParams = z.infer<typeof GetDatabaseCardAutocompleteParamsSchema>;
+export type GetDatabaseAvailableSettingsParams = z.infer<typeof GetDatabaseAvailableSettingsParamsSchema>;
+export type GetDatabaseSyncableSchemasParams = z.infer<typeof GetDatabaseSyncableSchemasParamsSchema>;
+export type GetVirtualDatabaseDatasetsParams = z.infer<typeof GetVirtualDatabaseDatasetsParamsSchema>;
+export type DismissDatabaseSpinnerInput = z.infer<typeof DismissDatabaseSpinnerInputSchema>;
+export type CheckDatabaseWorkspacePermissionInput = z.infer<typeof CheckDatabaseWorkspacePermissionInputSchema>;

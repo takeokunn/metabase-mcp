@@ -126,6 +126,22 @@ export const DeleteAlertInputSchema = z.object({
   id: AlertIdSchema.describe('Alert ID to delete'),
 });
 
+// List alerts input schema (simple, no params required)
+export const ListAlertsInputSchema = z.object({});
+export type ListAlertsInput = z.infer<typeof ListAlertsInputSchema>;
+
+// Get alert input schema
+export const GetAlertInputSchema = z.object({
+  id: z.number().describe('The alert ID'),
+});
+export type GetAlertInput = z.infer<typeof GetAlertInputSchema>;
+
+// Delete alert subscription input schema
+export const DeleteAlertSubscriptionInputSchema = z.object({
+  id: z.number().describe('The alert ID'),
+});
+export type DeleteAlertSubscriptionInput = z.infer<typeof DeleteAlertSubscriptionInputSchema>;
+
 // Inferred types
 export type AlertId = z.infer<typeof AlertIdSchema>;
 export type AlertCondition = z.infer<typeof AlertConditionSchema>;
