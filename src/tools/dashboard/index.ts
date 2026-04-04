@@ -1,41 +1,35 @@
 import type { ToolDefinition } from '@src/tools/registry';
-import { copyDashboardDefinition } from './copy-dashboard';
-import { createDashboardDefinition } from './create-dashboard';
-import { deleteDashboardDefinition } from './delete-dashboard';
-import { getDashboardDefinition } from './get-dashboard';
-import { getDashboardMetadataDefinition } from './get-dashboard-metadata';
-import { listDashboardsDefinition } from './list-dashboards';
-import { updateDashboardDefinition } from './update-dashboard';
-
 // Dashcard Management (v0.49+)
 import { addDashboardCardDefinition } from './add-dashboard-card';
-import { removeDashboardCardDefinition } from './remove-dashboard-card';
-import { updateDashboardCardDefinition } from './update-dashboard-card';
-import { updateDashboardCardsDefinition } from './update-dashboard-cards';
-
-// Tab Management (v0.49+)
-import { addDashboardTabDefinition } from './add-dashboard-tab';
-import { removeDashboardTabDefinition } from './remove-dashboard-tab';
-import { updateDashboardTabDefinition } from './update-dashboard-tab';
-
-// Public Sharing
-import { createDashboardPublicLinkDefinition } from './create-dashboard-public-link';
-import { deleteDashboardPublicLinkDefinition } from './delete-dashboard-public-link';
-import { listPublicDashboardsDefinition } from './list-public-dashboards';
-
 // Favorites
 import { addDashboardFavoriteDefinition } from './add-dashboard-favorite';
-import { removeDashboardFavoriteDefinition } from './remove-dashboard-favorite';
-
-// Revisions
-import { listDashboardRevisionsDefinition } from './list-dashboard-revisions';
-import { revertDashboardDefinition } from './revert-dashboard';
-
+// Tab Management (v0.49+)
+import { addDashboardTabDefinition } from './add-dashboard-tab';
+import { copyDashboardDefinition } from './copy-dashboard';
+import { createDashboardDefinition } from './create-dashboard';
+// Public Sharing
+import { createDashboardPublicLinkDefinition } from './create-dashboard-public-link';
 // Subscriptions (v0.49+)
 import { createDashboardSubscriptionDefinition } from './create-dashboard-subscription';
+import { deleteDashboardDefinition } from './delete-dashboard';
+import { deleteDashboardPublicLinkDefinition } from './delete-dashboard-public-link';
 import { deleteDashboardSubscriptionDefinition } from './delete-dashboard-subscription';
+import { getDashboardDefinition } from './get-dashboard';
+import { getDashboardMetadataDefinition } from './get-dashboard-metadata';
+// Revisions
+import { listDashboardRevisionsDefinition } from './list-dashboard-revisions';
 import { listDashboardSubscriptionsDefinition } from './list-dashboard-subscriptions';
+import { listDashboardsDefinition } from './list-dashboards';
+import { listPublicDashboardsDefinition } from './list-public-dashboards';
+import { removeDashboardCardDefinition } from './remove-dashboard-card';
+import { removeDashboardFavoriteDefinition } from './remove-dashboard-favorite';
+import { removeDashboardTabDefinition } from './remove-dashboard-tab';
+import { revertDashboardDefinition } from './revert-dashboard';
+import { updateDashboardDefinition } from './update-dashboard';
+import { updateDashboardCardDefinition } from './update-dashboard-card';
+import { updateDashboardCardsDefinition } from './update-dashboard-cards';
 import { updateDashboardSubscriptionDefinition } from './update-dashboard-subscription';
+import { updateDashboardTabDefinition } from './update-dashboard-tab';
 
 /**
  * All dashboard-related tool definitions

@@ -28,12 +28,10 @@ describe('addDashboardCard tool', () => {
   it('should add card to dashboard with negative ID', async () => {
     const mockClient = createMockClient({
       get: vi.fn().mockResolvedValue(mockDashboard),
-      put: vi
-        .fn()
-        .mockResolvedValue({
-          ...mockDashboard,
-          dashcards: [...mockDashboard.dashcards, { id: -1 }],
-        }),
+      put: vi.fn().mockResolvedValue({
+        ...mockDashboard,
+        dashcards: [...mockDashboard.dashcards, { id: -1 }],
+      }),
     });
 
     const result = await addDashboardCardDefinition.handler(mockClient, baseInput);

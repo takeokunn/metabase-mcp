@@ -64,12 +64,12 @@
     "zod": "4.3.6"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.13",
-    "@modelcontextprotocol/inspector": "^0.16.6",
-    "@types/node": "^22.0.0",
-    "@vitest/coverage-v8": "^3.2.4",
-    "tsdown": "^0.20.3",
-    "typescript": "^5.8.0",
-    "vitest": "^3.0.0"
+    "@biomejs/biome": "^2.4.10",
+    "@modelcontextprotocol/inspector": "^0.21.1",
+    "@types/node": "^25.5.0",
+    "@vitest/coverage-v8": "^4.1.2",
+    "tsdown": "^0.21.7",
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.2"
   }
 }
