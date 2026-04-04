@@ -155,9 +155,9 @@ export const CopyDashboardInputSchema = z.object({
   collection_id: z.number().int().optional().describe('Collection ID for the copied dashboard'),
 });
 
-// =============================================================================
+// ---------------------------------------------------------------------------
 // Dashcard Management Schemas (v0.49+: uses PUT /api/dashboard/:id)
-// =============================================================================
+// ---------------------------------------------------------------------------
 
 // Add dashboard card input schema
 export const AddDashboardCardInputSchema = z.object({
@@ -230,9 +230,9 @@ export const UpdateDashboardCardsInputSchema = z.object({
   ordered_tabs: z.array(DashboardTabSchema).optional().describe('Tab ordering'),
 });
 
-// =============================================================================
+// ---------------------------------------------------------------------------
 // Dashboard Tab Schemas
-// =============================================================================
+// ---------------------------------------------------------------------------
 
 // Add dashboard tab input schema
 export const AddDashboardTabInputSchema = z.object({
@@ -254,9 +254,9 @@ export const RemoveDashboardTabInputSchema = z.object({
   tab_id: DashboardTabIdSchema.describe('Tab ID to remove'),
 });
 
-// =============================================================================
+// ---------------------------------------------------------------------------
 // Public Sharing Schemas
-// =============================================================================
+// ---------------------------------------------------------------------------
 
 // Create public link input schema
 export const CreateDashboardPublicLinkInputSchema = z.object({
@@ -276,9 +276,9 @@ export const DashboardPublicLinkSchema = z.object({
   uuid: UUIDSchema.describe('Public link UUID'),
 });
 
-// =============================================================================
+// ---------------------------------------------------------------------------
 // Favorites Schemas
-// =============================================================================
+// ---------------------------------------------------------------------------
 
 // Add favorite input schema
 export const AddDashboardFavoriteInputSchema = z.object({
@@ -290,9 +290,9 @@ export const RemoveDashboardFavoriteInputSchema = z.object({
   dashboard_id: DashboardIdSchema.describe('Dashboard ID to unfavorite'),
 });
 
-// =============================================================================
+// ---------------------------------------------------------------------------
 // Revision Schemas
-// =============================================================================
+// ---------------------------------------------------------------------------
 
 // List revisions params schema
 export const ListDashboardRevisionsParamsSchema = z.object({
@@ -350,3 +350,70 @@ export type RemoveDashboardFavoriteInput = z.infer<typeof RemoveDashboardFavorit
 // Inferred types - Revisions
 export type ListDashboardRevisionsParams = z.infer<typeof ListDashboardRevisionsParamsSchema>;
 export type RevertDashboardInput = z.infer<typeof RevertDashboardInputSchema>;
+
+// ---------------------------------------------------------------------------
+// Query Execution & Export Schemas
+// ---------------------------------------------------------------------------
+
+// Execute dashboard card query input schema
+export const ExecuteDashboardCardQueryInputSchema = z.object({
+  id: DashboardIdSchema.describe('Dashboard ID'),
+  dashcard_id: z.number().int().positive().describe('Dashboard card ID'),
+  card_id: z.number().int().positive().describe('Card ID to execute'),
+  parameters: z
+    .array(z.record(z.unknown()))
+    .optional()
+    .describe('Dashboard filter parameters to apply to the query'),
+});
+
+// Export dashboard card query input schema
+export const ExportDashboardCardQueryInputSchema = z.object({
+  id: DashboardIdSchema.describe('Dashboard ID'),
+  dashcard_id: z.number().int().positive().describe('Dashboard card ID'),
+  card_id: z.number().int().positive().describe('Card ID to export'),
+  export_format: z
+    .enum(['csv', 'json', 'xlsx', 'pdf'])
+    .describe('Export format: csv, json, xlsx, or pdf'),
+  parameters: z
+    .array(z.record(z.unknown()))
+    .optional()
+    .describe('Dashboard filter parameters to apply to the query'),
+});
+
+// Get dashboard param values params schema
+export const GetDashboardParamValuesParamsSchema = z.object({
+  id: DashboardIdSchema.describe('Dashboard ID'),
+  param_key: z.string().describe('Parameter key (slug) to retrieve values for'),
+});
+
+// Search dashboard param values params schema
+export const SearchDashboardParamValuesParamsSchema = z.object({
+  id: DashboardIdSchema.describe('Dashboard ID'),
+  param_key: z.string().describe('Parameter key (slug) to search values for'),
+  query: z.string().describe('Search query string to filter parameter values'),
+});
+
+// Get dashboard field values params schema
+export const GetDashboardFieldValuesParamsSchema = z.object({
+  id: DashboardIdSchema.describe('Dashboard ID'),
+  field_id: z.number().int().positive().describe('Field ID to retrieve values for'),
+});
+
+// Search dashboard field values params schema
+export const SearchDashboardFieldValuesParamsSchema = z.object({
+  id: DashboardIdSchema.describe('Dashboard ID'),
+  field_id: z.number().int().positive().describe('Field ID to search values for'),
+  search_value: z.string().describe('Search string to filter field values'),
+});
+
+// Inferred types - Query Execution & Export
+export type ExecuteDashboardCardQueryInput = z.infer<typeof ExecuteDashboardCardQueryInputSchema>;
+export type ExportDashboardCardQueryInput = z.infer<typeof ExportDashboardCardQueryInputSchema>;
+export type GetDashboardParamValuesParams = z.infer<typeof GetDashboardParamValuesParamsSchema>;
+export type SearchDashboardParamValuesParams = z.infer<
+  typeof SearchDashboardParamValuesParamsSchema
+>;
+export type GetDashboardFieldValuesParams = z.infer<typeof GetDashboardFieldValuesParamsSchema>;
+export type SearchDashboardFieldValuesParams = z.infer<
+  typeof SearchDashboardFieldValuesParamsSchema
+>;

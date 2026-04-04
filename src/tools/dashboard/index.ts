@@ -30,6 +30,14 @@ import { updateDashboardCardDefinition } from './update-dashboard-card';
 import { updateDashboardCardsDefinition } from './update-dashboard-cards';
 import { updateDashboardSubscriptionDefinition } from './update-dashboard-subscription';
 import { updateDashboardTabDefinition } from './update-dashboard-tab';
+// Query Execution & Export
+import { executeDashboardCardQueryDefinition } from './execute-dashboard-card-query';
+import { exportDashboardCardQueryDefinition } from './export-dashboard-card-query';
+import { getDashboardParamValuesDefinition } from './get-dashboard-param-values';
+import { searchDashboardParamValuesDefinition } from './search-dashboard-param-values';
+import { getDashboardEmbeddableDefinition } from './get-dashboard-embeddable';
+import { getDashboardFieldValuesDefinition } from './get-dashboard-field-values';
+import { searchDashboardFieldValuesDefinition } from './search-dashboard-field-values';
 
 /**
  * All dashboard-related tool definitions
@@ -73,4 +81,13 @@ export const dashboardTools: ToolDefinition<unknown>[] = [
   createDashboardSubscriptionDefinition,
   updateDashboardSubscriptionDefinition,
   deleteDashboardSubscriptionDefinition,
+
+  // Query Execution & Export
+  executeDashboardCardQueryDefinition,
+  exportDashboardCardQueryDefinition,
+  getDashboardParamValuesDefinition,
+  searchDashboardParamValuesDefinition,
+  getDashboardEmbeddableDefinition,
+  getDashboardFieldValuesDefinition,
+  searchDashboardFieldValuesDefinition,
 ];

@@ -15,7 +15,7 @@ export const listDashboardRevisionsDefinition: ToolDefinition<ListDashboardRevis
   inputSchema: ListDashboardRevisionsParamsSchema,
   handler: async (client: MetabaseClient, input: ListDashboardRevisionsParams) => {
     const { dashboard_id } = input;
-    const result = await client.get(`/api/dashboard/${dashboard_id}/revisions`);
+    const result = await client.get('/api/revision', { entity: 'dashboard', id: dashboard_id });
     return formatToolResponse(result);
   },
 };

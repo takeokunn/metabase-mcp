@@ -64,9 +64,9 @@ export const DashboardSubscriptionSchema = z.object({
   parameters: z.array(z.record(z.unknown())).optional().describe('Dashboard filter parameters'),
 });
 
-// =============================================================================
+// ---------------------------------------------------------------------------
 // Dashboard Subscription Input Schemas
-// =============================================================================
+// ---------------------------------------------------------------------------
 
 // List dashboard subscriptions params schema
 export const ListDashboardSubscriptionsParamsSchema = z.object({
@@ -117,9 +117,9 @@ export const DeleteDashboardSubscriptionInputSchema = z.object({
   id: NotificationIdSchema.describe('Subscription ID to delete'),
 });
 
-// =============================================================================
+// ---------------------------------------------------------------------------
 // Inferred Types
-// =============================================================================
+// ---------------------------------------------------------------------------
 
 export type NotificationId = z.infer<typeof NotificationIdSchema>;
 export type NotificationChannelType = z.infer<typeof NotificationChannelTypeSchema>;
@@ -142,3 +142,58 @@ export type UpdateDashboardSubscriptionInput = z.infer<
 export type DeleteDashboardSubscriptionInput = z.infer<
   typeof DeleteDashboardSubscriptionInputSchema
 >;
+
+// ---------------------------------------------------------------------------
+// Standalone Notification Input Schemas
+// ---------------------------------------------------------------------------
+
+// List notifications params schema
+export const ListNotificationsParamsSchema = z.object({
+  archived: z.boolean().optional().describe('Filter by archived status'),
+  dashboard_id: z.number().int().positive().optional().describe('Filter by dashboard ID'),
+});
+
+// Get notification params schema
+export const GetNotificationParamsSchema = z.object({
+  id: z.number().int().positive().describe('Notification ID'),
+});
+
+// Send notification params schema
+export const SendNotificationParamsSchema = z.object({
+  id: z.number().int().positive().describe('Notification ID to send immediately'),
+});
+
+// Unsubscribe notification input schema
+export const UnsubscribeNotificationInputSchema = z.object({
+  id: z.number().int().positive().describe('Notification ID to unsubscribe from'),
+  email: z.string().email().optional().describe('Email address to unsubscribe'),
+});
+
+// Unsubscribe global input schema
+export const UnsubscribeGlobalInputSchema = z.object({
+  email: z.string().email().describe('Email address to unsubscribe globally'),
+  hash: z.string().describe('Unsubscribe token hash'),
+});
+
+// Undo unsubscribe input schema
+export const UndoUnsubscribeInputSchema = z.object({
+  email: z.string().email().describe('Email address to re-subscribe'),
+  hash: z.string().describe('Unsubscribe token hash to undo'),
+});
+
+// Send ad-hoc notification input schema
+export const SendAdhocNotificationInputSchema = z.object({
+  notification: z.record(z.unknown()).describe('Notification payload to send ad-hoc'),
+});
+
+// ---------------------------------------------------------------------------
+// Inferred Types (Standalone Notifications)
+// ---------------------------------------------------------------------------
+
+export type ListNotificationsParams = z.infer<typeof ListNotificationsParamsSchema>;
+export type GetNotificationParams = z.infer<typeof GetNotificationParamsSchema>;
+export type SendNotificationParams = z.infer<typeof SendNotificationParamsSchema>;
+export type UnsubscribeNotificationInput = z.infer<typeof UnsubscribeNotificationInputSchema>;
+export type UnsubscribeGlobalInput = z.infer<typeof UnsubscribeGlobalInputSchema>;
+export type UndoUnsubscribeInput = z.infer<typeof UndoUnsubscribeInputSchema>;
+export type SendAdhocNotificationInput = z.infer<typeof SendAdhocNotificationInputSchema>;

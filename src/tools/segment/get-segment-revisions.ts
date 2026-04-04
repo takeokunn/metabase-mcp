@@ -14,7 +14,7 @@ export const getSegmentRevisionsDefinition: ToolDefinition<GetSegmentRevisionsPa
   description: 'Get revision history of a segment from Metabase',
   inputSchema: GetSegmentRevisionsParamsSchema,
   handler: async (client: MetabaseClient, input: GetSegmentRevisionsParams) => {
-    const revisions = await client.get(`/api/segment/${input.id}/revisions`);
+    const revisions = await client.get('/api/revision', { entity: 'segment', id: input.id });
     return formatToolResponse(revisions);
   },
 };

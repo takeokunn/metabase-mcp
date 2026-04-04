@@ -79,3 +79,44 @@ export type GetCollectionPermissionsInput = z.infer<typeof GetCollectionPermissi
 export type UpdateCollectionPermissionsInput = z.infer<
   typeof UpdateCollectionPermissionsInputSchema
 >;
+
+// Membership schemas
+export const MembershipIdSchema = z.number().int().positive().describe('Membership ID');
+export const GroupIdSchema = z.number().int().positive().describe('Permission group ID');
+
+export const ListMembershipsInputSchema = z.object({});
+
+export const AddMembershipInputSchema = z.object({
+  user_id: z.number().int().positive().describe('ID of the user to add'),
+  group_id: z.number().int().positive().describe('ID of the permission group'),
+});
+
+export const UpdateMembershipInputSchema = z.object({
+  id: z.number().int().positive().describe('Membership ID'),
+  is_group_manager: z.boolean().optional().describe('Whether the user is a group manager'),
+});
+
+export const DeleteMembershipParamsSchema = z.object({
+  id: z.number().int().positive().describe('Membership ID'),
+});
+
+export const ClearMembershipsParamsSchema = z.object({
+  group_id: z.number().int().positive().describe('ID of the permission group to clear'),
+});
+
+export const GetDbPermissionsParamsSchema = z.object({
+  db_id: z.number().int().positive().describe('Database ID'),
+});
+
+export const GetGroupPermissionsParamsSchema = z.object({
+  group_id: z.number().int().positive().describe('ID of the permission group'),
+});
+
+// Membership type exports
+export type ListMembershipsInput = z.infer<typeof ListMembershipsInputSchema>;
+export type AddMembershipInput = z.infer<typeof AddMembershipInputSchema>;
+export type UpdateMembershipInput = z.infer<typeof UpdateMembershipInputSchema>;
+export type DeleteMembershipParams = z.infer<typeof DeleteMembershipParamsSchema>;
+export type ClearMembershipsParams = z.infer<typeof ClearMembershipsParamsSchema>;
+export type GetDbPermissionsParams = z.infer<typeof GetDbPermissionsParamsSchema>;
+export type GetGroupPermissionsParams = z.infer<typeof GetGroupPermissionsParamsSchema>;

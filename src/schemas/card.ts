@@ -107,3 +107,115 @@ export type UpdateCardInput = z.infer<typeof UpdateCardInputSchema>;
 export type DeleteCardInput = z.infer<typeof DeleteCardInputSchema>;
 export type ExecuteCardParams = z.infer<typeof ExecuteCardParamsSchema>;
 export type GetCardMetadataParams = z.infer<typeof GetCardMetadataParamsSchema>;
+
+// ---------------------------------------------------------------------------
+// Public Link Schemas
+// ---------------------------------------------------------------------------
+
+// Create card public link input schema
+export const CreateCardPublicLinkInputSchema = z.object({
+  id: CardIdSchema.describe('Card ID to create a public link for'),
+});
+
+// Delete card public link input schema
+export const DeleteCardPublicLinkInputSchema = z.object({
+  id: CardIdSchema.describe('Card ID to remove the public link from'),
+});
+
+// List embeddable cards params schema (admin only)
+export const ListEmbeddableCardsParamsSchema = z.object({});
+
+// List public cards params schema (admin only)
+export const ListPublicCardsParamsSchema = z.object({});
+
+// ---------------------------------------------------------------------------
+// Copy & Series Schemas
+// ---------------------------------------------------------------------------
+
+// Copy card params schema
+export const CopyCardParamsSchema = z.object({
+  id: CardIdSchema.describe('Card ID to copy'),
+  collection_id: z
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Collection ID to save the copied card in'),
+  name: z.string().optional().describe('Name for the copied card'),
+});
+
+// Get card series params schema
+export const GetCardSeriesParamsSchema = z.object({
+  id: CardIdSchema.describe('Card ID to get related series for'),
+});
+
+// Get card related params schema
+export const GetCardRelatedParamsSchema = z.object({
+  id: CardIdSchema.describe('Card ID to get related items for'),
+});
+
+// ---------------------------------------------------------------------------
+// Param & Field Value Schemas
+// ---------------------------------------------------------------------------
+
+// Get card param values params schema
+export const GetCardParamValuesParamsSchema = z.object({
+  id: CardIdSchema.describe('Card ID'),
+  param_key: z.string().describe('Parameter key (slug) to retrieve values for'),
+});
+
+// Search card param values params schema
+export const SearchCardParamValuesParamsSchema = z.object({
+  id: CardIdSchema.describe('Card ID'),
+  param_key: z.string().describe('Parameter key (slug) to search values for'),
+  query: z.string().describe('Search query string to filter parameter values'),
+});
+
+// Get card field values params schema
+export const GetCardFieldValuesParamsSchema = z.object({
+  id: CardIdSchema.describe('Card ID'),
+  field_id: z.number().int().positive().describe('Field ID to retrieve values for'),
+});
+
+// Search card field values params schema
+export const SearchCardFieldValuesParamsSchema = z.object({
+  id: CardIdSchema.describe('Card ID'),
+  field_id: z.number().int().positive().describe('Field ID to search values for'),
+  search_value: z.string().describe('Search string to filter field values'),
+});
+
+// Export card query params schema
+export const ExportCardQueryParamsSchema = z.object({
+  id: CardIdSchema.describe('Card ID to export'),
+  export_format: z
+    .enum(['csv', 'json', 'xlsx', 'pdf'])
+    .describe('Export format: csv, json, xlsx, or pdf'),
+});
+
+// Execute card pivot params schema
+export const ExecuteCardPivotParamsSchema = z.object({
+  id: CardIdSchema.describe('Card ID to execute as a pivot table'),
+  parameters: z
+    .array(z.record(z.unknown()))
+    .optional()
+    .describe('Query parameters to apply to the pivot query'),
+});
+
+// Inferred types - Public Links
+export type CreateCardPublicLinkInput = z.infer<typeof CreateCardPublicLinkInputSchema>;
+export type DeleteCardPublicLinkInput = z.infer<typeof DeleteCardPublicLinkInputSchema>;
+export type ListEmbeddableCardsParams = z.infer<typeof ListEmbeddableCardsParamsSchema>;
+export type ListPublicCardsParams = z.infer<typeof ListPublicCardsParamsSchema>;
+
+// Inferred types - Copy & Series
+export type CopyCardParams = z.infer<typeof CopyCardParamsSchema>;
+export type GetCardSeriesParams = z.infer<typeof GetCardSeriesParamsSchema>;
+export type GetCardRelatedParams = z.infer<typeof GetCardRelatedParamsSchema>;
+
+// Inferred types - Param & Field Values
+export type GetCardParamValuesParams = z.infer<typeof GetCardParamValuesParamsSchema>;
+export type SearchCardParamValuesParams = z.infer<typeof SearchCardParamValuesParamsSchema>;
+export type GetCardFieldValuesParams = z.infer<typeof GetCardFieldValuesParamsSchema>;
+export type SearchCardFieldValuesParams = z.infer<typeof SearchCardFieldValuesParamsSchema>;
+export type ExportCardQueryParams = z.infer<typeof ExportCardQueryParamsSchema>;
+export type ExecuteCardPivotParams = z.infer<typeof ExecuteCardPivotParamsSchema>;

@@ -63,6 +63,11 @@ export const SendInviteInputSchema = z.object({
   id: z.number().int().positive().describe('User ID to send invite to'),
 });
 
+// Get user memberships input schema
+export const GetUserMembershipsParamsSchema = z.object({
+  id: z.number().int().positive().describe('User ID to get group memberships for'),
+});
+
 // Inferred types
 export type UserStatus = z.infer<typeof UserStatusSchema>;
 export type ListUsersInput = z.infer<typeof ListUsersInputSchema>;
@@ -74,3 +79,4 @@ export type GetCurrentUserInput = z.infer<typeof GetCurrentUserInputSchema>;
 export type UpdateUserPasswordInput = z.infer<typeof UpdateUserPasswordInputSchema>;
 export type ReactivateUserInput = z.infer<typeof ReactivateUserInputSchema>;
 export type SendInviteInput = z.infer<typeof SendInviteInputSchema>;
+export type GetUserMembershipsParams = z.infer<typeof GetUserMembershipsParamsSchema>;

@@ -34,7 +34,7 @@ describe('listDashboardRevisions tool', () => {
     const result = await listDashboardRevisionsDefinition.handler(mockClient, baseInput);
 
     expectMcpContent(result, mockResponse);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1/revisions');
+    expect(mockClient.get).toHaveBeenCalledWith('/api/revision', { entity: 'dashboard', id: 1 });
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
 

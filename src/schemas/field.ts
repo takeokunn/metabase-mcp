@@ -92,6 +92,32 @@ export const SearchFieldValuesInputSchema = z.object({
   limit: z.number().int().positive().max(100).optional().describe('Maximum results to return'),
 });
 
+// Create field dimension input schema
+export const CreateFieldDimensionInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+  type: z.enum(['external', 'internal']).describe('Dimension type: external (remapping) or internal (FK lookup)'),
+  name: z.string().describe('Display name for the dimension'),
+  human_readable_field_id: z
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .describe('Field ID to use for human-readable values (required for external type)'),
+});
+
+// Field dimension params schema (for delete)
+export const FieldDimensionParamsSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+});
+
+// Update field remapping input schema
+export const UpdateFieldRemappingInputSchema = z.object({
+  id: z.number().int().positive().describe('Field ID'),
+  values: z
+    .array(z.array(z.unknown()))
+    .describe('Array of [original_value, human_readable_value] pairs'),
+});
+
 // Type exports
 export type GetFieldInput = z.infer<typeof GetFieldInputSchema>;
 export type UpdateFieldInput = z.infer<typeof UpdateFieldInputSchema>;
@@ -101,3 +127,6 @@ export type RescanFieldValuesInput = z.infer<typeof RescanFieldValuesInputSchema
 export type DiscardFieldValuesInput = z.infer<typeof DiscardFieldValuesInputSchema>;
 export type GetFieldRelatedInput = z.infer<typeof GetFieldRelatedInputSchema>;
 export type SearchFieldValuesInput = z.infer<typeof SearchFieldValuesInputSchema>;
+export type CreateFieldDimensionInput = z.infer<typeof CreateFieldDimensionInputSchema>;
+export type FieldDimensionParams = z.infer<typeof FieldDimensionParamsSchema>;
+export type UpdateFieldRemappingInput = z.infer<typeof UpdateFieldRemappingInputSchema>;

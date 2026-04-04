@@ -63,7 +63,7 @@ describe('getSegmentRevisions tool', () => {
     const result = await getSegmentRevisionsDefinition.handler(mockClient, { id: 1 });
 
     expectMcpContent(result, mockRevisions);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/segment/1/revisions');
+    expect(mockClient.get).toHaveBeenCalledWith('/api/revision', { entity: 'segment', id: 1 });
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
 
@@ -89,7 +89,7 @@ describe('getSegmentRevisions tool', () => {
     const result = await getSegmentRevisionsDefinition.handler(mockClient, { id: 42 });
 
     expectMcpContent(result, mockRevisions);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/segment/42/revisions');
+    expect(mockClient.get).toHaveBeenCalledWith('/api/revision', { entity: 'segment', id: 42 });
   });
 
   it('should handle empty revisions', async () => {
@@ -98,7 +98,7 @@ describe('getSegmentRevisions tool', () => {
     const result = await getSegmentRevisionsDefinition.handler(mockClient, { id: 5 });
 
     expectMcpContent(result, []);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/segment/5/revisions');
+    expect(mockClient.get).toHaveBeenCalledWith('/api/revision', { entity: 'segment', id: 5 });
   });
 
   it('should propagate client errors', async () => {
@@ -107,7 +107,7 @@ describe('getSegmentRevisions tool', () => {
     await expect(getSegmentRevisionsDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Segment not found',
     );
-    expect(mockClient.get).toHaveBeenCalledWith('/api/segment/999/revisions');
+    expect(mockClient.get).toHaveBeenCalledWith('/api/revision', { entity: 'segment', id: 999 });
   });
 
   it('should propagate API errors with status codes', async () => {

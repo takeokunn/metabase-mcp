@@ -12,7 +12,9 @@ export const revertDashboardDefinition: ToolDefinition<RevertDashboardInput> = {
   inputSchema: RevertDashboardInputSchema,
   handler: async (client: MetabaseClient, input: RevertDashboardInput) => {
     const { dashboard_id, revision_id } = input;
-    const result = await client.post(`/api/dashboard/${dashboard_id}/revert`, {
+    const result = await client.post('/api/revision/revert', {
+      entity: 'dashboard',
+      id: dashboard_id,
       revision_id,
     });
     return formatToolResponse(result);

@@ -37,9 +37,33 @@ export const ExportQueryInputSchema = ExecuteQueryInputSchema.extend({
   format: ExportFormatSchema.describe('Export format: csv, json, or xlsx'),
 });
 
+// Execute pivot query input schema
+export const ExecutePivotQueryInputSchema = z.object({
+  query: z.record(z.unknown()).describe('MBQL pivot query object'),
+});
+
+// Get native query input schema
+export const GetNativeQueryInputSchema = z.object({
+  query: z.record(z.unknown()).describe('MBQL query to convert to native SQL'),
+});
+
+// Get query duration input schema
+export const GetQueryDurationInputSchema = z.object({
+  query: z.record(z.unknown()).describe('MBQL query to estimate duration for'),
+});
+
+// Format query for visualization input schema
+export const FormatQueryForVizInputSchema = z.object({
+  query: z.record(z.unknown()).describe('MBQL query to format for visualization'),
+});
+
 // Inferred types
 export type QueryType = z.infer<typeof QueryTypeSchema>;
 export type DatasetQuery = z.infer<typeof DatasetQuerySchema>;
 export type ExecuteQueryInput = z.infer<typeof ExecuteQueryInputSchema>;
 export type ExportFormat = z.infer<typeof ExportFormatSchema>;
 export type ExportQueryInput = z.infer<typeof ExportQueryInputSchema>;
+export type ExecutePivotQueryInput = z.infer<typeof ExecutePivotQueryInputSchema>;
+export type GetNativeQueryInput = z.infer<typeof GetNativeQueryInputSchema>;
+export type GetQueryDurationInput = z.infer<typeof GetQueryDurationInputSchema>;
+export type FormatQueryForVizInput = z.infer<typeof FormatQueryForVizInputSchema>;

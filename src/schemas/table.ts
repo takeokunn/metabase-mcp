@@ -50,6 +50,25 @@ export const TableIdInputSchema = z.object({
   id: TableIdSchema.describe('Table ID'),
 });
 
+// Bulk update tables input schema
+export const BulkUpdateTablesInputSchema = z.object({
+  tables: z.array(z.record(z.unknown())).describe('Array of table update objects, each must include an id field'),
+});
+
+// Append CSV to table input schema
+export const AppendCsvToTableInputSchema = z.object({
+  id: TableIdSchema.describe('Table ID to append CSV data to'),
+  file_name: z.string().describe('Name of the CSV file to append'),
+});
+
+// Update table fields order input schema
+export const UpdateTableFieldsOrderInputSchema = z.object({
+  id: TableIdSchema.describe('Table ID'),
+  field_order: z
+    .array(z.number().int().positive())
+    .describe('Array of field IDs in the desired display order'),
+});
+
 // Inferred types
 export type TableId = z.infer<typeof TableIdSchema>;
 export type TableVisibilityType = z.infer<typeof TableVisibilityTypeSchema>;
@@ -59,3 +78,6 @@ export type GetTableMetadataParams = z.infer<typeof GetTableMetadataParamsSchema
 export type UpdateTableInput = z.infer<typeof UpdateTableInputSchema>;
 export type ListTableFieldsParams = z.infer<typeof ListTableFieldsParamsSchema>;
 export type TableIdInput = z.infer<typeof TableIdInputSchema>;
+export type BulkUpdateTablesInput = z.infer<typeof BulkUpdateTablesInputSchema>;
+export type AppendCsvToTableInput = z.infer<typeof AppendCsvToTableInputSchema>;
+export type UpdateTableFieldsOrderInput = z.infer<typeof UpdateTableFieldsOrderInputSchema>;

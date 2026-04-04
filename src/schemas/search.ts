@@ -50,9 +50,17 @@ export const SearchResponseSchema = z.object({
 // Search models response schema (for /api/search/models endpoint)
 export const SearchModelsResponseSchema = z.array(SearchModelSchema);
 
+// Get search context params schema (no parameters required)
+export const GetSearchContextParamsSchema = z.object({});
+
+// List search indexed entities params schema (no parameters required)
+export const ListSearchIndexedEntitiesParamsSchema = z.object({});
+
 // Inferred types
 export type SearchModel = z.infer<typeof SearchModelSchema>;
 export type SearchParams = z.infer<typeof SearchParamsSchema>;
 export type SearchResult = z.infer<typeof SearchResultSchema>;
 export type SearchResponse = z.infer<typeof SearchResponseSchema>;
 export type SearchModelsResponse = z.infer<typeof SearchModelsResponseSchema>;
+export type GetSearchContextParams = z.infer<typeof GetSearchContextParamsSchema>;
+export type ListSearchIndexedEntitiesParams = z.infer<typeof ListSearchIndexedEntitiesParamsSchema>;

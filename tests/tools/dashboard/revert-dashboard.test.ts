@@ -24,7 +24,9 @@ describe('revertDashboard tool', () => {
     const result = await revertDashboardDefinition.handler(mockClient, baseInput);
 
     expectMcpContent(result, mockResponse);
-    expect(mockClient.post).toHaveBeenCalledWith('/api/dashboard/1/revert', {
+    expect(mockClient.post).toHaveBeenCalledWith('/api/revision/revert', {
+      entity: 'dashboard',
+      id: 1,
       revision_id: 5,
     });
     expect(mockClient.post).toHaveBeenCalledOnce();

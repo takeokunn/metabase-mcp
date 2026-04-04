@@ -1,0 +1,29 @@
+import { z } from 'zod';
+
+export const GetCardMapTileParamsSchema = z.object({
+  zoom: z.number().int().nonnegative().describe('Map zoom level'),
+  x: z.number().int().nonnegative().describe('Tile X coordinate'),
+  y: z.number().int().nonnegative().describe('Tile Y coordinate'),
+  lat_field: z.string().describe('Latitude field reference'),
+  lon_field: z.string().describe('Longitude field reference'),
+  card_id: z.number().int().positive().describe('ID of the card to render on the map tile'),
+  query: z.string().optional().describe('Optional query parameters as a JSON string'),
+});
+export type GetCardMapTileParams = z.infer<typeof GetCardMapTileParamsSchema>;
+
+export const GetFieldMapTileParamsSchema = z.object({
+  zoom: z.number().int().nonnegative().describe('Map zoom level'),
+  x: z.number().int().nonnegative().describe('Tile X coordinate'),
+  y: z.number().int().nonnegative().describe('Tile Y coordinate'),
+  lat_field_id: z.number().int().positive().describe('ID of the latitude field'),
+  lon_field_id: z.number().int().positive().describe('ID of the longitude field'),
+});
+export type GetFieldMapTileParams = z.infer<typeof GetFieldMapTileParamsSchema>;
+
+export const GetTableMapTileParamsSchema = z.object({
+  zoom: z.number().int().nonnegative().describe('Map zoom level'),
+  x: z.number().int().nonnegative().describe('Tile X coordinate'),
+  y: z.number().int().nonnegative().describe('Tile Y coordinate'),
+  card_id: z.number().int().positive().optional().describe('Optional card ID to filter map data'),
+});
+export type GetTableMapTileParams = z.infer<typeof GetTableMapTileParamsSchema>;
