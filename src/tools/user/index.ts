@@ -7,7 +7,6 @@ import { getUserDefinition } from './get-user';
 import { getUserRecipientsDefinition } from './get-user-recipients';
 import { listUsersDefinition } from './list-users';
 import { reactivateUserDefinition } from './reactivate-user';
-import { sendInviteDefinition } from './send-invite';
 import { updateUserDefinition } from './update-user';
 import { updateUserPasswordDefinition } from './update-user-password';
 
@@ -23,7 +22,6 @@ export const userTools: ToolDefinition<unknown>[] = [
   getCurrentUserDefinition,
   updateUserPasswordDefinition,
   reactivateUserDefinition,
-  sendInviteDefinition,
   getUserRecipientsDefinition,
   dismissUserModalDefinition,
 ];

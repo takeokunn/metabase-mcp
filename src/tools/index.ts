@@ -8,6 +8,7 @@ import { bookmarkTools } from './bookmark';
 import { bugReportingTools } from './bug-reporting';
 import { cacheTools } from './cache';
 import { cardTools } from './card';
+import { cardsBulkTools } from './cards-bulk';
 import { channelTools } from './channel';
 import { cloudMigrationTools } from './cloud-migration';
 import { collectionTools } from './collection';
@@ -15,6 +16,7 @@ import { commentTools } from './comment';
 import { dashboardTools } from './dashboard';
 import { databaseTools } from './database';
 import { datasetTools } from './dataset';
+import { documentTools } from './document';
 import { eidTranslationTools } from './eid-translation';
 import { emailTools } from './email';
 import { embedTools } from './embed';
@@ -26,6 +28,7 @@ import { ldapTools } from './ldap';
 import { llmTools } from './llm';
 import { loggerTools } from './logger';
 import { loginHistoryTools } from './login-history';
+import { measureTools } from './measure';
 import { modelIndexTools } from './model-index';
 import { moderationReviewTools } from './moderation-review';
 import { notificationTools } from './notification';
@@ -33,6 +36,7 @@ import { permissionsTools } from './permissions';
 import { persistTools } from './persist';
 import { premiumFeaturesTools } from './premium-features';
 import { previewEmbedTools } from './preview-embed';
+import { productFeedbackTools } from './product-feedback';
 import { publicTools } from './public';
 import type { ToolDefinition } from './registry';
 import { revisionTools } from './revision';
@@ -48,6 +52,7 @@ import { tilesTools } from './tiles';
 import { timelineEventTools } from './timeline-event';
 import { timelineTools } from './timeline';
 import { uploadTools } from './upload';
+import { utilTools } from './util';
 import { analyticsTools } from './analytics';
 import { notifyTools } from './notify';
 import { userKeyValueTools } from './user-key-value';
@@ -62,6 +67,7 @@ export const allTools: ToolDefinition<unknown>[] = [
   ...collectionTools,
   ...dashboardTools,
   ...cardTools,
+  ...cardsBulkTools,
   ...searchTools,
   ...tableTools,
   ...datasetTools,
@@ -71,6 +77,8 @@ export const allTools: ToolDefinition<unknown>[] = [
   ...segmentTools,
   ...snippetTools,
   ...bookmarkTools,
+  ...documentTools,
+  ...measureTools,
   // Notifications & alerts
   ...notificationTools,
   ...alertTools,
@@ -127,6 +135,9 @@ export const allTools: ToolDefinition<unknown>[] = [
   ...notifyTools,
   // Analytics
   ...analyticsTools,
+  // Misc utilities
+  ...productFeedbackTools,
+  ...utilTools,
 ];
 
 export type { ToolDefinition, ToolResponse } from './registry';

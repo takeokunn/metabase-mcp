@@ -18,7 +18,14 @@ export const NotifyDatabaseSyncByNameInputSchema = z.object({
 // Notify Slack event input schema
 export const NotifySlackEventInputSchema = z.record(z.unknown()).describe('Slack event payload');
 
+// Notify new database table input schema
+export const NotifyNewDatabaseTableInputSchema = z.object({
+  id: z.number().describe('Database ID'),
+  table_id: z.number().describe('New table ID'),
+});
+
 // Inferred types
 export type NotifyDatabaseSyncInput = z.infer<typeof NotifyDatabaseSyncInputSchema>;
 export type NotifyDatabaseSyncByNameInput = z.infer<typeof NotifyDatabaseSyncByNameInputSchema>;
 export type NotifySlackEventInput = z.infer<typeof NotifySlackEventInputSchema>;
+export type NotifyNewDatabaseTableInput = z.infer<typeof NotifyNewDatabaseTableInputSchema>;

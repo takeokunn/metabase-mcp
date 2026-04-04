@@ -135,3 +135,54 @@ export const RunPublicDashcardQuerySchema = z.object({
   parameters: z.array(z.record(z.unknown())).optional(),
 });
 export type RunPublicDashcardQuery = z.infer<typeof RunPublicDashcardQuerySchema>;
+
+export const GetPublicActionSchema = z.object({
+  uuid: z.string().describe('Public UUID of the action'),
+});
+export type GetPublicAction = z.infer<typeof GetPublicActionSchema>;
+
+export const ExportPublicCardQuerySchema = z.object({
+  uuid: z.string(),
+  export_format: z.enum(['csv', 'json', 'xlsx']).describe('Export format'),
+});
+export type ExportPublicCardQuery = z.infer<typeof ExportPublicCardQuerySchema>;
+
+export const GetPublicDashcardQuerySchema = z.object({
+  uuid: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+});
+export type GetPublicDashcardQuery = z.infer<typeof GetPublicDashcardQuerySchema>;
+
+export const ExportPublicDashcardQuerySchema = z.object({
+  uuid: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+  export_format: z.enum(['csv', 'json', 'xlsx']).describe('Export format'),
+});
+export type ExportPublicDashcardQuery = z.infer<typeof ExportPublicDashcardQuerySchema>;
+
+export const RunPublicDashboardPivotDashcardQuerySchema = z.object({
+  uuid: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+});
+export type RunPublicDashboardPivotDashcardQuery = z.infer<typeof RunPublicDashboardPivotDashcardQuerySchema>;
+
+export const GetPublicCardTileSchema = z.object({
+  uuid: z.string(),
+  zoom: z.number(),
+  x: z.number(),
+  y: z.number(),
+});
+export type GetPublicCardTile = z.infer<typeof GetPublicCardTileSchema>;
+
+export const GetPublicDashboardTileSchema = z.object({
+  uuid: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+  zoom: z.number(),
+  x: z.number(),
+  y: z.number(),
+});
+export type GetPublicDashboardTile = z.infer<typeof GetPublicDashboardTileSchema>;

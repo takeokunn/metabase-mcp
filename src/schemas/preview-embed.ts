@@ -87,3 +87,55 @@ export const ExecutePreviewEmbedDashcardActionSchema = z.object({
   parameters: z.record(z.unknown()).optional(),
 });
 export type ExecutePreviewEmbedDashcardAction = z.infer<typeof ExecutePreviewEmbedDashcardActionSchema>;
+
+export const GetPreviewEmbedCardParamRemappingSchema = z.object({
+  token: z.string().describe('Preview embed token'),
+  param_key: z.string().describe('Parameter key'),
+});
+export type GetPreviewEmbedCardParamRemapping = z.infer<typeof GetPreviewEmbedCardParamRemappingSchema>;
+
+export const GetPreviewEmbedDashboardParamRemappingSchema = z.object({
+  token: z.string(),
+  param_key: z.string(),
+});
+export type GetPreviewEmbedDashboardParamRemapping = z.infer<typeof GetPreviewEmbedDashboardParamRemappingSchema>;
+
+export const RunPreviewEmbedDashcardQuerySchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+});
+export type RunPreviewEmbedDashcardQuery = z.infer<typeof RunPreviewEmbedDashcardQuerySchema>;
+
+export const ExportPreviewEmbedDashcardQuerySchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+  export_format: z.enum(['csv', 'json', 'xlsx']).describe('Export format'),
+});
+export type ExportPreviewEmbedDashcardQuery = z.infer<typeof ExportPreviewEmbedDashcardQuerySchema>;
+
+export const RunPreviewEmbedDashboardPivotDashcardQuerySchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+});
+export type RunPreviewEmbedDashboardPivotDashcardQuery = z.infer<typeof RunPreviewEmbedDashboardPivotDashcardQuerySchema>;
+
+export const GetPreviewEmbedCardTileSchema = z.object({
+  token: z.string(),
+  zoom: z.number(),
+  x: z.number(),
+  y: z.number(),
+});
+export type GetPreviewEmbedCardTile = z.infer<typeof GetPreviewEmbedCardTileSchema>;
+
+export const GetPreviewEmbedDashboardTileSchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+  zoom: z.number(),
+  x: z.number(),
+  y: z.number(),
+});
+export type GetPreviewEmbedDashboardTile = z.infer<typeof GetPreviewEmbedDashboardTileSchema>;

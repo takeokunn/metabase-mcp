@@ -10,31 +10,31 @@ describe('runPublicCardPivotQuery tool', () => {
 
   it('should return formatted MCP response', async () => {
     const mockResult = { data: { rows: [] } };
-    const mockClient = createMockClientWithResponse('post', mockResult);
+    const mockClient = createMockClientWithResponse('get', mockResult);
     const result = await runPublicCardPivotQueryDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
-    expect(mockClient.post).toHaveBeenCalledWith(
+    expect(mockClient.get).toHaveBeenCalledWith(
       `/api/public/pivot/card/${input.uuid}/query`,
       { parameters: input.parameters },
     );
   });
 
   it('should use empty array when parameters is undefined', async () => {
-    const mockClient = createMockClientWithResponse('post', { data: { rows: [] } });
+    const mockClient = createMockClientWithResponse('get', { data: { rows: [] } });
     await runPublicCardPivotQueryDefinition.handler(mockClient, { uuid: input.uuid });
-    expect(mockClient.post).toHaveBeenCalledWith(
+    expect(mockClient.get).toHaveBeenCalledWith(
       `/api/public/pivot/card/${input.uuid}/query`,
       { parameters: [] },
     );
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = createMockClientWithError('post', 'API error');
+    const mockClient = createMockClientWithError('get', 'API error');
     await expect(runPublicCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
-    const mockClient = createMockClientWithError('post', createApiError('Not Found', 404));
+    const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
     await expect(runPublicCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
   });
 

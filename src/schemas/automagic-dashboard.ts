@@ -19,31 +19,16 @@ export const GetXrayDatabaseCandidatesParamsSchema = z.object({
   id: IdSchema.describe('Database ID'),
 });
 
-// X-ray card params schema
-export const GetXrayCardParamsSchema = z.object({
-  id: IdSchema.describe('Card/question ID'),
-});
-
-// X-ray segment params schema
-export const GetXraySegmentParamsSchema = z.object({
-  id: IdSchema.describe('Segment ID'),
-});
-
-// X-ray field params schema
-export const GetXrayFieldParamsSchema = z.object({
-  id: IdSchema.describe('Field ID'),
-});
-
-// X-ray metric params schema
-export const GetXrayMetricParamsSchema = z.object({
-  id: IdSchema.describe('Metric ID'),
+// X-ray generic entity params schema
+export const GetXrayEntityInputSchema = z.object({
+  entity: z
+    .enum(['table', 'segment', 'question', 'field', 'metric'])
+    .describe('Entity type'),
+  entity_id: z.union([z.number(), z.string()]).describe('Entity ID or query'),
 });
 
 // Inferred types
 export type GetXrayTableParams = z.infer<typeof GetXrayTableParamsSchema>;
 export type GetXrayTableCellParams = z.infer<typeof GetXrayTableCellParamsSchema>;
 export type GetXrayDatabaseCandidatesParams = z.infer<typeof GetXrayDatabaseCandidatesParamsSchema>;
-export type GetXrayCardParams = z.infer<typeof GetXrayCardParamsSchema>;
-export type GetXraySegmentParams = z.infer<typeof GetXraySegmentParamsSchema>;
-export type GetXrayFieldParams = z.infer<typeof GetXrayFieldParamsSchema>;
-export type GetXrayMetricParams = z.infer<typeof GetXrayMetricParamsSchema>;
+export type GetXrayEntityInput = z.infer<typeof GetXrayEntityInputSchema>;

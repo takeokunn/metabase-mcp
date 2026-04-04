@@ -51,3 +51,17 @@ export const UnsubscribePulseInputSchema = z.object({
   id: z.number().describe('The pulse ID'),
 });
 export type UnsubscribePulseInput = z.infer<typeof UnsubscribePulseInputSchema>;
+
+export const UnsubscribePulseEmailInputSchema = z.object({
+  hash: z.string().describe('Unsubscribe hash'),
+  email: z.string().describe('Email address to unsubscribe'),
+  pulse_id: z.number().describe('Pulse ID'),
+});
+export type UnsubscribePulseEmailInput = z.infer<typeof UnsubscribePulseEmailInputSchema>;
+
+export const UndoPulseUnsubscribeInputSchema = z.object({
+  hash: z.string().describe('Unsubscribe hash'),
+  email: z.string().describe('Email address to unsubscribe'),
+  pulse_id: z.number().describe('Pulse ID'),
+});
+export type UndoPulseUnsubscribeInput = z.infer<typeof UndoPulseUnsubscribeInputSchema>;

@@ -8,7 +8,7 @@ export const runEmbedCardPivotQueryDefinition: ToolDefinition<RunEmbedCardPivotQ
   description: 'Run a pivot query for an embedded card in Metabase',
   inputSchema: RunEmbedCardPivotQuerySchema,
   handler: async (client: MetabaseClient, input: RunEmbedCardPivotQuery) => {
-    const result = await client.post(`/api/embed/pivot/card/${input.token}/query`, {});
+    const result = await client.get(`/api/embed/pivot/card/${input.token}/query`, {});
     return formatToolResponse(result);
   },
 };

@@ -10,22 +10,22 @@ describe('runEmbedCardPivotQuery tool', () => {
 
   it('should return formatted MCP response', async () => {
     const mockResult = { data: { rows: [] } };
-    const mockClient = createMockClientWithResponse('post', mockResult);
+    const mockClient = createMockClientWithResponse('get', mockResult);
     const result = await runEmbedCardPivotQueryDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
-    expect(mockClient.post).toHaveBeenCalledWith(
+    expect(mockClient.get).toHaveBeenCalledWith(
       `/api/embed/pivot/card/${input.token}/query`,
       {},
     );
   });
 
   it('should propagate client errors', async () => {
-    const mockClient = createMockClientWithError('post', 'API error');
+    const mockClient = createMockClientWithError('get', 'API error');
     await expect(runEmbedCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow('API error');
   });
 
   it('should propagate API errors with status codes', async () => {
-    const mockClient = createMockClientWithError('post', createApiError('Not Found', 404));
+    const mockClient = createMockClientWithError('get', createApiError('Not Found', 404));
     await expect(runEmbedCardPivotQueryDefinition.handler(mockClient, input)).rejects.toThrow('Not Found');
   });
 

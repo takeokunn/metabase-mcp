@@ -1,12 +1,12 @@
 import type { ToolDefinition } from '@src/tools/registry';
 import { createPulseDefinition } from './create-pulse';
-import { deletePulseDefinition } from './delete-pulse';
 import { getPulseDefinition } from './get-pulse';
 import { getPulseFormInputDefinition } from './get-pulse-form-input';
-import { getPulsePreviewCardDefinition } from './get-pulse-preview-card';
 import { listPulsesDefinition } from './list-pulses';
 import { testPulseDefinition } from './test-pulse';
+import { undoPulseUnsubscribeDefinition } from './undo-pulse-unsubscribe';
 import { unsubscribePulseDefinition } from './unsubscribe-pulse';
+import { unsubscribePulseEmailDefinition } from './unsubscribe-pulse-email';
 import { updatePulseDefinition } from './update-pulse';
 
 export const pulseTools: ToolDefinition<unknown>[] = [
@@ -14,9 +14,9 @@ export const pulseTools: ToolDefinition<unknown>[] = [
   getPulseDefinition,
   createPulseDefinition,
   updatePulseDefinition,
-  deletePulseDefinition,
   testPulseDefinition,
   getPulseFormInputDefinition,
-  getPulsePreviewCardDefinition,
   unsubscribePulseDefinition,
+  unsubscribePulseEmailDefinition,
+  undoPulseUnsubscribeDefinition,
 ];

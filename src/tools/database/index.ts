@@ -29,7 +29,6 @@ import { rescanDatabaseValuesDefinition } from './rescan-database-values';
 import { syncDatabaseDefinition } from './sync-database';
 import { syncDatabaseSchemaDefinition } from './sync-database-schema';
 import { updateDatabaseDefinition } from './update-database';
-import { uploadCsvToDatabaseDefinition } from './upload-csv-to-database';
 import { validateDatabaseDefinition } from './validate-database';
 
 /**
@@ -61,7 +60,6 @@ export const databaseTools: ToolDefinition<unknown>[] = [
   listDatabaseVirtualSchemaTablesDefinition,
   appendCsvToTableDefinition,
   replaceTableCsvDefinition,
-  uploadCsvToDatabaseDefinition,
   getDatabaseCardAutocompleteDefinition,
   getDatabaseAvailableSettingsDefinition,
   getDatabaseSyncableSchemasDefinition,

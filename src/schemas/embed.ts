@@ -106,3 +106,55 @@ export const ExecuteEmbedDashcardActionSchema = z.object({
   parameters: z.record(z.unknown()).optional(),
 });
 export type ExecuteEmbedDashcardAction = z.infer<typeof ExecuteEmbedDashcardActionSchema>;
+
+export const GetEmbedCardParamRemappingSchema = z.object({
+  token: z.string().describe('Embed token'),
+  param_key: z.string().describe('Parameter key'),
+});
+export type GetEmbedCardParamRemapping = z.infer<typeof GetEmbedCardParamRemappingSchema>;
+
+export const GetEmbedDashboardParamRemappingSchema = z.object({
+  token: z.string(),
+  param_key: z.string(),
+});
+export type GetEmbedDashboardParamRemapping = z.infer<typeof GetEmbedDashboardParamRemappingSchema>;
+
+export const RunEmbedDashcardQuerySchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+});
+export type RunEmbedDashcardQuery = z.infer<typeof RunEmbedDashcardQuerySchema>;
+
+export const ExportEmbedDashcardQuerySchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+  export_format: z.enum(['csv', 'json', 'xlsx']).describe('Export format'),
+});
+export type ExportEmbedDashcardQuery = z.infer<typeof ExportEmbedDashcardQuerySchema>;
+
+export const RunEmbedDashboardPivotDashcardQuerySchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+});
+export type RunEmbedDashboardPivotDashcardQuery = z.infer<typeof RunEmbedDashboardPivotDashcardQuerySchema>;
+
+export const GetEmbedCardTileSchema = z.object({
+  token: z.string(),
+  zoom: z.number(),
+  x: z.number(),
+  y: z.number(),
+});
+export type GetEmbedCardTile = z.infer<typeof GetEmbedCardTileSchema>;
+
+export const GetEmbedDashboardTileSchema = z.object({
+  token: z.string(),
+  dashcard_id: z.number(),
+  card_id: z.number(),
+  zoom: z.number(),
+  x: z.number(),
+  y: z.number(),
+});
+export type GetEmbedDashboardTile = z.infer<typeof GetEmbedDashboardTileSchema>;

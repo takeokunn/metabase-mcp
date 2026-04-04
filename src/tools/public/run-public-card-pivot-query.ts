@@ -11,7 +11,7 @@ export const runPublicCardPivotQueryDefinition: ToolDefinition<RunPublicCardPivo
   description: 'Run a pivot query for a public card in Metabase',
   inputSchema: RunPublicCardPivotQuerySchema,
   handler: async (client: MetabaseClient, input: RunPublicCardPivotQuery) => {
-    const result = await client.post(`/api/public/pivot/card/${input.uuid}/query`, {
+    const result = await client.get(`/api/public/pivot/card/${input.uuid}/query`, {
       parameters: input.parameters ?? [],
     });
     return formatToolResponse(result);
