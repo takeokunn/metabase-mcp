@@ -7,7 +7,7 @@ A Model Context Protocol (MCP) server for Metabase, enabling AI assistants to in
 
 ## Features
 
-- **258 tools** across 50 categories covering the full Metabase OSS API
+- **418 tools** across 58 categories covering the Metabase OSS API
 - **Database Management** - List, create, update, delete databases and sync metadata
 - **Card/Question Management** - Create, execute, and manage saved questions
 - **Dashboard Management** - Build and manage dashboards with cards, tabs, and subscriptions
@@ -92,25 +92,45 @@ Or if installed globally:
 
 ## Available Tools
 
-This MCP server provides **258 tools** organized into 50 categories.
+This MCP server provides **418 tools** organized into 58 categories.
 
-### Database Tools (11)
+### Database Tools (31)
 
 | Tool | Description |
 |------|-------------|
-| `list_databases` | List all databases connected to Metabase |
-| `get_database` | Get database details by ID |
-| `get_database_metadata` | Get database metadata including tables and fields |
-| `list_database_schemas` | List all schemas in a database |
-| `list_database_tables` | List tables in a specific schema |
-| `sync_database` | Trigger a metadata sync for a database |
-| `create_database` | Add a new database connection |
-| `update_database` | Update database configuration |
-| `delete_database` | Delete a database connection |
-| `rescan_database_values` | Rescan field values for a database |
-| `discard_database_values` | Discard cached field values |
+| `list_databases` | Get list of databases configured in Metabase |
+| `get_database` | Get a single database by ID from Metabase |
+| `get_database_metadata` | Get database metadata including tables and fields from Metabase |
+| `list_database_schemas` | List all schemas in a database from Metabase |
+| `list_database_tables` | List tables in a database schema from Metabase |
+| `sync_database` | Trigger a sync for a database in Metabase |
+| `create_database` | Add a new database connection to Metabase |
+| `update_database` | Update an existing database connection configuration in Metabase |
+| `delete_database` | Delete a database connection from Metabase |
+| `rescan_database_values` | Rescan field values for a database in Metabase |
+| `discard_database_values` | Discard cached field values for a database in Metabase |
+| `validate_database` | Validate a database connection configuration before creating it in Metabase |
+| `create_sample_database` | Create the built-in sample database in Metabase |
+| `sync_database_schema` | Sync the schema of a database in Metabase (schema only, not a full resync) |
+| `get_database_fields` | Get all fields for a database in Metabase |
+| `get_database_id_fields` | Get all ID-type fields for a database in Metabase |
+| `get_database_autocomplete` | Get autocomplete suggestions for a database in Metabase |
+| `get_database_usage_info` | Get usage information for a database in Metabase |
+| `get_database_healthcheck` | Perform a healthcheck on a database connection in Metabase |
+| `list_database_schemas_with_tables` | List all tables within a specific schema of a database in Metabase |
+| `list_database_virtual_tables` | List virtual tables (saved questions) available as tables in a database in Metabase |
+| `get_database_virtual_schema` | Get a virtual schema (datasets) for a database in Metabase |
+| `list_database_virtual_schema_tables` | List all virtual tables (saved questions as tables) across all databases in Metabase |
+| `append_csv_to_table` | Append rows from a CSV upload to an existing table in a database in Metabase |
+| `replace_table_csv` | Replace an existing table with CSV data in a database in Metabase |
+| `get_database_card_autocomplete` | Get card autocomplete suggestions for a database in Metabase |
+| `get_database_available_settings` | Get available settings for a database connection in Metabase |
+| `get_database_syncable_schemas` | Get syncable schemas for a database in Metabase |
+| `get_virtual_database_datasets` | Get datasets for a virtual database in Metabase |
+| `dismiss_database_spinner` | Dismiss the loading spinner for a database in Metabase |
+| `check_database_workspace_permission` | Check workspace permission for a database in Metabase |
 
-### Card Tools (7)
+### Card Tools (20)
 
 | Tool | Description |
 |------|-------------|
@@ -121,18 +141,31 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `update_card` | Update an existing card |
 | `delete_card` | Delete a card |
 | `execute_card` | Execute a card and return results |
+| `create_card_public_link` | Create a public sharing link for a card (saved question) in Metabase (returns UUID) |
+| `delete_card_public_link` | Delete a public sharing link from a card (saved question) in Metabase |
+| `list_embeddable_cards` | List all cards (saved questions) available for embedding in Metabase (admin only) |
+| `list_public_cards` | List all cards (saved questions) with public sharing links in Metabase (admin only) |
+| `copy_card` | Copy an existing card (saved question) in Metabase |
+| `get_card_series` | Get related series data for a card (saved question) in Metabase |
+| `get_card_param_values` | Get possible values for a card (saved question) filter parameter in Metabase |
+| `search_card_param_values` | Search possible values for a card (saved question) filter parameter in Metabase |
+| `get_card_param_remapping` | Get remapping for a parameter of a card in Metabase |
+| `get_card_dashboards` | Get dashboards that contain a specific card in Metabase |
+| `move_cards_to_collection` | Move multiple cards to a collection in Metabase |
+| `execute_card_pivot` | Execute a card (saved question) as a pivot table query in Metabase |
+| `export_card_query` | Export a card (saved question) query result in a specified format (csv, json, xlsx, pdf) in Metabase |
 
-### Dashboard Tools (25)
+### Dashboard Tools (38)
 
 | Tool | Description |
 |------|-------------|
 | `list_dashboards` | List all dashboards |
 | `get_dashboard` | Get dashboard details by ID |
-| `get_dashboard_metadata` | Get dashboard metadata including cards |
 | `create_dashboard` | Create a new dashboard |
 | `update_dashboard` | Update an existing dashboard |
 | `delete_dashboard` | Delete a dashboard |
 | `copy_dashboard` | Copy a dashboard to a new location |
+| `get_dashboard_metadata` | Get dashboard metadata including cards |
 | `add_dashboard_card` | Add a card to a dashboard (v0.49+) |
 | `update_dashboard_card` | Update a dashboard card position/size/settings (v0.49+) |
 | `remove_dashboard_card` | Remove a card from a dashboard (v0.49+) |
@@ -143,16 +176,29 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `create_dashboard_public_link` | Create a public sharing link for a dashboard |
 | `delete_dashboard_public_link` | Delete a public sharing link from a dashboard |
 | `list_public_dashboards` | List all dashboards with public sharing links |
-| `add_dashboard_favorite` | Add a dashboard to favorites |
-| `remove_dashboard_favorite` | Remove a dashboard from favorites |
 | `list_dashboard_revisions` | List revision history for a dashboard |
 | `revert_dashboard` | Revert a dashboard to a previous revision |
 | `list_dashboard_subscriptions` | List dashboard subscriptions (email/Slack notifications) |
 | `create_dashboard_subscription` | Create a dashboard subscription |
 | `update_dashboard_subscription` | Update a dashboard subscription |
-| `delete_dashboard_subscription` | Delete a dashboard subscription |
+| `execute_dashboard_card_query` | Execute a dashcard query with dashboard filter parameters in Metabase |
+| `export_dashboard_card_query` | Export a dashcard query result in a specified format (csv, json, xlsx, pdf) in Metabase |
+| `get_dashboard_param_values` | Get possible values for a dashboard filter parameter in Metabase |
+| `search_dashboard_param_values` | Search possible values for a dashboard filter parameter in Metabase |
+| `get_dashboard_embeddable` | List all dashboards available for embedding in Metabase (admin only) |
+| `get_dashboard_param_remapping` | Get remapping for a parameter of a dashboard in Metabase |
+| `get_dashboard_related` | Get related items for a dashboard in Metabase |
+| `get_valid_filter_fields` | Get valid filter fields for dashboard parameters in Metabase |
+| `save_dashboard` | Save a dashboard (creates or updates) in Metabase |
+| `save_dashboard_to_collection` | Save a dashboard to a specific collection in Metabase |
+| `get_dashboard_items` | Get items (dashcards) of a dashboard in Metabase |
+| `get_dashcard_action_params` | Get action parameters for a dashcard in Metabase |
+| `run_dashcard_query` | Run the query for a specific card on a dashboard in Metabase |
+| `export_dashcard_query` | Export query results for a dashcard in Metabase |
+| `execute_dashcard_action` | Execute an action on a dashcard in Metabase |
+| `pivot_dashcard_query` | Run a pivot query for a specific dashcard in Metabase |
 
-### Collection Tools (7)
+### Collection Tools (15)
 
 | Tool | Description |
 |------|-------------|
@@ -160,21 +206,38 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `get_collection` | Get collection details by ID |
 | `get_collection_items` | Get items within a collection |
 | `get_collection_tree` | Get the full collection hierarchy tree |
+| `get_root_collection` | Get the root collection from Metabase |
+| `get_root_collection_items` | Get items (cards, dashboards, etc.) within the root collection in Metabase |
+| `get_trash_collection` | Get the trash collection from Metabase |
 | `create_collection` | Create a new collection |
 | `update_collection` | Update collection properties |
 | `delete_collection` | Delete a collection |
+| `hard_delete_collection` | Permanently delete a collection in Metabase (cannot be undone) |
+| `get_root_dashboard_question_candidates` | Get dashboard question candidates from the root collection in Metabase |
+| `get_collection_dashboard_question_candidates` | Get dashboard question candidates from a collection in Metabase |
+| `move_root_dashboard_question_candidates` | Move dashboard question candidates from the root collection in Metabase |
+| `move_collection_dashboard_question_candidates` | Move dashboard question candidates from a collection in Metabase |
 
-### Table Tools (5)
+### Table Tools (14)
 
 | Tool | Description |
 |------|-------------|
+| `list_all_tables` | List all tables across all databases in Metabase |
 | `get_table` | Get table details by ID |
 | `get_table_metadata` | Get table metadata including fields |
 | `update_table` | Update table properties |
-| `list_table_fields` | List all fields in a table |
+| `bulk_update_tables` | Bulk update multiple tables in Metabase |
 | `resync_table_fields` | Resync field metadata for a table |
+| `get_table_foreign_keys` | Get foreign keys for a table in Metabase |
+| `sync_table_schema` | Sync the schema for a table in Metabase |
+| `discard_table_values` | Discard cached field values for a table in Metabase |
+| `get_table_related` | Get related tables and cards for a table in Metabase |
+| `update_table_fields_order` | Reorder fields in a table in Metabase |
+| `get_virtual_card_table_fks` | Get foreign keys for a virtual card-based table in Metabase |
+| `get_virtual_card_table_query_metadata` | Get query metadata for a virtual card-based table in Metabase |
+| `get_table_data` | Get data rows from a table in Metabase |
 
-### Field Tools (8)
+### Field Tools (12)
 
 | Tool | Description |
 |------|-------------|
@@ -186,22 +249,35 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `discard_field_values` | Discard cached field values |
 | `get_field_related` | Get related fields and tables |
 | `search_field_values` | Search for values within a field |
+| `create_field_dimension` | Create a dimension (remapping) for a field in Metabase |
+| `delete_field_dimension` | Delete a dimension (remapping) from a field in Metabase |
+| `get_field_remapping` | Get remapping between two fields in Metabase |
+| `get_field_summary` | Get summary statistics for a field in Metabase |
 
-### Search Tools (2)
+### Search Tools (5)
 
 | Tool | Description |
 |------|-------------|
 | `search` | Full-text search across Metabase content |
-| `search_models` | Search for specific model types |
+| `get_search_weights` | Get search result ranking weights in Metabase |
+| `update_search_weights` | Update search result ranking weights in Metabase |
+| `force_reindex_search` | Force a full reindex of the search index in Metabase |
+| `reinit_search` | Re-initialize the search index in Metabase |
 
-### Dataset/Query Tools (2)
+### Dataset/Query Tools (8)
 
 | Tool | Description |
 |------|-------------|
 | `execute_query` | Execute an ad-hoc query |
 | `export_query` | Export query results in various formats |
+| `execute_query_pivot` | Execute a pivot query against a Metabase database |
+| `get_native_query` | Convert an MBQL query to native SQL without executing it |
+| `get_dataset_param_values` | Get values for a dataset parameter in Metabase |
+| `search_dataset_param_values` | Search values for a dataset parameter in Metabase |
+| `get_dataset_param_remapping` | Get remapping for a dataset parameter in Metabase |
+| `get_dataset_query_metadata` | Get metadata for a dataset query in Metabase |
 
-### User Tools (9)
+### User Tools (10)
 
 | Tool | Description |
 |------|-------------|
@@ -213,7 +289,8 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `get_current_user` | Get the currently authenticated user |
 | `update_user_password` | Update a user's password |
 | `reactivate_user` | Reactivate a deactivated user |
-| `send_invite` | Send an invitation email to a user |
+| `get_user_recipients` | Get a list of users who are eligible to receive notifications and alerts in Metabase |
+| `dismiss_user_modal` | Dismiss a modal for a user in Metabase |
 
 ### Permissions Tools (16)
 
@@ -280,12 +357,13 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `clear_email` | Clear SMTP email configuration |
 | `test_email` | Send a test email |
 
-### Revision Tools (2)
+### Revision Tools (3)
 
 | Tool | Description |
 |------|-------------|
 | `list_revisions` | List revisions for an entity |
 | `revert_revision` | Revert an entity to a previous revision |
+| `get_entity_revision` | Get revision history for a specific entity by type and ID in Metabase |
 
 ### API Key Tools (6)
 
@@ -307,7 +385,7 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `delete_cache_config` | Remove cache configuration |
 | `invalidate_cache` | Invalidate cached query results |
 
-### Task Tools (6)
+### Task Tools (7)
 
 | Tool | Description |
 |------|-------------|
@@ -317,8 +395,9 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `list_task_runs` | List recent task runs |
 | `get_task_run` | Get a task run by ID |
 | `list_unique_tasks` | List all unique task types |
+| `get_task_run_entities` | Get entity types tracked by task runs in Metabase |
 
-### Activity Tools (4)
+### Activity Tools (5)
 
 | Tool | Description |
 |------|-------------|
@@ -326,6 +405,7 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `list_recents` | List recent activity |
 | `list_popular_items` | List popular items |
 | `get_most_recently_viewed_dashboard` | Get the most recently viewed dashboard |
+| `add_recent_activity` | Add an item to recent activity in Metabase |
 
 ### Login History Tools (1)
 
@@ -333,7 +413,7 @@ This MCP server provides **258 tools** organized into 50 categories.
 |------|-------------|
 | `get_login_history` | Get login history for the current user |
 
-### Persist Tools (10)
+### Persist Tools (11)
 
 | Tool | Description |
 |------|-------------|
@@ -347,6 +427,7 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `disable_model_persistence` | Disable model persistence globally |
 | `set_persist_refresh_schedule` | Set the persistence refresh schedule |
 | `persist_database_models` | Enable persistence for all database models |
+| `unpersist_database_models` | Unpersist all persisted models for a database in Metabase |
 
 ### Channel Tools (5)
 
@@ -357,15 +438,6 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `create_channel` | Create a notification channel |
 | `update_channel` | Update a notification channel |
 | `test_channel` | Test a notification channel |
-
-### Metric Tools (4)
-
-| Tool | Description |
-|------|-------------|
-| `list_metrics` | List all metrics |
-| `get_metric` | Get a metric by ID |
-| `execute_metric` | Execute a metric query |
-| `get_metric_breakout_values` | Get breakout dimension values for a metric |
 
 ### Model Index Tools (4)
 
@@ -397,7 +469,7 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `update_timeline_event` | Update a timeline event |
 | `delete_timeline_event` | Delete a timeline event |
 
-### Segment Tools (6)
+### Segment Tools (7)
 
 | Tool | Description |
 |------|-------------|
@@ -407,6 +479,7 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `update_segment` | Update an existing segment |
 | `delete_segment` | Delete a segment |
 | `get_segment_revisions` | Get revision history of a segment |
+| `get_segment_related` | Get related items for a segment in Metabase |
 
 ### Snippet Tools (5)
 
@@ -440,12 +513,11 @@ This MCP server provides **258 tools** organized into 50 categories.
 |------|-------------|
 | `upload_csv` | Upload a CSV file to create a new table |
 
-### Slack Tools (4) `[Requires Metabase Pro]`
+### Slack Tools (3) `[Requires Metabase Pro]`
 
 | Tool | Description |
 |------|-------------|
 | `update_slack_settings` | Update Slack integration settings |
-| `get_slack_app_info` | Get Slack app info |
 | `get_slack_manifest` | Get Slack app manifest |
 | `send_slack_bug_report` | Send a bug report via Slack |
 
@@ -461,55 +533,100 @@ This MCP server provides **258 tools** organized into 50 categories.
 |------|-------------|
 | `update_ldap_settings` | Update LDAP authentication settings |
 
-### Embed Tools (8)
+### Embed Tools (20)
 
 | Tool | Description |
 |------|-------------|
-| `get_embed_card` | Get an embedded card by JWT token |
-| `get_embed_card_query` | Execute an embedded card query |
-| `get_embed_card_query_format` | Export an embedded card query in a format |
-| `get_embed_dashboard` | Get an embedded dashboard |
-| `get_embed_dashboard_query` | Execute an embedded dashboard card query |
-| `get_embed_dashboard_query_format` | Export an embedded dashboard card query |
-| `get_embed_dashboard_params` | Get values for an embed dashboard parameter |
-| `search_embed_dashboard_params` | Search embed dashboard parameter values |
+| `get_embed_card` | Get an embedded card by JWT token from Metabase |
+| `get_embed_card_query` | Get query results for an embedded card by JWT token from Metabase |
+| `get_embed_card_query_format` | Get query results for an embedded card in a specific export format from Metabase |
+| `get_embed_dashboard` | Get an embedded dashboard by JWT token from Metabase |
+| `get_embed_dashboard_query` | Get query results for a dashcard in an embedded dashboard from Metabase |
+| `get_embed_dashboard_params` | Get values for a parameter in an embedded dashboard from Metabase |
+| `search_embed_dashboard_params` | Search parameter values for a parameter in an embedded dashboard from Metabase |
+| `get_embed_card_param_values` | Get values for a parameter of an embedded card in Metabase |
+| `search_embed_card_param_values` | Search values for a parameter of an embedded card in Metabase |
+| `export_embed_card_query` | Export results of an embedded card query in Metabase |
+| `get_embed_dashboard_param_values` | Get values for a parameter of an embedded dashboard in Metabase |
+| `search_embed_dashboard_param_values` | Search values for a parameter of an embedded dashboard in Metabase |
+| `run_embed_card_pivot_query` | Run a pivot query for an embedded card in Metabase |
+| `get_embed_card_param_remapping` | Get remapping for a parameter of an embedded card in Metabase |
+| `get_embed_dashboard_param_remapping` | Get remapping for a parameter of an embedded dashboard in Metabase |
+| `run_embed_dashcard_query` | Run a query for an embedded dashcard in Metabase |
+| `export_embed_dashcard_query` | Export results of an embedded dashcard query in Metabase |
+| `run_embed_dashboard_pivot_dashcard_query` | Run a pivot query for an embedded dashboard dashcard in Metabase |
+| `get_embed_card_tile` | Get a map tile for an embedded card in Metabase |
+| `get_embed_dashboard_tile` | Get a map tile for an embedded dashboard dashcard in Metabase |
 
-### Public Tools (8)
-
-| Tool | Description |
-|------|-------------|
-| `get_public_card` | Get a publicly shared card by UUID |
-| `get_public_card_query` | Execute a public card query |
-| `get_public_card_query_format` | Export a public card query in a format |
-| `get_public_dashboard` | Get a publicly shared dashboard |
-| `get_public_dashboard_query` | Execute a public dashboard card query |
-| `get_public_dashboard_query_format` | Export a public dashboard card query |
-| `get_public_dashboard_params` | Get values for a public dashboard parameter |
-| `search_public_dashboard_params` | Search public dashboard parameter values |
-
-### Preview Embed Tools (5)
-
-| Tool | Description |
-|------|-------------|
-| `preview_embed_card` | Preview an embed card (admin) |
-| `preview_embed_card_query` | Preview an embed card query (admin) |
-| `preview_embed_dashboard` | Preview an embed dashboard (admin) |
-| `preview_embed_dashboard_query` | Preview an embed dashboard query (admin) |
-| `preview_embed_dashboard_params` | Preview embed dashboard parameter values |
-
-### Automagic Dashboard Tools (7)
+### Public Tools (27)
 
 | Tool | Description |
 |------|-------------|
-| `get_xray_table` | Get auto-generated X-ray dashboard for a table |
-| `get_xray_table_cell` | Get X-ray for a specific table cell value |
-| `get_xray_database_candidates` | Get X-ray candidates for a database |
-| `get_xray_card` | Get auto-generated X-ray for a saved question |
-| `get_xray_segment` | Get auto-generated X-ray for a segment |
-| `get_xray_field` | Get auto-generated X-ray for a field |
-| `get_xray_metric` | Get auto-generated X-ray for a metric |
+| `get_public_card` | Get a publicly shared card by UUID from Metabase |
+| `get_public_card_query` | Get query results for a publicly shared card by UUID from Metabase |
+| `get_public_card_query_format` | Get query results for a publicly shared card in a specific export format from Metabase |
+| `get_public_dashboard` | Get a publicly shared dashboard by UUID from Metabase |
+| `get_public_dashboard_params` | Get values for a parameter in a publicly shared dashboard from Metabase |
+| `search_public_dashboard_params` | Search parameter values for a parameter in a publicly shared dashboard from Metabase |
+| `get_public_card_param_values` | Get values for a parameter of a public card in Metabase |
+| `search_public_card_param_values` | Search values for a parameter of a public card in Metabase |
+| `get_public_card_param_remapping` | Get remapping for a parameter of a public card in Metabase |
+| `get_public_dashboard_param_values` | Get values for a parameter of a public dashboard in Metabase |
+| `search_public_dashboard_param_values` | Search values for a parameter of a public dashboard in Metabase |
+| `get_public_dashboard_param_remapping` | Get remapping for a parameter of a public dashboard in Metabase |
+| `execute_public_action` | Execute a public action in Metabase |
+| `execute_public_dashcard_action` | Execute an action on a public dashcard in Metabase |
+| `run_public_card_pivot_query` | Run a pivot query for a public card in Metabase |
+| `get_public_oembed` | Get oEmbed metadata for a public Metabase resource |
+| `get_public_action` | Get details of a public action in Metabase |
+| `export_public_card_query` | Export results of a public card query in Metabase |
+| `get_public_dashcard_query` | Get query results for a public dashcard in Metabase |
+| `export_public_dashcard_query` | Export results of a public dashcard query in Metabase |
+| `run_public_dashboard_pivot_dashcard_query` | Run a pivot query for a public dashboard dashcard in Metabase |
+| `get_public_card_tile` | Get a map tile for a public card in Metabase |
+| `get_public_dashboard_tile` | Get a map tile for a public dashboard dashcard in Metabase |
+| `get_public_document` | Get a publicly shared document by UUID from Metabase |
+| `get_public_document_card` | Get a card from a publicly shared document by UUID in Metabase |
+| `export_public_document_card` | Export a card from a publicly shared document in Metabase |
+| `export_public_dashcard_query_format` | Export results of a public dashboard card query in a specific format in Metabase |
 
-### Comment Tools (5)
+### Preview Embed Tools (15)
+
+| Tool | Description |
+|------|-------------|
+| `preview_embed_card` | Preview an embedded card by token from Metabase (admin only) |
+| `preview_embed_card_query` | Preview query results for an embedded card by token from Metabase (admin only) |
+| `preview_embed_dashboard` | Preview an embedded dashboard by token from Metabase (admin only) |
+| `preview_embed_dashboard_params` | Preview values for a parameter in an embedded dashboard from Metabase (admin only) |
+| `get_preview_embed_card_param_values` | Get values for a parameter of a preview embedded card in Metabase |
+| `get_preview_embed_dashboard_param_values` | Get values for a parameter of a preview embedded dashboard in Metabase |
+| `search_preview_embed_dashboard_param_values` | Search values for a parameter of a preview embedded dashboard in Metabase |
+| `run_preview_embed_card_pivot_query` | Run a pivot query for a preview embedded card in Metabase |
+| `get_preview_embed_card_param_remapping` | Get remapping for a parameter of a preview embedded card in Metabase |
+| `get_preview_embed_dashboard_param_remapping` | Get remapping for a parameter of a preview embedded dashboard in Metabase |
+| `run_preview_embed_dashcard_query` | Run a query for a preview embedded dashcard in Metabase |
+| `export_preview_embed_dashcard_query` | Export results of a preview embedded dashcard query in Metabase |
+| `run_preview_embed_dashboard_pivot_dashcard_query` | Run a pivot query for a preview embedded dashboard dashcard in Metabase |
+| `get_preview_embed_card_tile` | Get a map tile for a preview embedded card in Metabase |
+| `get_preview_embed_dashboard_tile` | Get a map tile for a preview embedded dashboard dashcard in Metabase |
+
+### Automagic Dashboard Tools (11)
+
+| Tool | Description |
+|------|-------------|
+| `get_xray_entity` | Get an x-ray automagic dashboard for any entity in Metabase |
+| `get_xray_database_candidates` | Get X-ray dashboard candidates for a database in Metabase |
+| `get_xray_entity_cell` | Get an x-ray automagic dashboard for a specific cell of an entity in Metabase |
+| `get_xray_entity_cell_compare` | Get a comparison x-ray automagic dashboard for a specific cell of an entity in Metabase |
+| `get_xray_entity_cell_rule` | Get an x-ray automagic dashboard for a specific cell of an entity with a rule applied in Metabase |
+| `get_xray_entity_cell_rule_compare` | Get a comparison x-ray automagic dashboard for a specific cell of an entity with a rule applied in Metabase |
+| `get_xray_entity_compare` | Get a comparison x-ray automagic dashboard for an entity in Metabase |
+| `get_xray_entity_query_metadata` | Get query metadata for an x-ray automagic dashboard entity in Metabase |
+| `get_xray_entity_rule` | Get an x-ray automagic dashboard for an entity with a rule applied in Metabase |
+| `get_xray_entity_rule_compare` | Get a comparison x-ray automagic dashboard for an entity with a rule applied in Metabase |
+| `get_xray_model_index` | Get an x-ray automagic dashboard for a model index by primary key in Metabase |
+
+### Comment Tools (6)
 
 | Tool | Description |
 |------|-------------|
@@ -518,6 +635,7 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `update_comment` | Update a comment |
 | `delete_comment` | Delete a comment |
 | `add_comment_reaction` | Add an emoji reaction to a comment |
+| `get_comment_mentions` | Get comment mentions for the current user in Metabase |
 
 ### Glossary Tools (4)
 
@@ -536,15 +654,6 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `extract_tables_from_sql` | Extract table references from SQL |
 | `list_llm_models` | List available LLM models |
 
-### Metabot Tools (4) `[Requires Metabase Pro]`
-
-| Tool | Description |
-|------|-------------|
-| `query_metabot` | Query the Metabot AI assistant |
-| `feedback_metabot` | Submit feedback for a Metabot response |
-| `get_metabot_settings` | Get Metabot settings |
-| `update_metabot_settings` | Update Metabot settings |
-
 ### Premium Features Tools (2) `[Requires Metabase Pro]`
 
 | Tool | Description |
@@ -560,13 +669,15 @@ This MCP server provides **258 tools** organized into 50 categories.
 | `get_cloud_migration` | Get the current cloud migration status |
 | `cancel_cloud_migration` | Cancel an in-progress cloud migration |
 
-### Map Tile Tools (3)
+### Tiles Tools (5)
 
 | Tool | Description |
 |------|-------------|
 | `get_card_map_tile` | Get a map tile for a card with lat/lon fields |
-| `get_field_map_tile` | Get a map tile using field IDs |
 | `get_table_map_tile` | Get a map tile for a table |
+| `get_card_tile` | Get a map tile for a card in Metabase |
+| `get_dashboard_tile` | Get a map tile for a dashboard card in Metabase |
+| `get_basic_tile` | Get a basic map tile by zoom level and coordinates in Metabase |
 
 ### User Key-Value Tools (4)
 
@@ -610,6 +721,85 @@ This MCP server provides **258 tools** organized into 50 categories.
 | Tool | Description |
 |------|-------------|
 | `translate_entity_ids` | Translate entity IDs to their internal equivalents |
+
+### Alert Tools (3)
+
+| Tool | Description |
+|------|-------------|
+| `list_alerts` | List all alerts in Metabase |
+| `get_alert` | Get details of a specific alert in Metabase |
+| `delete_alert_subscription` | Delete subscription to an alert in Metabase |
+
+### Analytics Tools (1)
+
+| Tool | Description |
+|------|-------------|
+| `get_analytics_stats` | Retrieve anonymous usage statistics from Metabase |
+
+### Cards Bulk Tools (2)
+
+| Tool | Description |
+|------|-------------|
+| `list_cards_in_dashboards` | Get dashboards that contain the specified cards in Metabase |
+| `bulk_move_cards` | Move multiple cards to a collection in Metabase |
+
+### Document Tools (10)
+
+| Tool | Description |
+|------|-------------|
+| `list_documents` | List all documents in Metabase |
+| `get_document` | Get a document by ID in Metabase |
+| `create_document` | Create a new document in Metabase |
+| `update_document` | Update a document by ID in Metabase |
+| `delete_document` | Delete a document by ID in Metabase |
+| `copy_document` | Copy a document by ID in Metabase |
+| `create_document_public_link` | Create a public link for a document in Metabase |
+| `delete_document_public_link` | Delete the public link for a document in Metabase |
+| `export_document_card_query` | Export a card query result from a document in Metabase |
+| `list_public_documents` | List all documents with public links in Metabase |
+
+### Measure Tools (4)
+
+| Tool | Description |
+|------|-------------|
+| `list_measures` | List all measures in Metabase |
+| `get_measure` | Get a measure by ID in Metabase |
+| `create_measure` | Create a new measure in Metabase |
+| `update_measure` | Update a measure by ID in Metabase |
+
+### Notify Tools (3)
+
+| Tool | Description |
+|------|-------------|
+| `notify_database_sync` | Notify Metabase that a database has changed and trigger a sync by database ID |
+| `notify_database_sync_by_name` | Notify Metabase that a database has changed and trigger a sync by engine and database name |
+| `notify_new_database_table` | Notify Metabase of a new table in a database |
+
+### Product Feedback Tools (1)
+
+| Tool | Description |
+|------|-------------|
+| `submit_product_feedback` | Submit product feedback to Metabase |
+
+### Pulse Tools (9)
+
+| Tool | Description |
+|------|-------------|
+| `list_pulses` | List all pulses in Metabase |
+| `get_pulse` | Get details of a specific pulse in Metabase |
+| `create_pulse` | Create a new pulse in Metabase |
+| `update_pulse` | Update a pulse in Metabase |
+| `test_pulse` | Test a pulse by sending it immediately in Metabase |
+| `get_pulse_form_input` | Get form input options for creating a pulse in Metabase |
+| `unsubscribe_pulse` | Unsubscribe from a pulse in Metabase |
+| `unsubscribe_pulse_email` | Unsubscribe from pulse email notifications in Metabase |
+| `undo_pulse_unsubscribe` | Undo an email unsubscribe from a pulse in Metabase |
+
+### Util Tools (1)
+
+| Tool | Description |
+|------|-------------|
+| `generate_random_token` | Generate a random token in Metabase |
 
 ## Requirements
 
