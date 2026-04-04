@@ -12,11 +12,9 @@ import { getEmbedDashboardParamRemappingDefinition } from './get-embed-dashboard
 import { getEmbedDashboardParamValuesDefinition } from './get-embed-dashboard-param-values';
 import { getEmbedDashboardParamsDefinition } from './get-embed-dashboard-params';
 import { getEmbedDashboardQueryDefinition } from './get-embed-dashboard-query';
-import { getEmbedDashboardQueryFormatDefinition } from './get-embed-dashboard-query-format';
 import { getEmbedDashboardTileDefinition } from './get-embed-dashboard-tile';
 import { runEmbedCardPivotQueryDefinition } from './run-embed-card-pivot-query';
 import { runEmbedDashboardPivotDashcardQueryDefinition } from './run-embed-dashboard-pivot-dashcard-query';
-import { runEmbedDashboardPivotQueryDefinition } from './run-embed-dashboard-pivot-query';
 import { runEmbedDashcardQueryDefinition } from './run-embed-dashcard-query';
 import { searchEmbedCardParamValuesDefinition } from './search-embed-card-param-values';
 import { searchEmbedDashboardParamValuesDefinition } from './search-embed-dashboard-param-values';
@@ -28,7 +26,6 @@ export const embedTools: ToolDefinition<unknown>[] = [
   getEmbedCardQueryFormatDefinition,
   getEmbedDashboardDefinition,
   getEmbedDashboardQueryDefinition,
-  getEmbedDashboardQueryFormatDefinition,
   getEmbedDashboardParamsDefinition,
   searchEmbedDashboardParamsDefinition,
   getEmbedCardParamValuesDefinition,
@@ -37,7 +34,6 @@ export const embedTools: ToolDefinition<unknown>[] = [
   getEmbedDashboardParamValuesDefinition,
   searchEmbedDashboardParamValuesDefinition,
   runEmbedCardPivotQueryDefinition,
-  runEmbedDashboardPivotQueryDefinition,
   getEmbedCardParamRemappingDefinition,
   getEmbedDashboardParamRemappingDefinition,
   runEmbedDashcardQueryDefinition,

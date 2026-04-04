@@ -11,7 +11,6 @@ import { createDashboardPublicLinkDefinition } from './create-dashboard-public-l
 import { createDashboardSubscriptionDefinition } from './create-dashboard-subscription';
 import { deleteDashboardDefinition } from './delete-dashboard';
 import { deleteDashboardPublicLinkDefinition } from './delete-dashboard-public-link';
-import { deleteDashboardSubscriptionDefinition } from './delete-dashboard-subscription';
 import { getDashboardDefinition } from './get-dashboard';
 import { getDashboardMetadataDefinition } from './get-dashboard-metadata';
 // Revisions
@@ -82,8 +81,6 @@ export const dashboardTools: ToolDefinition<unknown>[] = [
   listDashboardSubscriptionsDefinition,
   createDashboardSubscriptionDefinition,
   updateDashboardSubscriptionDefinition,
-  deleteDashboardSubscriptionDefinition,
-
   // Query Execution & Export
   executeDashboardCardQueryDefinition,
   exportDashboardCardQueryDefinition,

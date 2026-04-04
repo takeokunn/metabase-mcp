@@ -18,14 +18,10 @@ import { getPublicDocumentCardDefinition } from './get-public-document-card';
 import { getPublicDashboardParamRemappingDefinition } from './get-public-dashboard-param-remapping';
 import { getPublicDashboardParamValuesDefinition } from './get-public-dashboard-param-values';
 import { getPublicDashboardParamsDefinition } from './get-public-dashboard-params';
-import { getPublicDashboardQueryDefinition } from './get-public-dashboard-query';
-import { getPublicDashboardQueryFormatDefinition } from './get-public-dashboard-query-format';
 import { getPublicDashboardTileDefinition } from './get-public-dashboard-tile';
 import { getPublicOembedDefinition } from './get-public-oembed';
 import { runPublicCardPivotQueryDefinition } from './run-public-card-pivot-query';
 import { runPublicDashboardPivotDashcardQueryDefinition } from './run-public-dashboard-pivot-dashcard-query';
-import { runPublicDashboardPivotQueryDefinition } from './run-public-dashboard-pivot-query';
-import { runPublicDashcardQueryDefinition } from './run-public-dashcard-query';
 import { getPublicDashcardQueryDefinition } from './run-public-dashcard-query-get';
 import { searchPublicCardParamValuesDefinition } from './search-public-card-param-values';
 import { searchPublicDashboardParamValuesDefinition } from './search-public-dashboard-param-values';
@@ -36,8 +32,6 @@ export const publicTools: ToolDefinition<unknown>[] = [
   getPublicCardQueryDefinition,
   getPublicCardQueryFormatDefinition,
   getPublicDashboardDefinition,
-  getPublicDashboardQueryDefinition,
-  getPublicDashboardQueryFormatDefinition,
   getPublicDashboardParamsDefinition,
   searchPublicDashboardParamsDefinition,
   getPublicCardParamValuesDefinition,
@@ -49,9 +43,7 @@ export const publicTools: ToolDefinition<unknown>[] = [
   executePublicActionDefinition,
   executePublicDashcardActionDefinition,
   runPublicCardPivotQueryDefinition,
-  runPublicDashboardPivotQueryDefinition,
   getPublicOembedDefinition,
-  runPublicDashcardQueryDefinition,
   getPublicActionDefinition,
   exportPublicCardQueryDefinition,
   getPublicDashcardQueryDefinition,
