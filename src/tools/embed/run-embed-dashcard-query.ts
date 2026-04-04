@@ -9,7 +9,7 @@ export const runEmbedDashcardQueryDefinition: ToolDefinition<RunEmbedDashcardQue
   inputSchema: RunEmbedDashcardQuerySchema,
   handler: async (client: MetabaseClient, input: RunEmbedDashcardQuery) => {
     const result = await client.get(
-      `/api/embed/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+      `/api/embed/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}`,
     );
     return formatToolResponse(result);
   },

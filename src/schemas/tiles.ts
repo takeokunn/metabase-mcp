@@ -57,3 +57,10 @@ export const GetFieldTileInputSchema = z.object({
   token: z.string().describe('Authentication token'),
 });
 export type GetFieldTileInput = z.infer<typeof GetFieldTileInputSchema>;
+
+export const GetBasicTileInputSchema = z.object({
+  zoom: z.number().describe('Zoom level'),
+  x: z.number().describe('Tile X coordinate'),
+  y: z.number().describe('Tile Y coordinate'),
+});
+export type GetBasicTileInput = z.infer<typeof GetBasicTileInputSchema>;

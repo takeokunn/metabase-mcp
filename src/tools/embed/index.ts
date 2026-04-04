@@ -1,5 +1,4 @@
 import type { ToolDefinition } from '@src/tools/registry';
-import { executeEmbedDashcardActionDefinition } from './execute-embed-dashcard-action';
 import { exportEmbedCardQueryDefinition } from './export-embed-card-query';
 import { exportEmbedDashcardQueryDefinition } from './export-embed-dashcard-query';
 import { getEmbedCardDefinition } from './get-embed-card';
@@ -39,7 +38,6 @@ export const embedTools: ToolDefinition<unknown>[] = [
   searchEmbedDashboardParamValuesDefinition,
   runEmbedCardPivotQueryDefinition,
   runEmbedDashboardPivotQueryDefinition,
-  executeEmbedDashcardActionDefinition,
   getEmbedCardParamRemappingDefinition,
   getEmbedDashboardParamRemappingDefinition,
   runEmbedDashcardQueryDefinition,

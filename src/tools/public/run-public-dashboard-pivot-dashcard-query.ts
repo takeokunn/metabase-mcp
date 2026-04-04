@@ -13,7 +13,7 @@ export const runPublicDashboardPivotDashcardQueryDefinition: ToolDefinition<RunP
     inputSchema: RunPublicDashboardPivotDashcardQuerySchema,
     handler: async (client: MetabaseClient, input: RunPublicDashboardPivotDashcardQuery) => {
       const result = await client.get(
-        `/api/public/pivot/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+        `/api/public/pivot/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}`,
       );
       return formatToolResponse(result);
     },

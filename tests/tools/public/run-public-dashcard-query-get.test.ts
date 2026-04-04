@@ -18,7 +18,7 @@ describe('getPublicDashcardQuery tool', () => {
     const result = await getPublicDashcardQueryDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
     expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/public/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+      `/api/public/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}`,
     );
   });
 

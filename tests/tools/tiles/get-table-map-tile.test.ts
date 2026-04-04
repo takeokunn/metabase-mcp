@@ -17,14 +17,14 @@ describe('getTableMapTile tool', () => {
   it('should call correct URL without card_id', async () => {
     const mockClient = createMockClientWithResponse('get', {});
     await getTableMapTileDefinition.handler(mockClient, input);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/tiles/6/32/32/tile.png', undefined);
+    expect(mockClient.get).toHaveBeenCalledWith('/api/tiles/6/32/32', undefined);
   });
 
   it('should pass card_id as query param when provided', async () => {
     const inputWithCard = { ...input, card_id: 7 };
     const mockClient = createMockClientWithResponse('get', {});
     await getTableMapTileDefinition.handler(mockClient, inputWithCard);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/tiles/6/32/32/tile.png', { 'card-id': 7 });
+    expect(mockClient.get).toHaveBeenCalledWith('/api/tiles/6/32/32', { 'card-id': 7 });
   });
 
   it('should propagate client errors', async () => {

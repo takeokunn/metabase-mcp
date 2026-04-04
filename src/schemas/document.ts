@@ -17,3 +17,5 @@ export const DeleteDocumentPublicLinkInputSchema = z.object({ id: z.number().des
 export type DeleteDocumentPublicLinkInput = z.infer<typeof DeleteDocumentPublicLinkInputSchema>;
 export const RunDocumentCardQueryInputSchema = z.object({ id: z.number().describe('Document ID'), card_id: z.number().describe('Card ID'), export_format: z.enum(['csv','json','xlsx']).optional().describe('Export format') });
 export type RunDocumentCardQueryInput = z.infer<typeof RunDocumentCardQueryInputSchema>;
+export const ListPublicDocumentsInputSchema = z.object({});
+export type ListPublicDocumentsInput = z.infer<typeof ListPublicDocumentsInputSchema>;

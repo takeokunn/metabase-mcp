@@ -3,6 +3,8 @@ import { executePublicActionDefinition } from './execute-public-action';
 import { executePublicDashcardActionDefinition } from './execute-public-dashcard-action';
 import { exportPublicCardQueryDefinition } from './export-public-card-query';
 import { exportPublicDashcardQueryDefinition } from './export-public-dashcard-query';
+import { exportPublicDashcardQueryFormatDefinition } from './export-public-dashcard-query-format';
+import { exportPublicDocumentCardDefinition } from './export-public-document-card';
 import { getPublicActionDefinition } from './get-public-action';
 import { getPublicCardDefinition } from './get-public-card';
 import { getPublicCardParamRemappingDefinition } from './get-public-card-param-remapping';
@@ -11,6 +13,8 @@ import { getPublicCardQueryDefinition } from './get-public-card-query';
 import { getPublicCardQueryFormatDefinition } from './get-public-card-query-format';
 import { getPublicCardTileDefinition } from './get-public-card-tile';
 import { getPublicDashboardDefinition } from './get-public-dashboard';
+import { getPublicDocumentDefinition } from './get-public-document';
+import { getPublicDocumentCardDefinition } from './get-public-document-card';
 import { getPublicDashboardParamRemappingDefinition } from './get-public-dashboard-param-remapping';
 import { getPublicDashboardParamValuesDefinition } from './get-public-dashboard-param-values';
 import { getPublicDashboardParamsDefinition } from './get-public-dashboard-params';
@@ -55,4 +59,8 @@ export const publicTools: ToolDefinition<unknown>[] = [
   runPublicDashboardPivotDashcardQueryDefinition,
   getPublicCardTileDefinition,
   getPublicDashboardTileDefinition,
+  getPublicDocumentDefinition,
+  getPublicDocumentCardDefinition,
+  exportPublicDocumentCardDefinition,
+  exportPublicDashcardQueryFormatDefinition,
 ];

@@ -13,7 +13,7 @@ export const runPreviewEmbedDashcardQueryDefinition: ToolDefinition<RunPreviewEm
     inputSchema: RunPreviewEmbedDashcardQuerySchema,
     handler: async (client: MetabaseClient, input: RunPreviewEmbedDashcardQuery) => {
       const result = await client.get(
-        `/api/preview_embed/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+        `/api/preview_embed/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}`,
       );
       return formatToolResponse(result);
     },

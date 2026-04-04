@@ -19,7 +19,7 @@ describe('exportPublicDashcardQuery tool', () => {
     const result = await exportPublicDashcardQueryDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
     expect(mockClient.post).toHaveBeenCalledWith(
-      `/api/public/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}/query/${input.export_format}`,
+      `/api/public/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}/${input.export_format}`,
       {},
     );
   });

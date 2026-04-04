@@ -10,7 +10,7 @@ export const getCardMapTileDefinition: ToolDefinition<GetCardMapTileParams> = {
   handler: async (client: MetabaseClient, input: GetCardMapTileParams) => {
     const params = input.query ? { query: input.query } : undefined;
     const result = await client.get(
-      `/api/tiles/${input.card_id}/${input.zoom}/${input.x}/${input.y}/${encodeURIComponent(input.lat_field)}/${encodeURIComponent(input.lon_field)}/tile.png`,
+      `/api/tiles/${input.card_id}/${input.zoom}/${input.x}/${input.y}/${encodeURIComponent(input.lat_field)}/${encodeURIComponent(input.lon_field)}`,
       params,
     );
     return formatToolResponse(result);

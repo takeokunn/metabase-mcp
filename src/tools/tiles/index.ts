@@ -1,4 +1,5 @@
 import type { ToolDefinition } from '@src/tools/registry';
+import { getBasicTileDefinition } from './get-basic-tile';
 import { getCardMapTileDefinition } from './get-card-map-tile';
 import { getCardTileDefinition } from './get-card-tile';
 import { getDashboardTileDefinition } from './get-dashboard-tile';
@@ -13,4 +14,5 @@ export const tilesTools: ToolDefinition<unknown>[] = [
   getCardTileDefinition,
   getDashboardTileDefinition,
   getFieldTileDefinition,
+  getBasicTileDefinition,
 ];

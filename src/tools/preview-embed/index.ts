@@ -1,6 +1,5 @@
 import type { ToolDefinition } from '@src/tools/registry';
 import { executePreviewEmbedDashcardActionDefinition } from './execute-preview-embed-dashcard-action';
-import { exportPreviewEmbedCardQueryDefinition } from './export-preview-embed-card-query';
 import { exportPreviewEmbedDashcardQueryDefinition } from './export-preview-embed-dashcard-query';
 import { getPreviewEmbedCardParamRemappingDefinition } from './get-preview-embed-card-param-remapping';
 import { getPreviewEmbedCardParamValuesDefinition } from './get-preview-embed-card-param-values';
@@ -17,7 +16,6 @@ import { runPreviewEmbedCardPivotQueryDefinition } from './run-preview-embed-car
 import { runPreviewEmbedDashboardPivotDashcardQueryDefinition } from './run-preview-embed-dashboard-pivot-dashcard-query';
 import { runPreviewEmbedDashboardPivotQueryDefinition } from './run-preview-embed-dashboard-pivot-query';
 import { runPreviewEmbedDashcardQueryDefinition } from './run-preview-embed-dashcard-query';
-import { searchPreviewEmbedCardParamValuesDefinition } from './search-preview-embed-card-param-values';
 import { searchPreviewEmbedDashboardParamValuesDefinition } from './search-preview-embed-dashboard-param-values';
 
 export const previewEmbedTools: ToolDefinition<unknown>[] = [
@@ -27,8 +25,6 @@ export const previewEmbedTools: ToolDefinition<unknown>[] = [
   previewEmbedDashboardQueryDefinition,
   previewEmbedDashboardParamsDefinition,
   getPreviewEmbedCardParamValuesDefinition,
-  searchPreviewEmbedCardParamValuesDefinition,
-  exportPreviewEmbedCardQueryDefinition,
   getPreviewEmbedDashboardParamValuesDefinition,
   searchPreviewEmbedDashboardParamValuesDefinition,
   runPreviewEmbedCardPivotQueryDefinition,

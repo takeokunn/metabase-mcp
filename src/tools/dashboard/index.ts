@@ -33,8 +33,6 @@ import { exportDashboardCardQueryDefinition } from './export-dashboard-card-quer
 import { getDashboardParamValuesDefinition } from './get-dashboard-param-values';
 import { searchDashboardParamValuesDefinition } from './search-dashboard-param-values';
 import { getDashboardEmbeddableDefinition } from './get-dashboard-embeddable';
-import { getDashboardFieldValuesDefinition } from './get-dashboard-field-values';
-import { searchDashboardFieldValuesDefinition } from './search-dashboard-field-values';
 import { getDashboardParamRemappingDefinition } from './get-dashboard-param-remapping';
 import { getDashboardRelatedDefinition } from './get-dashboard-related';
 import { getValidFilterFieldsDefinition } from './get-valid-filter-fields';
@@ -92,8 +90,6 @@ export const dashboardTools: ToolDefinition<unknown>[] = [
   getDashboardParamValuesDefinition,
   searchDashboardParamValuesDefinition,
   getDashboardEmbeddableDefinition,
-  getDashboardFieldValuesDefinition,
-  searchDashboardFieldValuesDefinition,
   getDashboardParamRemappingDefinition,
   getDashboardRelatedDefinition,
   getValidFilterFieldsDefinition,

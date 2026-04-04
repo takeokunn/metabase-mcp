@@ -13,7 +13,7 @@ export const runPreviewEmbedDashboardPivotDashcardQueryDefinition: ToolDefinitio
     inputSchema: RunPreviewEmbedDashboardPivotDashcardQuerySchema,
     handler: async (client: MetabaseClient, input: RunPreviewEmbedDashboardPivotDashcardQuery) => {
       const result = await client.get(
-        `/api/preview_embed/pivot/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+        `/api/preview_embed/pivot/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}`,
       );
       return formatToolResponse(result);
     },

@@ -17,7 +17,7 @@ describe('getFieldMapTile tool', () => {
   it('should call correct URL with path params', async () => {
     const mockClient = createMockClientWithResponse('get', {});
     await getFieldMapTileDefinition.handler(mockClient, input);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/tiles/8/256/256/10/11/tile.png');
+    expect(mockClient.get).toHaveBeenCalledWith('/api/tiles/8/256/256/10/11');
   });
 
   it('should propagate client errors', async () => {

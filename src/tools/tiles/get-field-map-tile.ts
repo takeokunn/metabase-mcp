@@ -9,7 +9,7 @@ export const getFieldMapTileDefinition: ToolDefinition<GetFieldMapTileParams> = 
   inputSchema: GetFieldMapTileParamsSchema,
   handler: async (client: MetabaseClient, input: GetFieldMapTileParams) => {
     const result = await client.get(
-      `/api/tiles/${input.zoom}/${input.x}/${input.y}/${input.lat_field_id}/${input.lon_field_id}/tile.png`,
+      `/api/tiles/${input.zoom}/${input.x}/${input.y}/${input.lat_field_id}/${input.lon_field_id}`,
     );
     return formatToolResponse(result);
   },

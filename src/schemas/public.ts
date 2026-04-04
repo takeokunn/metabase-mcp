@@ -186,3 +186,29 @@ export const GetPublicDashboardTileSchema = z.object({
   y: z.number(),
 });
 export type GetPublicDashboardTile = z.infer<typeof GetPublicDashboardTileSchema>;
+
+export const GetPublicDocumentSchema = z.object({
+  uuid: z.string().describe('Public UUID of the document'),
+});
+export type GetPublicDocument = z.infer<typeof GetPublicDocumentSchema>;
+
+export const GetPublicDocumentCardSchema = z.object({
+  uuid: z.string().describe('Public UUID of the document'),
+  card_id: z.number().describe('Card ID'),
+});
+export type GetPublicDocumentCard = z.infer<typeof GetPublicDocumentCardSchema>;
+
+export const ExportPublicDocumentCardSchema = z.object({
+  uuid: z.string().describe('Public UUID of the document'),
+  card_id: z.number().describe('Card ID'),
+  export_format: z.string().describe('Export format'),
+});
+export type ExportPublicDocumentCard = z.infer<typeof ExportPublicDocumentCardSchema>;
+
+export const ExportPublicDashcardQueryFormatSchema = z.object({
+  uuid: z.string().describe('Public UUID of the dashboard'),
+  dashcard_id: z.number().describe('Dashboard card ID'),
+  card_id: z.number().describe('Card ID'),
+  export_format: z.string().describe('Export format'),
+});
+export type ExportPublicDashcardQueryFormat = z.infer<typeof ExportPublicDashcardQueryFormatSchema>;

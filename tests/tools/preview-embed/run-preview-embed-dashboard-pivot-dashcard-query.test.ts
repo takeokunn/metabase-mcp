@@ -17,7 +17,7 @@ describe('runPreviewEmbedDashboardPivotDashcardQuery tool', () => {
     );
     expectMcpContent(result, mockResult);
     expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/preview_embed/pivot/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+      `/api/preview_embed/pivot/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}`,
     );
   });
 

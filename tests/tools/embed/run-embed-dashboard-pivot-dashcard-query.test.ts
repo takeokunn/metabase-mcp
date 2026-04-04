@@ -14,7 +14,7 @@ describe('runEmbedDashboardPivotDashcardQuery tool', () => {
     const result = await runEmbedDashboardPivotDashcardQueryDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
     expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/embed/pivot/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+      `/api/embed/pivot/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}`,
     );
   });
 

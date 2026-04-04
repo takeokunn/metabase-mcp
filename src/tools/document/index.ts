@@ -7,7 +7,7 @@ import { deleteDocumentPublicLinkDefinition } from './delete-document-public-lin
 import { exportDocumentCardQueryDefinition } from './export-document-card-query';
 import { getDocumentDefinition } from './get-document';
 import { listDocumentsDefinition } from './list-documents';
-import { runDocumentCardQueryDefinition } from './run-document-card-query';
+import { listPublicDocumentsDefinition } from './list-public-documents';
 import { updateDocumentDefinition } from './update-document';
 
 export const documentTools: ToolDefinition<unknown>[] = [
@@ -19,6 +19,6 @@ export const documentTools: ToolDefinition<unknown>[] = [
   copyDocumentDefinition,
   createDocumentPublicLinkDefinition,
   deleteDocumentPublicLinkDefinition,
-  runDocumentCardQueryDefinition,
   exportDocumentCardQueryDefinition,
+  listPublicDocumentsDefinition,
 ];

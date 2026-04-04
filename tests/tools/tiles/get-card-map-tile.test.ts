@@ -18,7 +18,7 @@ describe('getCardMapTile tool', () => {
     const mockClient = createMockClientWithResponse('get', {});
     await getCardMapTileDefinition.handler(mockClient, input);
     expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/tiles/42/10/512/512/latitude/longitude/tile.png`,
+      `/api/tiles/42/10/512/512/latitude/longitude`,
       undefined,
     );
   });
@@ -28,7 +28,7 @@ describe('getCardMapTile tool', () => {
     const mockClient = createMockClientWithResponse('get', {});
     await getCardMapTileDefinition.handler(mockClient, inputWithQuery);
     expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/tiles/42/10/512/512/latitude/longitude/tile.png`,
+      `/api/tiles/42/10/512/512/latitude/longitude`,
       { query: '{"filter": []}' },
     );
   });

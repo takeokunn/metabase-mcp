@@ -9,7 +9,7 @@ export const exportPublicDashcardQueryDefinition: ToolDefinition<ExportPublicDas
   inputSchema: ExportPublicDashcardQuerySchema,
   handler: async (client: MetabaseClient, input: ExportPublicDashcardQuery) => {
     const result = await client.post(
-      `/api/public/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}/query/${input.export_format}`,
+      `/api/public/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}/${input.export_format}`,
       {},
     );
     return formatToolResponse(result);

@@ -18,7 +18,7 @@ describe('runPublicDashboardPivotDashcardQuery tool', () => {
     const result = await runPublicDashboardPivotDashcardQueryDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
     expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/public/pivot/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+      `/api/public/pivot/dashboard/${input.uuid}/dashcard/${input.dashcard_id}/card/${input.card_id}`,
     );
   });
 

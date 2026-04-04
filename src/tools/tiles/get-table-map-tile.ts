@@ -10,7 +10,7 @@ export const getTableMapTileDefinition: ToolDefinition<GetTableMapTileParams> = 
   handler: async (client: MetabaseClient, input: GetTableMapTileParams) => {
     const params = input.card_id ? { 'card-id': input.card_id } : undefined;
     const result = await client.get(
-      `/api/tiles/${input.zoom}/${input.x}/${input.y}/tile.png`,
+      `/api/tiles/${input.zoom}/${input.x}/${input.y}`,
       params,
     );
     return formatToolResponse(result);
