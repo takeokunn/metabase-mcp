@@ -14,11 +14,9 @@ import { listPublicCardsDefinition } from './list-public-cards';
 // Copy & Series
 import { copyCardDefinition } from './copy-card';
 import { getCardSeriesDefinition } from './get-card-series';
-import { getCardRelatedDefinition } from './get-card-related';
 // Param & Field Values
 import { getCardParamValuesDefinition } from './get-card-param-values';
 import { searchCardParamValuesDefinition } from './search-card-param-values';
-import { getCardFieldValuesDefinition } from './get-card-field-values';
 import { searchCardFieldValuesDefinition } from './search-card-field-values';
 // Query Execution & Export
 import { executeCardPivotDefinition } from './execute-card-pivot';
@@ -45,12 +43,10 @@ export const cardTools: ToolDefinition<unknown>[] = [
   // Copy & Series
   copyCardDefinition,
   getCardSeriesDefinition,
-  getCardRelatedDefinition,
 
   // Param & Field Values
   getCardParamValuesDefinition,
   searchCardParamValuesDefinition,
-  getCardFieldValuesDefinition,
   searchCardFieldValuesDefinition,
 
   // Query Execution & Export

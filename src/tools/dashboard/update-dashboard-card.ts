@@ -9,9 +9,8 @@ import { formatToolResponse } from '@src/tools/registry';
 /**
  * Tool definition for updating a dashboard card in Metabase (v0.49+)
  *
- * Note: In v0.49+, dashcards are managed via PUT /api/dashboard/:id
- * This tool fetches the current dashboard, updates the specified dashcard,
- * and saves the changes.
+ * Fetches the current dashcards via GET /api/dashboard/:id, merges updates
+ * into the target dashcard, then writes all cards to PUT /api/dashboard/:id/cards.
  */
 export const updateDashboardCardDefinition: ToolDefinition<UpdateDashboardCardInput> = {
   name: 'update_dashboard_card',
@@ -32,11 +31,9 @@ export const updateDashboardCardDefinition: ToolDefinition<UpdateDashboardCardIn
 
     // Fetch current dashboard
     const dashboard = (await client.get(`/api/dashboard/${dashboard_id}`)) as {
-      tabs?: Array<{ id: number; name: string }>;
       dashcards?: Array<{ id: number } & Record<string, unknown>>;
     };
 
-    const existingTabs = dashboard.tabs || [];
     const existingCards = dashboard.dashcards || [];
 
     // Find and update the target dashcard
@@ -56,10 +53,9 @@ export const updateDashboardCardDefinition: ToolDefinition<UpdateDashboardCardIn
       return card;
     });
 
-    // Update dashboard
-    const result = await client.put(`/api/dashboard/${dashboard_id}`, {
-      tabs: existingTabs,
-      dashcards: updatedCards,
+    // Update dashcards via dedicated endpoint
+    const result = await client.put(`/api/dashboard/${dashboard_id}/cards`, {
+      cards: updatedCards,
     });
 
     return formatToolResponse(result);

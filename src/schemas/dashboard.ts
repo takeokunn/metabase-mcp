@@ -156,7 +156,7 @@ export const CopyDashboardInputSchema = z.object({
 });
 
 // ---------------------------------------------------------------------------
-// Dashcard Management Schemas (v0.49+: uses PUT /api/dashboard/:id)
+// Dashcard Management Schemas (v0.49+: uses PUT /api/dashboard/:id/cards)
 // ---------------------------------------------------------------------------
 
 // Add dashboard card input schema
@@ -227,7 +227,6 @@ export const UpdateDashboardCardsInputSchema = z.object({
     )
     .min(1)
     .describe('Array of dashcards to update'),
-  ordered_tabs: z.array(DashboardTabSchema).optional().describe('Tab ordering'),
 });
 
 // ---------------------------------------------------------------------------

@@ -9,11 +9,9 @@ import { formatToolResponse } from '@src/tools/registry';
 /**
  * Tool definition for bulk updating dashboard cards in Metabase (v0.49+)
  *
- * Note: In v0.49+, dashcards are managed via PUT /api/dashboard/:id
- * This tool allows updating multiple dashcards at once, including:
- * - Adding new cards (use negative IDs)
- * - Updating existing cards
- * - Cards not in the payload will be removed
+ * Accepts an array of complete dashcard objects and PUTs them directly to
+ * PUT /api/dashboard/:id/cards. Cards not in the payload are removed.
+ * Use negative IDs for new cards (the server assigns real IDs).
  */
 export const updateDashboardCardsDefinition: ToolDefinition<UpdateDashboardCardsInput> = {
   name: 'update_dashboard_cards',
@@ -21,14 +19,7 @@ export const updateDashboardCardsDefinition: ToolDefinition<UpdateDashboardCards
     'Bulk update dashboard cards in Metabase (v0.49+). Cards not in payload are removed.',
   inputSchema: UpdateDashboardCardsInputSchema,
   handler: async (client: MetabaseClient, input: UpdateDashboardCardsInput) => {
-    const { dashboard_id, cards, ordered_tabs } = input;
-
-    // Fetch current dashboard to get existing tabs if not provided
-    const dashboard = (await client.get(`/api/dashboard/${dashboard_id}`)) as {
-      tabs?: Array<{ id: number; name: string }>;
-    };
-
-    const tabs = ordered_tabs ?? dashboard.tabs ?? [];
+    const { dashboard_id, cards } = input;
 
     // Format cards for the API
     const formattedCards = cards.map((card) => ({
@@ -44,10 +35,9 @@ export const updateDashboardCardsDefinition: ToolDefinition<UpdateDashboardCards
       series: [],
     }));
 
-    // Update dashboard with all cards
-    const result = await client.put(`/api/dashboard/${dashboard_id}`, {
-      tabs,
-      dashcards: formattedCards,
+    // Update dashcards via dedicated endpoint
+    const result = await client.put(`/api/dashboard/${dashboard_id}/cards`, {
+      cards: formattedCards,
     });
 
     return formatToolResponse(result);

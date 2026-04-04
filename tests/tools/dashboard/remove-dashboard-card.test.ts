@@ -31,9 +31,9 @@ describe('removeDashboardCard tool', () => {
 
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        dashcards: [expect.objectContaining({ id: 20 })],
+        cards: [expect.objectContaining({ id: 20 })],
       }),
     );
   });
@@ -47,12 +47,12 @@ describe('removeDashboardCard tool', () => {
     await removeDashboardCardDefinition.handler(mockClient, baseInput);
 
     const putCall = mockClient.put.mock.calls[0];
-    const dashcards = putCall[1].dashcards;
-    expect(dashcards).toHaveLength(1);
-    expect(dashcards[0].id).toBe(20);
+    const cards = putCall[1].cards;
+    expect(cards).toHaveLength(1);
+    expect(cards[0].id).toBe(20);
   });
 
-  it('should preserve existing tabs', async () => {
+  it('should PUT to /cards endpoint (not full dashboard)', async () => {
     const mockClient = createMockClient({
       get: vi.fn().mockResolvedValue(mockDashboard),
       put: vi.fn().mockResolvedValue(mockDashboard),
@@ -61,9 +61,9 @@ describe('removeDashboardCard tool', () => {
     await removeDashboardCardDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        tabs: [{ id: 1, name: 'Tab 1' }],
+        cards: expect.any(Array),
       }),
     );
   });
@@ -82,9 +82,9 @@ describe('removeDashboardCard tool', () => {
     await removeDashboardCardDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        dashcards: [],
+        cards: [],
       }),
     );
   });

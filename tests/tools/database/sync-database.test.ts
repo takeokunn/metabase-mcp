@@ -14,7 +14,7 @@ describe('syncDatabase tool', () => {
     const result = await syncDatabaseDefinition.handler(mockClient, { id: 1 });
 
     expectMcpContent(result, mockResponse);
-    expect(mockClient.post).toHaveBeenCalledWith('/api/database/1/sync');
+    expect(mockClient.post).toHaveBeenCalledWith('/api/database/1/sync_schema');
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
 
@@ -38,7 +38,7 @@ describe('syncDatabase tool', () => {
       success: true,
       message: 'Database sync triggered',
     });
-    expect(mockClient.post).toHaveBeenCalledWith('/api/database/42/sync');
+    expect(mockClient.post).toHaveBeenCalledWith('/api/database/42/sync_schema');
   });
 
   it('should propagate client errors', async () => {
@@ -47,7 +47,7 @@ describe('syncDatabase tool', () => {
     await expect(syncDatabaseDefinition.handler(mockClient, { id: 999 })).rejects.toThrow(
       'Database not found',
     );
-    expect(mockClient.post).toHaveBeenCalledWith('/api/database/999/sync');
+    expect(mockClient.post).toHaveBeenCalledWith('/api/database/999/sync_schema');
   });
 
   it('should propagate API errors with status codes', async () => {

@@ -7,14 +7,12 @@ import { deleteDatabaseSchemaDefinition } from './delete-database-schema';
 import { discardDatabaseValuesDefinition } from './discard-database-values';
 import { getDatabaseDefinition } from './get-database';
 import { getDatabaseAutocompleteDefinition } from './get-database-autocomplete';
-import { getDatabaseEntityIdDefinition } from './get-database-entity-id';
 import { getDatabaseFieldsDefinition } from './get-database-fields';
 import { getDatabaseHealthcheckDefinition } from './get-database-healthcheck';
 import { getDatabaseIdFieldsDefinition } from './get-database-id-fields';
 import { getDatabaseMetadataDefinition } from './get-database-metadata';
 import { getDatabaseUsageInfoDefinition } from './get-database-usage-info';
 import { getDatabaseVirtualSchemaDefinition } from './get-database-virtual-schema';
-import { listDatabaseConnectedCardsDefinition } from './list-database-connected-cards';
 import { listDatabaseSchemasDefinition } from './list-database-schemas';
 import { listDatabaseSchemasWithTablesDefinition } from './list-database-schemas-with-tables';
 import { listDatabaseTablesDefinition } from './list-database-tables';
@@ -60,6 +58,4 @@ export const databaseTools: ToolDefinition<unknown>[] = [
   appendCsvToTableDefinition,
   replaceTableCsvDefinition,
   uploadCsvToDatabaseDefinition,
-  listDatabaseConnectedCardsDefinition,
-  getDatabaseEntityIdDefinition,
 ];

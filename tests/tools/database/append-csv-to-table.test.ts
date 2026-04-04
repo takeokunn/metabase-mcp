@@ -10,10 +10,10 @@ describe('appendCsvToTable tool', () => {
 
     const mockClient = createMockClientWithResponse('post', mockResponse);
 
-    const result = await appendCsvToTableDefinition.handler(mockClient, { id: 1, table_id: 5 });
+    const result = await appendCsvToTableDefinition.handler(mockClient, { table_id: 5 });
 
     expectMcpContent(result, mockResponse);
-    expect(mockClient.post).toHaveBeenCalledWith('/api/database/1/table/5/append');
+    expect(mockClient.post).toHaveBeenCalledWith('/api/table/5/append-csv');
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
 
@@ -21,7 +21,7 @@ describe('appendCsvToTable tool', () => {
     const mockClient = createMockClientWithError('post', 'Database not found');
 
     await expect(
-      appendCsvToTableDefinition.handler(mockClient, { id: 999, table_id: 1 }),
+      appendCsvToTableDefinition.handler(mockClient, { table_id: 1 }),
     ).rejects.toThrow('Database not found');
   });
 
@@ -29,7 +29,7 @@ describe('appendCsvToTable tool', () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
 
     await expect(
-      appendCsvToTableDefinition.handler(mockClient, { id: 1, table_id: 5 }),
+      appendCsvToTableDefinition.handler(mockClient, { table_id: 5 }),
     ).rejects.toThrow('Unauthorized');
   });
 

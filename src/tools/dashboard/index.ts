@@ -1,8 +1,6 @@
 import type { ToolDefinition } from '@src/tools/registry';
 // Dashcard Management (v0.49+)
 import { addDashboardCardDefinition } from './add-dashboard-card';
-// Favorites
-import { addDashboardFavoriteDefinition } from './add-dashboard-favorite';
 // Tab Management (v0.49+)
 import { addDashboardTabDefinition } from './add-dashboard-tab';
 import { copyDashboardDefinition } from './copy-dashboard';
@@ -22,7 +20,6 @@ import { listDashboardSubscriptionsDefinition } from './list-dashboard-subscript
 import { listDashboardsDefinition } from './list-dashboards';
 import { listPublicDashboardsDefinition } from './list-public-dashboards';
 import { removeDashboardCardDefinition } from './remove-dashboard-card';
-import { removeDashboardFavoriteDefinition } from './remove-dashboard-favorite';
 import { removeDashboardTabDefinition } from './remove-dashboard-tab';
 import { revertDashboardDefinition } from './revert-dashboard';
 import { updateDashboardDefinition } from './update-dashboard';
@@ -67,10 +64,6 @@ export const dashboardTools: ToolDefinition<unknown>[] = [
   createDashboardPublicLinkDefinition,
   deleteDashboardPublicLinkDefinition,
   listPublicDashboardsDefinition,
-
-  // Favorites
-  addDashboardFavoriteDefinition,
-  removeDashboardFavoriteDefinition,
 
   // Revisions
   listDashboardRevisionsDefinition,

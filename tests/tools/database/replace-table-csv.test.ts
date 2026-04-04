@@ -10,10 +10,10 @@ describe('replaceTableCsv tool', () => {
 
     const mockClient = createMockClientWithResponse('post', mockResponse);
 
-    const result = await replaceTableCsvDefinition.handler(mockClient, { id: 1, table_id: 5 });
+    const result = await replaceTableCsvDefinition.handler(mockClient, { table_id: 5 });
 
     expectMcpContent(result, mockResponse);
-    expect(mockClient.post).toHaveBeenCalledWith('/api/database/1/table/5/replace');
+    expect(mockClient.post).toHaveBeenCalledWith('/api/table/5/replace-csv');
     expect(mockClient.post).toHaveBeenCalledOnce();
   });
 
@@ -21,7 +21,7 @@ describe('replaceTableCsv tool', () => {
     const mockClient = createMockClientWithError('post', 'Database not found');
 
     await expect(
-      replaceTableCsvDefinition.handler(mockClient, { id: 999, table_id: 1 }),
+      replaceTableCsvDefinition.handler(mockClient, { table_id: 1 }),
     ).rejects.toThrow('Database not found');
   });
 
@@ -29,7 +29,7 @@ describe('replaceTableCsv tool', () => {
     const mockClient = createMockClientWithError('post', createApiError('Unauthorized', 401));
 
     await expect(
-      replaceTableCsvDefinition.handler(mockClient, { id: 1, table_id: 5 }),
+      replaceTableCsvDefinition.handler(mockClient, { table_id: 5 }),
     ).rejects.toThrow('Unauthorized');
   });
 

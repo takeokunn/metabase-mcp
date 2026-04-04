@@ -1,10 +1,8 @@
 import type { ToolDefinition } from '@src/tools/registry';
-import { countUsersDefinition } from './count-users';
 import { createUserDefinition } from './create-user';
 import { deleteUserDefinition } from './delete-user';
 import { getCurrentUserDefinition } from './get-current-user';
 import { getUserDefinition } from './get-user';
-import { getUserMembershipsDefinition } from './get-user-memberships';
 import { getUserRecipientsDefinition } from './get-user-recipients';
 import { listUsersDefinition } from './list-users';
 import { reactivateUserDefinition } from './reactivate-user';
@@ -26,6 +24,4 @@ export const userTools: ToolDefinition<unknown>[] = [
   reactivateUserDefinition,
   sendInviteDefinition,
   getUserRecipientsDefinition,
-  getUserMembershipsDefinition,
-  countUsersDefinition,
 ];

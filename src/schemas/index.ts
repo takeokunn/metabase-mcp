@@ -25,8 +25,6 @@ export * from './ldap';
 export * from './llm';
 export * from './logger';
 export * from './login-history';
-export * from './metabot';
-export * from './metric';
 export * from './model-index';
 export * from './moderation-review';
 export * from './notification';

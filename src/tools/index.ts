@@ -24,8 +24,6 @@ import { ldapTools } from './ldap';
 import { llmTools } from './llm';
 import { loggerTools } from './logger';
 import { loginHistoryTools } from './login-history';
-import { metabotTools } from './metabot';
-import { metricTools } from './metric';
 import { modelIndexTools } from './model-index';
 import { moderationReviewTools } from './moderation-review';
 import { notificationTools } from './notification';
@@ -94,7 +92,6 @@ export const allTools: ToolDefinition<unknown>[] = [
   // Model features
   ...persistTools,
   ...channelTools,
-  ...metricTools,
   ...modelIndexTools,
   // Timelines
   ...timelineTools,
@@ -116,7 +113,6 @@ export const allTools: ToolDefinition<unknown>[] = [
   ...moderationReviewTools,
   // AI features
   ...llmTools,
-  ...metabotTools,
   // Enterprise / premium
   ...premiumFeaturesTools,
   // Platform

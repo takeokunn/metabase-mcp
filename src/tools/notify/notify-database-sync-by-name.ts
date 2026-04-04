@@ -15,7 +15,7 @@ export const notifyDatabaseSyncByNameDefinition: ToolDefinition<NotifyDatabaseSy
     'Notify Metabase that a database has changed and trigger a sync by engine and database name. Used by external systems to signal schema or data changes without knowing the Metabase DB ID.',
   inputSchema: NotifyDatabaseSyncByNameInputSchema,
   handler: async (client: MetabaseClient, input: NotifyDatabaseSyncByNameInput) => {
-    const result = await client.post('/api/notify/db', {
+    const result = await client.post('/api/notify/db/attached_datawarehouse', {
       engine: input.engine,
       database_name: input.database_name,
       table_name: input.table_name,

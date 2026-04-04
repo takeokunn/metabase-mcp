@@ -6,9 +6,9 @@ import { formatToolResponse } from '@src/tools/registry';
 /**
  * Tool definition for adding a card to a dashboard in Metabase (v0.49+)
  *
- * Note: In v0.49+, dashcards are managed via PUT /api/dashboard/:id
- * This tool fetches the current dashboard, adds a new dashcard with a negative ID,
- * and updates the dashboard.
+ * Fetches the current dashcards via GET /api/dashboard/:id, appends the new
+ * dashcard with a server-assigned negative ID, then writes the full updated
+ * array to PUT /api/dashboard/:id/cards.
  */
 export const addDashboardCardDefinition: ToolDefinition<AddDashboardCardInput> = {
   name: 'add_dashboard_card',
@@ -28,13 +28,11 @@ export const addDashboardCardDefinition: ToolDefinition<AddDashboardCardInput> =
       virtual_card,
     } = input;
 
-    // Fetch current dashboard to get existing cards and tabs
+    // Fetch current dashboard to get existing cards
     const dashboard = (await client.get(`/api/dashboard/${dashboard_id}`)) as {
-      tabs?: Array<{ id: number; name: string }>;
       dashcards?: Array<{ id: number } & Record<string, unknown>>;
     };
 
-    const existingTabs = dashboard.tabs || [];
     const existingCards = dashboard.dashcards || [];
 
     // Find the minimum ID to ensure new card has unique negative ID
@@ -60,10 +58,9 @@ export const addDashboardCardDefinition: ToolDefinition<AddDashboardCardInput> =
       newDashcard.virtual_card = virtual_card;
     }
 
-    // Update dashboard with new card
-    const result = await client.put(`/api/dashboard/${dashboard_id}`, {
-      tabs: existingTabs,
-      dashcards: [...existingCards, newDashcard],
+    // Update dashcards via dedicated endpoint
+    const result = await client.put(`/api/dashboard/${dashboard_id}/cards`, {
+      cards: [...existingCards, newDashcard],
     });
 
     return formatToolResponse(result);

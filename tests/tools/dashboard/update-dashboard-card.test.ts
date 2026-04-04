@@ -33,9 +33,9 @@ describe('updateDashboardCard tool', () => {
 
     expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        dashcards: expect.arrayContaining([expect.objectContaining({ id: 10, row: 5, col: 6 })]),
+        cards: expect.arrayContaining([expect.objectContaining({ id: 10, row: 5, col: 6 })]),
       }),
     );
   });
@@ -51,9 +51,9 @@ describe('updateDashboardCard tool', () => {
     await updateDashboardCardDefinition.handler(mockClient, inputWithSize);
 
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        dashcards: expect.arrayContaining([
+        cards: expect.arrayContaining([
           expect.objectContaining({ id: 10, size_x: 8, size_y: 6 }),
         ]),
       }),
@@ -74,9 +74,9 @@ describe('updateDashboardCard tool', () => {
     await updateDashboardCardDefinition.handler(mockClient, inputWithSettings);
 
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        dashcards: expect.arrayContaining([
+        cards: expect.arrayContaining([
           expect.objectContaining({ visualization_settings: { 'graph.colors': ['#FF0000'] } }),
         ]),
       }),
@@ -92,16 +92,16 @@ describe('updateDashboardCard tool', () => {
     await updateDashboardCardDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        dashcards: expect.arrayContaining([
+        cards: expect.arrayContaining([
           expect.objectContaining({ id: 20, row: 0, col: 4 }), // Unchanged
         ]),
       }),
     );
   });
 
-  it('should preserve existing tabs', async () => {
+  it('should PUT to /cards endpoint (not full dashboard)', async () => {
     const mockClient = createMockClient({
       get: vi.fn().mockResolvedValue(mockDashboard),
       put: vi.fn().mockResolvedValue(mockDashboard),
@@ -110,9 +110,9 @@ describe('updateDashboardCard tool', () => {
     await updateDashboardCardDefinition.handler(mockClient, baseInput);
 
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        tabs: [{ id: 1, name: 'Tab 1' }],
+        cards: expect.any(Array),
       }),
     );
   });

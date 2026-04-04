@@ -2,12 +2,10 @@ import type { ToolDefinition } from '@src/tools/registry';
 import { bulkUpdateTablesDefinition } from './bulk-update-tables';
 import { discardTableValuesDefinition } from './discard-table-values';
 import { getTableDefinition } from './get-table';
-import { getTableEntityIdDefinition } from './get-table-entity-id';
 import { getTableForeignKeysDefinition } from './get-table-foreign-keys';
 import { getTableMetadataDefinition } from './get-table-metadata';
 import { getTableRelatedDefinition } from './get-table-related';
 import { listAllTablesDefinition } from './list-all-tables';
-import { listTableFieldsDefinition } from './list-table-fields';
 import { resyncTableFieldsDefinition } from './resync-table-fields';
 import { syncTableSchemaDefinition } from './sync-table-schema';
 import { updateTableDefinition } from './update-table';
@@ -22,12 +20,10 @@ export const tableTools: ToolDefinition<unknown>[] = [
   getTableMetadataDefinition,
   updateTableDefinition,
   bulkUpdateTablesDefinition,
-  listTableFieldsDefinition,
   resyncTableFieldsDefinition,
   getTableForeignKeysDefinition,
   syncTableSchemaDefinition,
   discardTableValuesDefinition,
-  getTableEntityIdDefinition,
   getTableRelatedDefinition,
   updateTableFieldsOrderDefinition,
 ];

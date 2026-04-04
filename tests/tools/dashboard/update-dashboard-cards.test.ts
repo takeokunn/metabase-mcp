@@ -14,26 +14,23 @@ describe('updateDashboardCards tool', () => {
     ],
   };
 
-  const mockDashboard = {
+  const mockResult = {
     id: 1,
     name: 'Test Dashboard',
-    tabs: [{ id: 1, name: 'Tab 1' }],
     dashcards: [],
   };
 
-  it('should bulk update dashboard cards', async () => {
+  it('should bulk update dashboard cards via PUT /cards', async () => {
     const mockClient = createMockClient({
-      get: vi.fn().mockResolvedValue(mockDashboard),
-      put: vi.fn().mockResolvedValue(mockDashboard),
+      put: vi.fn().mockResolvedValue(mockResult),
     });
 
     await updateDashboardCardsDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.get).toHaveBeenCalledWith('/api/dashboard/1');
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        dashcards: expect.arrayContaining([
+        cards: expect.arrayContaining([
           expect.objectContaining({ id: 10, card_id: 42 }),
           expect.objectContaining({ id: 20, card_id: 43 }),
         ]),
@@ -41,47 +38,15 @@ describe('updateDashboardCards tool', () => {
     );
   });
 
-  it('should use existing tabs when ordered_tabs not provided', async () => {
+  it('should not perform a GET request before PUT', async () => {
     const mockClient = createMockClient({
-      get: vi.fn().mockResolvedValue(mockDashboard),
-      put: vi.fn().mockResolvedValue(mockDashboard),
+      get: vi.fn(),
+      put: vi.fn().mockResolvedValue(mockResult),
     });
 
     await updateDashboardCardsDefinition.handler(mockClient, baseInput);
 
-    expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
-      expect.objectContaining({
-        tabs: [{ id: 1, name: 'Tab 1' }],
-      }),
-    );
-  });
-
-  it('should use ordered_tabs when provided', async () => {
-    const inputWithTabs = {
-      ...baseInput,
-      ordered_tabs: [
-        { id: 1, name: 'First Tab' },
-        { id: 2, name: 'Second Tab' },
-      ],
-    };
-
-    const mockClient = createMockClient({
-      get: vi.fn().mockResolvedValue(mockDashboard),
-      put: vi.fn().mockResolvedValue(mockDashboard),
-    });
-
-    await updateDashboardCardsDefinition.handler(mockClient, inputWithTabs);
-
-    expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
-      expect.objectContaining({
-        tabs: [
-          { id: 1, name: 'First Tab' },
-          { id: 2, name: 'Second Tab' },
-        ],
-      }),
-    );
+    expect(mockClient.get).not.toHaveBeenCalled();
   });
 
   it('should format cards with default values', async () => {
@@ -91,16 +56,15 @@ describe('updateDashboardCards tool', () => {
     };
 
     const mockClient = createMockClient({
-      get: vi.fn().mockResolvedValue(mockDashboard),
-      put: vi.fn().mockResolvedValue(mockDashboard),
+      put: vi.fn().mockResolvedValue(mockResult),
     });
 
     await updateDashboardCardsDefinition.handler(mockClient, inputWithMinimalCards);
 
     expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
+      '/api/dashboard/1/cards',
       expect.objectContaining({
-        dashcards: [
+        cards: [
           expect.objectContaining({
             id: -1,
             card_id: null,
@@ -113,27 +77,9 @@ describe('updateDashboardCards tool', () => {
     );
   });
 
-  it('should handle empty dashboard tabs', async () => {
-    const dashboardNoTabs = { ...mockDashboard, tabs: undefined };
-
-    const mockClient = createMockClient({
-      get: vi.fn().mockResolvedValue(dashboardNoTabs),
-      put: vi.fn().mockResolvedValue(dashboardNoTabs),
-    });
-
-    await updateDashboardCardsDefinition.handler(mockClient, baseInput);
-
-    expect(mockClient.put).toHaveBeenCalledWith(
-      '/api/dashboard/1',
-      expect.objectContaining({
-        tabs: [],
-      }),
-    );
-  });
-
   it('should propagate client errors', async () => {
     const mockClient = createMockClient({
-      get: vi.fn().mockRejectedValue(new Error('Dashboard not found')),
+      put: vi.fn().mockRejectedValue(new Error('Dashboard not found')),
     });
 
     await expect(updateDashboardCardsDefinition.handler(mockClient, baseInput)).rejects.toThrow(
@@ -143,7 +89,7 @@ describe('updateDashboardCards tool', () => {
 
   it('should propagate API errors with status codes', async () => {
     const mockClient = createMockClient({
-      get: vi.fn().mockRejectedValue(createApiError('Bad Request', 400)),
+      put: vi.fn().mockRejectedValue(createApiError('Bad Request', 400)),
     });
 
     await expect(updateDashboardCardsDefinition.handler(mockClient, baseInput)).rejects.toThrow(

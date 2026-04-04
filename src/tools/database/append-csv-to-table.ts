@@ -1,11 +1,9 @@
 import type { MetabaseClient } from '@src/client';
 import { z } from 'zod';
-import { DatabaseIdSchema } from '@src/schemas/database';
 import type { ToolDefinition } from '@src/tools/registry';
 import { formatToolResponse } from '@src/tools/registry';
 
 export const AppendCsvToTableParamsSchema = z.object({
-  id: DatabaseIdSchema.describe('Database ID'),
   table_id: z.number().describe('ID of the table to append rows to'),
 });
 
@@ -19,7 +17,7 @@ export const appendCsvToTableDefinition: ToolDefinition<AppendCsvToTableParams> 
   description: 'Append rows from a CSV upload to an existing table in a database in Metabase',
   inputSchema: AppendCsvToTableParamsSchema,
   handler: async (client: MetabaseClient, input: AppendCsvToTableParams) => {
-    const result = await client.post(`/api/database/${input.id}/table/${input.table_id}/append`);
+    const result = await client.post(`/api/table/${input.table_id}/append-csv`);
     return formatToolResponse(result);
   },
 };
