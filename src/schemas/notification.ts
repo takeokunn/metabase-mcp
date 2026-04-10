@@ -32,7 +32,7 @@ export const NotificationChannelSchema = z.object({
   enabled: z.boolean().optional().describe('Whether the channel is enabled'),
   recipients: z.array(NotificationRecipientSchema).optional().describe('List of recipients'),
   details: z
-    .record(z.unknown())
+    .record(z.string(), z.unknown())
     .optional()
     .describe('Channel-specific details (e.g., Slack webhook)'),
   schedule_type: ScheduleTypeSchema.optional().describe('Schedule frequency'),
@@ -61,7 +61,10 @@ export const DashboardSubscriptionSchema = z.object({
   created_at: z.string().datetime().optional().describe('Creation timestamp'),
   updated_at: z.string().datetime().optional().describe('Last update timestamp'),
   archived: z.boolean().optional().describe('Whether the subscription is archived'),
-  parameters: z.array(z.record(z.unknown())).optional().describe('Dashboard filter parameters'),
+  parameters: z
+    .array(z.record(z.string(), z.unknown()))
+    .optional()
+    .describe('Dashboard filter parameters'),
 });
 
 // ---------------------------------------------------------------------------
@@ -88,7 +91,7 @@ export const CreateDashboardSubscriptionInputSchema = z.object({
         channel_type: NotificationChannelTypeSchema.describe('Channel type'),
         enabled: z.boolean().default(true).describe('Whether the channel is enabled'),
         recipients: z.array(NotificationRecipientSchema).optional().describe('Recipients'),
-        details: z.record(z.unknown()).optional().describe('Channel-specific details'),
+        details: z.record(z.string(), z.unknown()).optional().describe('Channel-specific details'),
         schedule_type: ScheduleTypeSchema.describe('Schedule frequency'),
         schedule_hour: z.number().int().min(0).max(23).optional().describe('Hour of day'),
         schedule_day: DayOfWeekSchema.nullable().optional().describe('Day of week'),
@@ -101,14 +104,20 @@ export const CreateDashboardSubscriptionInputSchema = z.object({
     )
     .min(1)
     .describe('Notification channels'),
-  parameters: z.array(z.record(z.unknown())).optional().describe('Dashboard filter parameters'),
+  parameters: z
+    .array(z.record(z.string(), z.unknown()))
+    .optional()
+    .describe('Dashboard filter parameters'),
 });
 
 // Update dashboard subscription input schema
 export const UpdateDashboardSubscriptionInputSchema = z.object({
   id: NotificationIdSchema.describe('Subscription ID to update'),
   channels: z.array(NotificationChannelSchema).optional().describe('Updated notification channels'),
-  parameters: z.array(z.record(z.unknown())).optional().describe('Updated filter parameters'),
+  parameters: z
+    .array(z.record(z.string(), z.unknown()))
+    .optional()
+    .describe('Updated filter parameters'),
   archived: z.boolean().optional().describe('Archive or unarchive the subscription'),
 });
 
@@ -183,7 +192,7 @@ export const UndoUnsubscribeInputSchema = z.object({
 
 // Send ad-hoc notification input schema
 export const SendAdhocNotificationInputSchema = z.object({
-  notification: z.record(z.unknown()).describe('Notification payload to send ad-hoc'),
+  notification: z.record(z.string(), z.unknown()).describe('Notification payload to send ad-hoc'),
 });
 
 // ---------------------------------------------------------------------------

@@ -24,7 +24,7 @@ export const UUIDSchema = z.string().uuid().describe('UUID identifier');
 export const ErrorResponseSchema = z.object({
   error: z.string(),
   message: z.string().optional(),
-  details: z.record(z.unknown()).optional(),
+  details: z.record(z.string(), z.unknown()).optional(),
 });
 
 // Inferred types

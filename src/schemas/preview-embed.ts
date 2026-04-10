@@ -92,7 +92,7 @@ export type RunPreviewEmbedDashboardPivotQuery = z.infer<
 export const ExecutePreviewEmbedDashcardActionSchema = z.object({
   token: z.string(),
   dashcard_id: z.number(),
-  parameters: z.record(z.unknown()).optional(),
+  parameters: z.record(z.string(), z.unknown()).optional(),
 });
 export type ExecutePreviewEmbedDashcardAction = z.infer<
   typeof ExecutePreviewEmbedDashcardActionSchema

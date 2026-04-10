@@ -23,7 +23,7 @@ export const CreateUserInputSchema = z.object({
   email: z.string().email().describe('User email address'),
   password: z.string().min(8).optional().describe('Initial password (optional if using SSO)'),
   group_ids: z.array(z.number().int().positive()).optional().describe('Permission group IDs'),
-  login_attributes: z.record(z.string()).optional().describe('Custom login attributes'),
+  login_attributes: z.record(z.string(), z.string()).optional().describe('Custom login attributes'),
 });
 
 // Update user input schema
@@ -34,7 +34,7 @@ export const UpdateUserInputSchema = z.object({
   email: z.string().email().optional().describe('User email address'),
   is_superuser: z.boolean().optional().describe('Superuser status'),
   is_group_manager: z.boolean().optional().describe('Group manager status'),
-  login_attributes: z.record(z.string()).optional().describe('Custom login attributes'),
+  login_attributes: z.record(z.string(), z.string()).optional().describe('Custom login attributes'),
   locale: z.string().optional().describe('User locale preference'),
 });
 

@@ -53,7 +53,7 @@ export const TableIdInputSchema = z.object({
 // Bulk update tables input schema
 export const BulkUpdateTablesInputSchema = z.object({
   tables: z
-    .array(z.record(z.unknown()))
+    .array(z.record(z.string(), z.unknown()))
     .describe('Array of table update objects, each must include an id field'),
 });
 

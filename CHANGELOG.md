@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.1] - 2026-04-10
+
+### Bug Fixes
+
+Fixed a `tools/list` crash introduced in v1.1.0 caused by `z.record(T)` — the single-argument form of `z.record()` — being semantically broken in Zod v4. All 80 call sites across 26 schema files have been updated from `z.record(T)` to the explicit two-argument form `z.record(z.string(), T)`. Regression tests covering the affected record schemas have been added in `tests/schemas/record.test.ts`.
+
+**Affected versions:** v1.1.0 users should upgrade to v1.1.1.
+
+---
+
 ## [1.1.0] - 2026-04-04
 
 ### Breaking Changes

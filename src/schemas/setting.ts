@@ -13,7 +13,7 @@ export type UpdateSettingInput = z.infer<typeof UpdateSettingInputSchema>;
 
 export const BulkUpdateSettingsInputSchema = z.object({
   settings: z
-    .record(z.unknown())
+    .record(z.string(), z.unknown())
     .describe('Map of setting keys to their new values (e.g., { "site-name": "Acme Corp" })'),
 });
 export type BulkUpdateSettingsInput = z.infer<typeof BulkUpdateSettingsInputSchema>;

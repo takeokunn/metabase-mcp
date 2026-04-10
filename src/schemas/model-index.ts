@@ -12,8 +12,8 @@ export const GetModelIndexParamsSchema = z.object({
 // Create model index input schema
 export const CreateModelIndexInputSchema = z.object({
   model_id: z.number().int().positive().describe('Card/model ID'),
-  pk_ref: z.record(z.unknown()).describe('Primary key field reference'),
-  value_ref: z.record(z.unknown()).describe('Value field reference to index'),
+  pk_ref: z.record(z.string(), z.unknown()).describe('Primary key field reference'),
+  value_ref: z.record(z.string(), z.unknown()).describe('Value field reference to index'),
 });
 
 // Delete model index params schema

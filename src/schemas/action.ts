@@ -11,8 +11,14 @@ export const ActionSchema = z.object({
   description: z.string().nullable().optional().describe('Action description'),
   type: ActionTypeSchema,
   model_id: z.number().int().positive().describe('ID of the model (card) this action belongs to'),
-  parameters: z.array(z.record(z.unknown())).optional().describe('Action parameter definitions'),
-  visualization_settings: z.record(z.unknown()).optional().describe('Visualization settings'),
+  parameters: z
+    .array(z.record(z.string(), z.unknown()))
+    .optional()
+    .describe('Action parameter definitions'),
+  visualization_settings: z
+    .record(z.string(), z.unknown())
+    .optional()
+    .describe('Visualization settings'),
   archived: z.boolean().optional().describe('Whether the action is archived'),
   created_at: z.string().datetime().optional().describe('Creation timestamp'),
   updated_at: z.string().datetime().optional().describe('Last update timestamp'),
@@ -31,9 +37,15 @@ export const CreateActionInputSchema = z.object({
   type: ActionTypeSchema,
   model_id: z.number().int().positive().describe('ID of the model (card) this action belongs to'),
   description: z.string().optional().describe('Action description'),
-  parameters: z.array(z.record(z.unknown())).optional().describe('Action parameter definitions'),
-  template: z.record(z.unknown()).optional().describe('Template for HTTP actions'),
-  visualization_settings: z.record(z.unknown()).optional().describe('Visualization settings'),
+  parameters: z
+    .array(z.record(z.string(), z.unknown()))
+    .optional()
+    .describe('Action parameter definitions'),
+  template: z.record(z.string(), z.unknown()).optional().describe('Template for HTTP actions'),
+  visualization_settings: z
+    .record(z.string(), z.unknown())
+    .optional()
+    .describe('Visualization settings'),
 });
 
 export const UpdateActionInputSchema = z.object({
@@ -41,10 +53,13 @@ export const UpdateActionInputSchema = z.object({
   name: z.string().min(1).optional().describe('New action display name'),
   description: z.string().optional().describe('Action description'),
   type: ActionTypeSchema.optional(),
-  parameters: z.array(z.record(z.unknown())).optional().describe('Action parameter definitions'),
-  template: z.record(z.unknown()).optional().describe('Template for HTTP actions'),
+  parameters: z
+    .array(z.record(z.string(), z.unknown()))
+    .optional()
+    .describe('Action parameter definitions'),
+  template: z.record(z.string(), z.unknown()).optional().describe('Template for HTTP actions'),
   visualization_settings: z
-    .record(z.unknown())
+    .record(z.string(), z.unknown())
     .optional()
     .describe('Updated visualization settings'),
   archived: z.boolean().optional().describe('Whether to archive the action'),
@@ -60,7 +75,9 @@ export const GetActionExecuteFormParamsSchema = z.object({
 
 export const ExecuteActionInputSchema = z.object({
   id: ActionIdSchema.describe('Action ID to execute'),
-  parameters: z.record(z.unknown()).describe('Key-value map of parameter values for the action'),
+  parameters: z
+    .record(z.string(), z.unknown())
+    .describe('Key-value map of parameter values for the action'),
 });
 
 export const CreateActionPublicLinkParamsSchema = z.object({

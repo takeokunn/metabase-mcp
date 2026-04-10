@@ -16,7 +16,9 @@ export const NotifyDatabaseSyncByNameInputSchema = z.object({
 });
 
 // Notify Slack event input schema
-export const NotifySlackEventInputSchema = z.record(z.unknown()).describe('Slack event payload');
+export const NotifySlackEventInputSchema = z
+  .record(z.string(), z.unknown())
+  .describe('Slack event payload');
 
 // Notify new database table input schema
 export const NotifyNewDatabaseTableInputSchema = z.object({

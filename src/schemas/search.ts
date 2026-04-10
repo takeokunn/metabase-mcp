@@ -61,7 +61,7 @@ export const GetSearchWeightsParamsSchema = z.object({});
 
 // Update search weights input schema
 export const UpdateSearchWeightsInputSchema = z.object({
-  weights: z.record(z.number()).describe('Map of model type to weight value'),
+  weights: z.record(z.string(), z.number()).describe('Map of model type to weight value'),
 });
 
 // Force reindex search input schema

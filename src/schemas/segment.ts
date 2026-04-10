@@ -10,7 +10,9 @@ export const SegmentSchema = z.object({
   name: z.string().min(1).describe('Display name of the segment'),
   description: z.string().nullable().optional().describe('Description of the segment'),
   table_id: z.number().int().positive().describe('ID of the table this segment belongs to'),
-  definition: z.record(z.unknown()).describe('Segment filter definition in MBQL format'),
+  definition: z
+    .record(z.string(), z.unknown())
+    .describe('Segment filter definition in MBQL format'),
   archived: z.boolean().describe('Whether the segment is archived'),
   creator_id: z
     .number()
@@ -38,7 +40,9 @@ export const GetSegmentParamsSchema = z.object({
 export const CreateSegmentInputSchema = z.object({
   name: z.string().min(1).describe('Display name for the segment'),
   table_id: z.number().int().positive().describe('ID of the table this segment belongs to'),
-  definition: z.record(z.unknown()).describe('Segment filter definition in MBQL format'),
+  definition: z
+    .record(z.string(), z.unknown())
+    .describe('Segment filter definition in MBQL format'),
   description: z.string().optional().describe('Description of the segment'),
 });
 
@@ -47,7 +51,10 @@ export const UpdateSegmentInputSchema = z.object({
   id: SegmentIdSchema.describe('Segment ID to update'),
   revision_message: z.string().min(1).describe('Message describing the reason for the update'),
   name: z.string().min(1).optional().describe('New display name for the segment'),
-  definition: z.record(z.unknown()).optional().describe('Updated segment filter definition'),
+  definition: z
+    .record(z.string(), z.unknown())
+    .optional()
+    .describe('Updated segment filter definition'),
   archived: z.boolean().optional().describe('Whether to archive/unarchive the segment'),
 });
 

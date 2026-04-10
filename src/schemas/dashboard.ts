@@ -31,7 +31,7 @@ export const ParameterMappingSchema = z.object({
 
 // Visualization settings schema (flexible object for card-specific settings)
 export const VisualizationSettingsSchema = z
-  .record(z.unknown())
+  .record(z.string(), z.unknown())
   .describe('Card-specific visualization settings');
 
 // Dashboard tab schema
@@ -66,7 +66,10 @@ export const DashcardSchema = z.object({
   visualization_settings: VisualizationSettingsSchema.optional().describe(
     'Card-specific visualization settings',
   ),
-  series: z.array(z.record(z.unknown())).optional().describe('Series data for multi-series cards'),
+  series: z
+    .array(z.record(z.string(), z.unknown()))
+    .optional()
+    .describe('Series data for multi-series cards'),
   action_id: z
     .number()
     .int()
@@ -360,7 +363,7 @@ export const ExecuteDashboardCardQueryInputSchema = z.object({
   dashcard_id: z.number().int().positive().describe('Dashboard card ID'),
   card_id: z.number().int().positive().describe('Card ID to execute'),
   parameters: z
-    .array(z.record(z.unknown()))
+    .array(z.record(z.string(), z.unknown()))
     .optional()
     .describe('Dashboard filter parameters to apply to the query'),
 });
@@ -374,7 +377,7 @@ export const ExportDashboardCardQueryInputSchema = z.object({
     .enum(['csv', 'json', 'xlsx', 'pdf'])
     .describe('Export format: csv, json, xlsx, or pdf'),
   parameters: z
-    .array(z.record(z.unknown()))
+    .array(z.record(z.string(), z.unknown()))
     .optional()
     .describe('Dashboard filter parameters to apply to the query'),
 });
@@ -453,13 +456,13 @@ export const GetValidFilterFieldsInputSchema = z.object({
 
 // Save dashboard input schema
 export const SaveDashboardInputSchema = z.object({
-  dashboard: z.record(z.unknown()).describe('Dashboard object to save'),
+  dashboard: z.record(z.string(), z.unknown()).describe('Dashboard object to save'),
 });
 
 // Save dashboard to collection input schema
 export const SaveDashboardToCollectionInputSchema = z.object({
   parent_collection_id: z.number().describe('The parent collection ID'),
-  dashboard: z.record(z.unknown()).describe('Dashboard object to save'),
+  dashboard: z.record(z.string(), z.unknown()).describe('Dashboard object to save'),
 });
 
 // Get dashboard items input schema
@@ -471,7 +474,7 @@ export const GetDashboardItemsInputSchema = z.object({
 export const GetDashcardActionParamsInputSchema = z.object({
   dashboard_id: z.number().describe('The dashboard ID'),
   dashcard_id: z.number().describe('The dashcard ID'),
-  parameters: z.record(z.unknown()).optional().describe('Parameter values'),
+  parameters: z.record(z.string(), z.unknown()).optional().describe('Parameter values'),
 });
 
 // Run dashcard query input schema
@@ -479,7 +482,7 @@ export const RunDashcardQueryInputSchema = z.object({
   dashboard_id: z.number().describe('The dashboard ID'),
   dashcard_id: z.number().describe('The dashcard ID'),
   card_id: z.number().describe('The card ID'),
-  parameters: z.array(z.record(z.unknown())).optional().describe('Parameter values'),
+  parameters: z.array(z.record(z.string(), z.unknown())).optional().describe('Parameter values'),
 });
 
 // Export dashcard query input schema
@@ -488,14 +491,14 @@ export const ExportDashcardQueryInputSchema = z.object({
   dashcard_id: z.number().describe('The dashcard ID'),
   card_id: z.number().describe('The card ID'),
   export_format: z.enum(['csv', 'json', 'xlsx']).describe('Export format'),
-  parameters: z.array(z.record(z.unknown())).optional().describe('Parameter values'),
+  parameters: z.array(z.record(z.string(), z.unknown())).optional().describe('Parameter values'),
 });
 
 // Execute dashcard action input schema
 export const ExecuteDashcardActionInputSchema = z.object({
   dashboard_id: z.number().describe('The dashboard ID'),
   dashcard_id: z.number().describe('The dashcard ID'),
-  parameters: z.record(z.unknown()).describe('Action parameters'),
+  parameters: z.record(z.string(), z.unknown()).describe('Action parameters'),
 });
 
 // Pivot dashcard query input schema
@@ -503,7 +506,7 @@ export const PivotDashcardQueryInputSchema = z.object({
   dashboard_id: z.number().describe('The dashboard ID'),
   dashcard_id: z.number().describe('The dashcard ID'),
   card_id: z.number().describe('The card ID'),
-  parameters: z.array(z.record(z.unknown())).optional().describe('Parameter values'),
+  parameters: z.array(z.record(z.string(), z.unknown())).optional().describe('Parameter values'),
 });
 
 // Inferred types - New Dashboard Input Schemas

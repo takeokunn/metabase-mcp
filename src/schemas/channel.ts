@@ -18,7 +18,7 @@ export const GetChannelParamsSchema = z.object({
 export const CreateChannelInputSchema = z.object({
   name: z.string().describe('Name of the notification channel'),
   type: ChannelTypeSchema,
-  details: z.record(z.unknown()).describe('Channel-specific configuration details'),
+  details: z.record(z.string(), z.unknown()).describe('Channel-specific configuration details'),
   description: z.string().optional().describe('Optional description of the channel'),
   active: z.boolean().optional().describe('Whether the channel is active'),
 });
@@ -29,7 +29,7 @@ export const UpdateChannelInputSchema = z.object({
   name: z.string().optional().describe('Updated name of the notification channel'),
   type: ChannelTypeSchema.optional(),
   details: z
-    .record(z.unknown())
+    .record(z.string(), z.unknown())
     .optional()
     .describe('Updated channel-specific configuration details'),
   description: z.string().optional().describe('Updated description of the channel'),
@@ -38,7 +38,9 @@ export const UpdateChannelInputSchema = z.object({
 
 // Test channel input schema
 export const TestChannelInputSchema = z.object({
-  details: z.record(z.unknown()).describe('Channel-specific configuration details to test'),
+  details: z
+    .record(z.string(), z.unknown())
+    .describe('Channel-specific configuration details to test'),
   type: z.string().describe('Type of notification channel to test'),
 });
 

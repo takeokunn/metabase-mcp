@@ -10,7 +10,10 @@ export const UpdateCacheConfigInputSchema = z.object({
     .describe('The model type to configure caching for'),
   model_id: z.number().int().positive().describe('The ID of the model to configure caching for'),
   strategy: CacheStrategySchema.optional().describe('Cache strategy to apply'),
-  config: z.record(z.unknown()).optional().describe('Additional strategy-specific configuration'),
+  config: z
+    .record(z.string(), z.unknown())
+    .optional()
+    .describe('Additional strategy-specific configuration'),
 });
 
 export const InvalidateCacheInputSchema = z.object({

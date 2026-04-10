@@ -20,7 +20,7 @@ export const AlertChannelSchema = z.object({
     )
     .optional()
     .describe('List of recipients for the alert'),
-  details: z.record(z.unknown()).optional().describe('Channel-specific details'),
+  details: z.record(z.string(), z.unknown()).optional().describe('Channel-specific details'),
   schedule_type: z
     .enum(['hourly', 'daily', 'weekly'])
     .optional()

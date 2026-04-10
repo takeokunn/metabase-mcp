@@ -31,7 +31,9 @@ export const UpdateDataPermissionsInputSchema = z.object({
   revision: z.number().int().describe('Current permissions revision number'),
   groups: z
     .record(
+      z.string(),
       z.record(
+        z.string(),
         z.object({
           data: z
             .object({
@@ -40,7 +42,11 @@ export const UpdateDataPermissionsInputSchema = z.object({
                 .union([
                   DataPermissionValueSchema,
                   z.record(
-                    z.union([DataPermissionValueSchema, z.record(DataPermissionValueSchema)]),
+                    z.string(),
+                    z.union([
+                      DataPermissionValueSchema,
+                      z.record(z.string(), DataPermissionValueSchema),
+                    ]),
                   ),
                 ])
                 .optional()
@@ -63,7 +69,7 @@ export const GetCollectionPermissionsInputSchema = z.object({});
 export const UpdateCollectionPermissionsInputSchema = z.object({
   revision: z.number().int().describe('Current permissions revision number'),
   groups: z
-    .record(z.record(CollectionPermissionValueSchema))
+    .record(z.string(), z.record(z.string(), CollectionPermissionValueSchema))
     .describe('Permission groups mapping: group_id -> collection_id -> permission'),
 });
 

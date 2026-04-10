@@ -50,8 +50,13 @@ export const GetCardParamsSchema = z.object({
 export const CreateCardInputSchema = z.object({
   name: z.string().min(1).describe('Card display name'),
   display: CardDisplayTypeSchema.describe('Visualization type (e.g., table, bar, line)'),
-  dataset_query: z.record(z.unknown()).describe('Query definition in MBQL or native format'),
-  visualization_settings: z.record(z.unknown()).optional().describe('Chart visualization settings'),
+  dataset_query: z
+    .record(z.string(), z.unknown())
+    .describe('Query definition in MBQL or native format'),
+  visualization_settings: z
+    .record(z.string(), z.unknown())
+    .optional()
+    .describe('Chart visualization settings'),
   collection_id: z
     .number()
     .int()
@@ -66,9 +71,9 @@ export const UpdateCardInputSchema = z.object({
   name: z.string().min(1).optional().describe('New card display name'),
   description: z.string().nullable().optional().describe('Card description'),
   display: CardDisplayTypeSchema.optional().describe('New visualization type'),
-  dataset_query: z.record(z.unknown()).optional().describe('Updated query definition'),
+  dataset_query: z.record(z.string(), z.unknown()).optional().describe('Updated query definition'),
   visualization_settings: z
-    .record(z.unknown())
+    .record(z.string(), z.unknown())
     .optional()
     .describe('Updated visualization settings'),
   collection_id: z
@@ -88,7 +93,10 @@ export const DeleteCardInputSchema = z.object({
 // Execute card params schema
 export const ExecuteCardParamsSchema = z.object({
   id: CardIdSchema.describe('Card ID to execute'),
-  parameters: z.record(z.unknown()).optional().describe('Query parameters for the card'),
+  parameters: z
+    .record(z.string(), z.unknown())
+    .optional()
+    .describe('Query parameters for the card'),
 });
 
 // Card metadata params schema
@@ -196,7 +204,7 @@ export const ExportCardQueryParamsSchema = z.object({
 export const ExecuteCardPivotParamsSchema = z.object({
   id: CardIdSchema.describe('Card ID to execute as a pivot table'),
   parameters: z
-    .array(z.record(z.unknown()))
+    .array(z.record(z.string(), z.unknown()))
     .optional()
     .describe('Query parameters to apply to the pivot query'),
 });

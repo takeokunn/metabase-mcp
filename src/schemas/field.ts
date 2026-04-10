@@ -62,7 +62,7 @@ export const UpdateFieldInputSchema = z.object({
     .enum(['none', 'list', 'search', 'auto-list'])
     .optional()
     .describe('Field values behavior'),
-  settings: z.record(z.unknown()).optional().describe('Field-specific settings'),
+  settings: z.record(z.string(), z.unknown()).optional().describe('Field-specific settings'),
 });
 
 export const GetFieldValuesInputSchema = z.object({

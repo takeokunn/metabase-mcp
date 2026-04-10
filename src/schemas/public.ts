@@ -100,20 +100,20 @@ export type GetPublicDashboardParamRemapping = z.infer<
 
 export const ExecutePublicActionSchema = z.object({
   uuid: z.string().describe('Public UUID of the action'),
-  parameters: z.record(z.unknown()).optional().describe('Action parameters'),
+  parameters: z.record(z.string(), z.unknown()).optional().describe('Action parameters'),
 });
 export type ExecutePublicAction = z.infer<typeof ExecutePublicActionSchema>;
 
 export const ExecutePublicDashcardActionSchema = z.object({
   uuid: z.string(),
   dashcard_id: z.number(),
-  parameters: z.record(z.unknown()).optional(),
+  parameters: z.record(z.string(), z.unknown()).optional(),
 });
 export type ExecutePublicDashcardAction = z.infer<typeof ExecutePublicDashcardActionSchema>;
 
 export const RunPublicCardPivotQuerySchema = z.object({
   uuid: z.string(),
-  parameters: z.array(z.record(z.unknown())).optional(),
+  parameters: z.array(z.record(z.string(), z.unknown())).optional(),
 });
 export type RunPublicCardPivotQuery = z.infer<typeof RunPublicCardPivotQuerySchema>;
 
@@ -121,7 +121,7 @@ export const RunPublicDashboardPivotQuerySchema = z.object({
   uuid: z.string(),
   dashcard_id: z.number(),
   card_id: z.number(),
-  parameters: z.array(z.record(z.unknown())).optional(),
+  parameters: z.array(z.record(z.string(), z.unknown())).optional(),
 });
 export type RunPublicDashboardPivotQuery = z.infer<typeof RunPublicDashboardPivotQuerySchema>;
 
@@ -136,7 +136,7 @@ export const RunPublicDashcardQuerySchema = z.object({
   uuid: z.string(),
   dashcard_id: z.number(),
   card_id: z.number(),
-  parameters: z.array(z.record(z.unknown())).optional(),
+  parameters: z.array(z.record(z.string(), z.unknown())).optional(),
 });
 export type RunPublicDashcardQuery = z.infer<typeof RunPublicDashcardQuerySchema>;
 

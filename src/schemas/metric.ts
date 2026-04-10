@@ -11,13 +11,13 @@ export const GetMetricParamsSchema = z.object({
 
 // Execute metric input schema
 export const ExecuteMetricInputSchema = z.object({
-  query: z.record(z.unknown()).describe('MBQL query for the metric'),
+  query: z.record(z.string(), z.unknown()).describe('MBQL query for the metric'),
 });
 
 // Get metric breakout values input schema
 export const GetMetricBreakoutValuesInputSchema = z.object({
   metric_id: z.number().int().positive().describe('ID of the metric to get breakout values for'),
-  dimension: z.record(z.unknown()).describe('Breakout dimension definition'),
+  dimension: z.record(z.string(), z.unknown()).describe('Breakout dimension definition'),
 });
 
 // Inferred types

@@ -5,12 +5,12 @@ export const GetMeasureInputSchema = z.object({ id: z.number().describe('Measure
 export type GetMeasureInput = z.infer<typeof GetMeasureInputSchema>;
 export const CreateMeasureInputSchema = z.object({
   name: z.string().describe('Measure name'),
-  definition: z.record(z.unknown()).describe('Measure definition'),
+  definition: z.record(z.string(), z.unknown()).describe('Measure definition'),
 });
 export type CreateMeasureInput = z.infer<typeof CreateMeasureInputSchema>;
 export const UpdateMeasureInputSchema = z.object({
   id: z.number().describe('Measure ID'),
   name: z.string().optional().describe('Measure name'),
-  definition: z.record(z.unknown()).optional().describe('Measure definition'),
+  definition: z.record(z.string(), z.unknown()).optional().describe('Measure definition'),
 });
 export type UpdateMeasureInput = z.infer<typeof UpdateMeasureInputSchema>;

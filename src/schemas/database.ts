@@ -54,7 +54,7 @@ export const CreateDatabaseInputSchema = z.object({
   name: z.string().min(1).describe('Database display name'),
   engine: DatabaseEngineSchema.describe('Database engine type (e.g., postgres, mysql)'),
   details: z
-    .record(z.unknown())
+    .record(z.string(), z.unknown())
     .optional()
     .describe('Connection details specific to the database engine'),
 });
@@ -64,7 +64,7 @@ export const UpdateDatabaseInputSchema = z.object({
   id: DatabaseIdSchema.describe('Database ID to update'),
   name: z.string().min(1).optional().describe('New database display name'),
   engine: DatabaseEngineSchema.optional().describe('New database engine type'),
-  details: z.record(z.unknown()).optional().describe('Updated connection details'),
+  details: z.record(z.string(), z.unknown()).optional().describe('Updated connection details'),
 });
 
 // Delete database input schema
@@ -80,7 +80,9 @@ export const DatabaseIdInputSchema = z.object({
 // Validate database input schema
 export const ValidateDatabaseInputSchema = z.object({
   engine: z.string().describe('Database engine type (e.g., postgres, mysql)'),
-  details: z.record(z.unknown()).describe('Connection details specific to the database engine'),
+  details: z
+    .record(z.string(), z.unknown())
+    .describe('Connection details specific to the database engine'),
 });
 
 // Get database fields params schema
