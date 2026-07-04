@@ -18,7 +18,7 @@ describe('listDatabaseTables tool', () => {
     const result = await listDatabaseTablesDefinition.handler(mockClient, { id: 1 });
 
     expectMcpContent(result, mockTables);
-    expect(mockClient.get).toHaveBeenCalledWith('/api/database/1/tables');
+    expect(mockClient.get).toHaveBeenCalledWith('/api/database/1/schema');
     expect(mockClient.get).toHaveBeenCalledOnce();
   });
 

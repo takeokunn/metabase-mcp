@@ -29,6 +29,7 @@ import { llmTools } from './llm';
 import { loggerTools } from './logger';
 import { loginHistoryTools } from './login-history';
 import { measureTools } from './measure';
+import { metricTools } from './metric';
 import { modelIndexTools } from './model-index';
 import { moderationReviewTools } from './moderation-review';
 import { notificationTools } from './notification';
@@ -79,6 +80,7 @@ export const allTools: ToolDefinition<unknown>[] = [
   ...bookmarkTools,
   ...documentTools,
   ...measureTools,
+  ...metricTools,
   // Notifications & alerts
   ...notificationTools,
   ...alertTools,

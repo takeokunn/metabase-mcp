@@ -16,7 +16,7 @@ export const listDatabaseTablesDefinition: ToolDefinition<ListDatabaseTablesPara
   handler: async (client: MetabaseClient, input: ListDatabaseTablesParams) => {
     const endpoint = input.schema
       ? `/api/database/${input.id}/schema/${encodeURIComponent(input.schema)}`
-      : `/api/database/${input.id}/tables`;
+      : `/api/database/${input.id}/schema`;
     const tables = await client.get(endpoint);
     return formatToolResponse(tables);
   },

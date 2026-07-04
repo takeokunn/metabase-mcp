@@ -1,5 +1,6 @@
 import type { ToolDefinition } from '@src/tools/registry';
 import { createUserDefinition } from './create-user';
+import { createUserPasswordResetUrlDefinition } from './create-user-password-reset-url';
 import { deleteUserDefinition } from './delete-user';
 import { dismissUserModalDefinition } from './dismiss-user-modal';
 import { getCurrentUserDefinition } from './get-current-user';
@@ -24,4 +25,5 @@ export const userTools: ToolDefinition<unknown>[] = [
   reactivateUserDefinition,
   getUserRecipientsDefinition,
   dismissUserModalDefinition,
+  createUserPasswordResetUrlDefinition,
 ];

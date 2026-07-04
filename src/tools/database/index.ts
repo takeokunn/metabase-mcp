@@ -1,6 +1,5 @@
 import type { ToolDefinition } from '@src/tools/registry';
 import { appendCsvToTableDefinition } from './append-csv-to-table';
-import { checkDatabaseWorkspacePermissionDefinition } from './check-database-workspace-permission';
 import { createDatabaseDefinition } from './create-database';
 import { createSampleDatabaseDefinition } from './create-sample-database';
 import { deleteDatabaseDefinition } from './delete-database';
@@ -65,5 +64,4 @@ export const databaseTools: ToolDefinition<unknown>[] = [
   getDatabaseSyncableSchemasDefinition,
   getVirtualDatabaseDatasetsDefinition,
   dismissDatabaseSpinnerDefinition,
-  checkDatabaseWorkspacePermissionDefinition,
 ];

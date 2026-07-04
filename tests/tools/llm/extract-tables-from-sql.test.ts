@@ -5,7 +5,10 @@ import { expectMcpContent } from '../../__helpers__';
 import { createMockClientWithError, createMockClientWithResponse } from '../../__mocks__';
 
 describe('extractTablesFromSql tool', () => {
-  const input = { sql: 'SELECT * FROM orders JOIN users ON orders.user_id = users.id' };
+  const input = {
+    database_id: 1,
+    sql: 'SELECT * FROM orders JOIN users ON orders.user_id = users.id',
+  };
 
   it('should return formatted MCP response', async () => {
     const mockResult = { tables: ['orders', 'users'] };
@@ -21,7 +24,10 @@ describe('extractTablesFromSql tool', () => {
   it('should call correct endpoint', async () => {
     const mockClient = createMockClientWithResponse('post', {});
     await extractTablesFromSqlDefinition.handler(mockClient, input);
-    expect(mockClient.post).toHaveBeenCalledWith('/api/llm/extract-tables', { sql: input.sql });
+    expect(mockClient.post).toHaveBeenCalledWith('/api/llm/extract-sources', {
+      database_id: input.database_id,
+      sql: input.sql,
+    });
   });
 
   it('should propagate client errors', async () => {

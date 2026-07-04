@@ -111,6 +111,15 @@ export const ExecutePublicDashcardActionSchema = z.object({
 });
 export type ExecutePublicDashcardAction = z.infer<typeof ExecutePublicDashcardActionSchema>;
 
+export const GetPublicDashcardExecuteSchema = z.object({
+  uuid: z.string().describe('Public dashboard UUID'),
+  dashcard_id: z.number().int().describe('Dashboard card ID'),
+  parameters: z
+    .record(z.string(), z.unknown())
+    .describe('Map of parameter values keyed by parameter/slug ID'),
+});
+export type GetPublicDashcardExecute = z.infer<typeof GetPublicDashcardExecuteSchema>;
+
 export const RunPublicCardPivotQuerySchema = z.object({
   uuid: z.string(),
   parameters: z.array(z.record(z.string(), z.unknown())).optional(),

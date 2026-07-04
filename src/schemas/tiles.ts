@@ -7,7 +7,7 @@ export const GetCardMapTileParamsSchema = z.object({
   lat_field: z.string().describe('Latitude field reference'),
   lon_field: z.string().describe('Longitude field reference'),
   card_id: z.number().int().positive().describe('ID of the card to render on the map tile'),
-  query: z.string().optional().describe('Optional query parameters as a JSON string'),
+  parameters: z.string().optional().describe('Optional dashboard/card parameters as a JSON string'),
 });
 export type GetCardMapTileParams = z.infer<typeof GetCardMapTileParamsSchema>;
 
