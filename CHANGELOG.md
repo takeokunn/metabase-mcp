@@ -1,5 +1,30 @@
 # Changelog
 
+## [1.2.0] - 2026-07-04
+
+### New Features
+
+Completed **Metabase OSS API coverage**, expanding from **415 tools** to **429 tools** across **59 categories**. Every tool was audited against the authoritative Metabase OpenAPI spec (`resources/openapi/openapi.json` / `GET /api/docs/openapi.json`), and all in-scope OSS coverage gaps were closed.
+
+14 previously-missing OSS endpoints were added:
+
+| Category | New tools |
+|---|---|
+| `metric` (new category — was empty) | `list_metrics`, `get_metric`, `get_metric_dimension_values`, `search_metric_dimension_values`, `get_metric_dimension_remapping`, `get_metric_breakout_values`, `get_metric_dataset` |
+| `measure` | `get_measure_dimension_values`, `search_measure_dimension_values`, `get_measure_dimension_remapping` |
+| `field` | `get_field_table_ids` |
+| `slack` | `get_slack_app_info` |
+| `user` | `create_user_password_reset_url` |
+| `public` | `get_public_dashcard_execute` |
+
+### Changes
+
+Finalized OSS spec path/method alignment (`extract-tables` → `/api/llm/extract-sources`, tiles/embed dashcard query paths, `list-database-tables`) and removed 2 non-spec tools (`check_database_workspace_permission`, `export_preview_embed_dashcard_query`).
+
+Endpoints intentionally left uncovered are all out of scope for an OSS, API-key server: Enterprise/Pro-only routes (`/api/ee/*`, `/api/mt/*` sandboxing, transforms, Metabot/agent, embedding themes, data-studio), dev-only `/api/testing/*` and telemetry, and `/api/session/*` login/logout/password auth flows.
+
+---
+
 ## [1.1.1] - 2026-04-10
 
 ### Bug Fixes
