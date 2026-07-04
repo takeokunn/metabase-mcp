@@ -1,5 +1,4 @@
 import type { ToolDefinition } from '@src/tools/registry';
-import { exportPreviewEmbedDashcardQueryDefinition } from './export-preview-embed-dashcard-query';
 import { getPreviewEmbedCardParamRemappingDefinition } from './get-preview-embed-card-param-remapping';
 import { getPreviewEmbedCardParamValuesDefinition } from './get-preview-embed-card-param-values';
 import { getPreviewEmbedCardTileDefinition } from './get-preview-embed-card-tile';
@@ -27,7 +26,6 @@ export const previewEmbedTools: ToolDefinition<unknown>[] = [
   getPreviewEmbedCardParamRemappingDefinition,
   getPreviewEmbedDashboardParamRemappingDefinition,
   runPreviewEmbedDashcardQueryDefinition,
-  exportPreviewEmbedDashcardQueryDefinition,
   runPreviewEmbedDashboardPivotDashcardQueryDefinition,
   getPreviewEmbedCardTileDefinition,
   getPreviewEmbedDashboardTileDefinition,

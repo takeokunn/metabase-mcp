@@ -8,9 +8,13 @@ export const getCardMapTileDefinition: ToolDefinition<GetCardMapTileParams> = {
   description: 'Get a map tile PNG for a card with latitude/longitude fields',
   inputSchema: GetCardMapTileParamsSchema,
   handler: async (client: MetabaseClient, input: GetCardMapTileParams) => {
-    const params = input.query ? { query: input.query } : undefined;
+    const params = {
+      latField: input.lat_field,
+      lonField: input.lon_field,
+      ...(input.parameters !== undefined ? { parameters: input.parameters } : {}),
+    };
     const result = await client.get(
-      `/api/tiles/${input.card_id}/${input.zoom}/${input.x}/${input.y}/${encodeURIComponent(input.lat_field)}/${encodeURIComponent(input.lon_field)}`,
+      `/api/tiles/${input.card_id}/${input.zoom}/${input.x}/${input.y}`,
       params,
     );
     return formatToolResponse(result);

@@ -7,7 +7,7 @@ A Model Context Protocol (MCP) server for Metabase, enabling AI assistants to in
 
 ## Features
 
-- **418 tools** across 58 categories covering the Metabase OSS API
+- **429 tools** across 59 categories covering the Metabase OSS API
 - **Database Management** - List, create, update, delete databases and sync metadata
 - **Card/Question Management** - Create, execute, and manage saved questions
 - **Dashboard Management** - Build and manage dashboards with cards, tabs, and subscriptions
@@ -92,9 +92,11 @@ Or if installed globally:
 
 ## Available Tools
 
-This MCP server provides **418 tools** organized into 58 categories.
+This MCP server provides **429 tools** organized into 59 categories.
 
-### Database Tools (31)
+> Coverage note: tools mirror the Metabase **OSS** REST API (`/api/docs/openapi.json`). Enterprise/Pro-only endpoints (`/api/ee/*`, sandboxing `/api/mt/*`, transforms, Metabot/agent, embedding themes, data-studio), test-only endpoints (`/api/testing/*`), and session-based auth flows (`/api/session/*` login/logout/password) are intentionally out of scope — this server authenticates with an API key.
+
+### Database Tools (30)
 
 | Tool | Description |
 |------|-------------|
@@ -128,7 +130,6 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `get_database_syncable_schemas` | Get syncable schemas for a database in Metabase |
 | `get_virtual_database_datasets` | Get datasets for a virtual database in Metabase |
 | `dismiss_database_spinner` | Dismiss the loading spinner for a database in Metabase |
-| `check_database_workspace_permission` | Check workspace permission for a database in Metabase |
 
 ### Card Tools (20)
 
@@ -237,7 +238,7 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `get_virtual_card_table_query_metadata` | Get query metadata for a virtual card-based table in Metabase |
 | `get_table_data` | Get data rows from a table in Metabase |
 
-### Field Tools (12)
+### Field Tools (13)
 
 | Tool | Description |
 |------|-------------|
@@ -253,6 +254,7 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `delete_field_dimension` | Delete a dimension (remapping) from a field in Metabase |
 | `get_field_remapping` | Get remapping between two fields in Metabase |
 | `get_field_summary` | Get summary statistics for a field in Metabase |
+| `get_field_table_ids` | Get unique Table IDs for a list of Field IDs in Metabase |
 
 ### Search Tools (5)
 
@@ -277,7 +279,7 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `get_dataset_param_remapping` | Get remapping for a dataset parameter in Metabase |
 | `get_dataset_query_metadata` | Get metadata for a dataset query in Metabase |
 
-### User Tools (10)
+### User Tools (11)
 
 | Tool | Description |
 |------|-------------|
@@ -291,6 +293,7 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `reactivate_user` | Reactivate a deactivated user |
 | `get_user_recipients` | Get a list of users who are eligible to receive notifications and alerts in Metabase |
 | `dismiss_user_modal` | Dismiss a modal for a user in Metabase |
+| `create_user_password_reset_url` | Generate a password reset URL for a user in Metabase (admin only) |
 
 ### Permissions Tools (16)
 
@@ -513,13 +516,14 @@ This MCP server provides **418 tools** organized into 58 categories.
 |------|-------------|
 | `upload_csv` | Upload a CSV file to create a new table |
 
-### Slack Tools (3) `[Requires Metabase Pro]`
+### Slack Tools (4) `[Requires Metabase Pro]`
 
 | Tool | Description |
 |------|-------------|
 | `update_slack_settings` | Update Slack integration settings |
 | `get_slack_manifest` | Get Slack app manifest |
 | `send_slack_bug_report` | Send a bug report via Slack |
+| `get_slack_app_info` | Get information about the configured Slack app in Metabase |
 
 ### Google Tools (1)
 
@@ -558,7 +562,7 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `get_embed_card_tile` | Get a map tile for an embedded card in Metabase |
 | `get_embed_dashboard_tile` | Get a map tile for an embedded dashboard dashcard in Metabase |
 
-### Public Tools (27)
+### Public Tools (28)
 
 | Tool | Description |
 |------|-------------|
@@ -589,8 +593,9 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `get_public_document_card` | Get a card from a publicly shared document by UUID in Metabase |
 | `export_public_document_card` | Export a card from a publicly shared document in Metabase |
 | `export_public_dashcard_query_format` | Export results of a public dashboard card query in a specific format in Metabase |
+| `get_public_dashcard_execute` | Fetch the values for executing an action on a public dashcard in Metabase |
 
-### Preview Embed Tools (15)
+### Preview Embed Tools (14)
 
 | Tool | Description |
 |------|-------------|
@@ -605,7 +610,6 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `get_preview_embed_card_param_remapping` | Get remapping for a parameter of a preview embedded card in Metabase |
 | `get_preview_embed_dashboard_param_remapping` | Get remapping for a parameter of a preview embedded dashboard in Metabase |
 | `run_preview_embed_dashcard_query` | Run a query for a preview embedded dashcard in Metabase |
-| `export_preview_embed_dashcard_query` | Export results of a preview embedded dashcard query in Metabase |
 | `run_preview_embed_dashboard_pivot_dashcard_query` | Run a pivot query for a preview embedded dashboard dashcard in Metabase |
 | `get_preview_embed_card_tile` | Get a map tile for a preview embedded card in Metabase |
 | `get_preview_embed_dashboard_tile` | Get a map tile for a preview embedded dashboard dashcard in Metabase |
@@ -758,7 +762,7 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `export_document_card_query` | Export a card query result from a document in Metabase |
 | `list_public_documents` | List all documents with public links in Metabase |
 
-### Measure Tools (4)
+### Measure Tools (7)
 
 | Tool | Description |
 |------|-------------|
@@ -766,6 +770,21 @@ This MCP server provides **418 tools** organized into 58 categories.
 | `get_measure` | Get a measure by ID in Metabase |
 | `create_measure` | Create a new measure in Metabase |
 | `update_measure` | Update a measure by ID in Metabase |
+| `get_measure_dimension_values` | Fetch values for a dimension of a measure in Metabase |
+| `search_measure_dimension_values` | Search values for a dimension of a measure in Metabase |
+| `get_measure_dimension_remapping` | Fetch the remapping for a dimension value of a measure in Metabase |
+
+### Metric Tools (7)
+
+| Tool | Description |
+|------|-------------|
+| `list_metrics` | List metrics readable by the current user in Metabase |
+| `get_metric` | Get a specific metric by ID in Metabase |
+| `get_metric_dimension_values` | Fetch values for a dimension of a metric in Metabase |
+| `search_metric_dimension_values` | Search values for a dimension of a metric in Metabase |
+| `get_metric_dimension_remapping` | Fetch the remapping for a dimension value of a metric in Metabase |
+| `get_metric_breakout_values` | Compute breakout values for a metric definition in Metabase |
+| `get_metric_dataset` | Run a metric definition as a dataset query in Metabase |
 
 ### Notify Tools (3)
 

@@ -6,6 +6,7 @@ import { getFieldDefinition } from './get-field';
 import { getFieldRelatedDefinition } from './get-field-related';
 import { getFieldRemappingDefinition } from './get-field-remapping';
 import { getFieldSummaryDefinition } from './get-field-summary';
+import { getFieldTableIdsDefinition } from './get-field-table-ids';
 import { getFieldValuesDefinition } from './get-field-values';
 import { rescanFieldValuesDefinition } from './rescan-field-values';
 import { searchFieldValuesDefinition } from './search-field-values';
@@ -28,4 +29,5 @@ export const fieldTools: ToolDefinition<unknown>[] = [
   deleteFieldDimensionDefinition,
   getFieldRemappingDefinition,
   getFieldSummaryDefinition,
+  getFieldTableIdsDefinition,
 ];

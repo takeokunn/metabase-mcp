@@ -8,8 +8,10 @@ export const extractTablesFromSqlDefinition: ToolDefinition<ExtractTablesFromSql
   description: '[Requires Metabase Pro] Extract table references from a SQL query using AI',
   inputSchema: ExtractTablesFromSqlInputSchema,
   handler: async (client: MetabaseClient, input: ExtractTablesFromSqlInput) => {
-    const result = await client.post('/api/llm/extract-tables', {
+    const result = await client.post('/api/llm/extract-sources', {
+      database_id: input.database_id,
       sql: input.sql,
+      ...(input.template_tags !== undefined ? { template_tags: input.template_tags } : {}),
     });
     return formatToolResponse(result);
   },

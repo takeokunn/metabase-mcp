@@ -131,6 +131,11 @@ export const GetFieldSummaryInputSchema = z.object({
   id: z.number().describe('The field ID'),
 });
 
+// Get field table IDs input schema
+export const GetFieldTableIdsInputSchema = z.object({
+  field_ids: z.array(z.number().int()).describe('List of Field IDs to resolve Table IDs for'),
+});
+
 // Type exports
 export type GetFieldInput = z.infer<typeof GetFieldInputSchema>;
 export type UpdateFieldInput = z.infer<typeof UpdateFieldInputSchema>;
@@ -145,3 +150,4 @@ export type FieldDimensionParams = z.infer<typeof FieldDimensionParamsSchema>;
 export type UpdateFieldRemappingInput = z.infer<typeof UpdateFieldRemappingInputSchema>;
 export type GetFieldRemappingInput = z.infer<typeof GetFieldRemappingInputSchema>;
 export type GetFieldSummaryInput = z.infer<typeof GetFieldSummaryInputSchema>;
+export type GetFieldTableIdsInput = z.infer<typeof GetFieldTableIdsInputSchema>;

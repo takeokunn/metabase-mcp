@@ -24,18 +24,20 @@ describe('getCardMapTile tool', () => {
   it('should call correct URL with path params', async () => {
     const mockClient = createMockClientWithResponse('get', {});
     await getCardMapTileDefinition.handler(mockClient, input);
-    expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/tiles/42/10/512/512/latitude/longitude`,
-      undefined,
-    );
+    expect(mockClient.get).toHaveBeenCalledWith(`/api/tiles/42/10/512/512`, {
+      latField: 'latitude',
+      lonField: 'longitude',
+    });
   });
 
-  it('should pass query param when provided', async () => {
-    const inputWithQuery = { ...input, query: '{"filter": []}' };
+  it('should pass parameters param when provided', async () => {
+    const inputWithQuery = { ...input, parameters: '{"filter": []}' };
     const mockClient = createMockClientWithResponse('get', {});
     await getCardMapTileDefinition.handler(mockClient, inputWithQuery);
-    expect(mockClient.get).toHaveBeenCalledWith(`/api/tiles/42/10/512/512/latitude/longitude`, {
-      query: '{"filter": []}',
+    expect(mockClient.get).toHaveBeenCalledWith(`/api/tiles/42/10/512/512`, {
+      latField: 'latitude',
+      lonField: 'longitude',
+      parameters: '{"filter": []}',
     });
   });
 

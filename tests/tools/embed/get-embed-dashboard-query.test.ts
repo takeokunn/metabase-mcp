@@ -14,7 +14,7 @@ describe('getEmbedDashboardQuery tool', () => {
     const result = await getEmbedDashboardQueryDefinition.handler(mockClient, input);
     expectMcpContent(result, mockResult);
     expect(mockClient.get).toHaveBeenCalledWith(
-      `/api/embed/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}/query`,
+      `/api/embed/dashboard/${input.token}/dashcard/${input.dashcard_id}/card/${input.card_id}`,
     );
   });
 

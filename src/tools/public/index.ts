@@ -17,6 +17,7 @@ import { getPublicDashboardParamRemappingDefinition } from './get-public-dashboa
 import { getPublicDashboardParamValuesDefinition } from './get-public-dashboard-param-values';
 import { getPublicDashboardParamsDefinition } from './get-public-dashboard-params';
 import { getPublicDashboardTileDefinition } from './get-public-dashboard-tile';
+import { getPublicDashcardExecuteDefinition } from './get-public-dashcard-execute';
 import { getPublicDocumentDefinition } from './get-public-document';
 import { getPublicDocumentCardDefinition } from './get-public-document-card';
 import { getPublicOembedDefinition } from './get-public-oembed';
@@ -42,6 +43,7 @@ export const publicTools: ToolDefinition<unknown>[] = [
   getPublicDashboardParamRemappingDefinition,
   executePublicActionDefinition,
   executePublicDashcardActionDefinition,
+  getPublicDashcardExecuteDefinition,
   runPublicCardPivotQueryDefinition,
   getPublicOembedDefinition,
   getPublicActionDefinition,

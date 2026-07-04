@@ -157,11 +157,6 @@ export const DismissDatabaseSpinnerInputSchema = z.object({
   id: z.number().describe('Database ID'),
 });
 
-// Check database workspace permission input schema
-export const CheckDatabaseWorkspacePermissionInputSchema = z.object({
-  id: z.number().describe('Database ID'),
-});
-
 // Inferred types
 export type DatabaseId = z.infer<typeof DatabaseIdSchema>;
 export type DatabaseEngine = z.infer<typeof DatabaseEngineSchema>;
@@ -194,6 +189,3 @@ export type GetVirtualDatabaseDatasetsParams = z.infer<
   typeof GetVirtualDatabaseDatasetsParamsSchema
 >;
 export type DismissDatabaseSpinnerInput = z.infer<typeof DismissDatabaseSpinnerInputSchema>;
-export type CheckDatabaseWorkspacePermissionInput = z.infer<
-  typeof CheckDatabaseWorkspacePermissionInputSchema
->;
