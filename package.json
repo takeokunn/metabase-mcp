@@ -65,11 +65,11 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.10",
-    "@modelcontextprotocol/inspector": "^0.22.0",
+    "@modelcontextprotocol/inspector": "^1.0.0",
     "@types/node": "^26.1.0",
     "@vitest/coverage-v8": "^4.1.2",
     "tsdown": "^0.22.3",
-    "typescript": "^6.0.2",
+    "typescript": "^7.0.2",
     "vitest": "^4.1.2"
   }
 }
